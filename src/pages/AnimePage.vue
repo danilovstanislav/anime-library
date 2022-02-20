@@ -8,6 +8,15 @@
 			/>
 			<ul class="sidebar__list">
 				<li class="sidebar__item">
+					<h2 class="anime-title hidden">
+						{{
+							$store.state.animePage.currentAnime?.title_english
+								? $store.state.animePage.currentAnime?.title_english
+								: $store.state.animePage.currentAnime?.title
+						}}
+					</h2>
+				</li>
+				<li class="sidebar__item">
 					<span class="sidebar__item-category">Type:</span>
 					{{ $store.state.animePage.currentAnime?.type }}
 				</li>
@@ -49,14 +58,14 @@
 				<button
 					class="button about__button"
 					@click="isShowMore = !isShowMore"
-					v-if="!isShowMore"
+					v-if="!isShowMore && getTextAbout().length > 250"
 				>
 					show more
 				</button>
 				<button
 					class="button about__button about__button--less"
 					@click="isShowMore = !isShowMore"
-					v-else
+					v-else-if="getTextAbout().length > 250"
 				>
 					show less
 				</button>
@@ -75,9 +84,17 @@
 				</iframe>
 			</section>
 
-			<section class="characters">
+			<section
+				class="characters"
+				v-if="$store.state.animePage.charactersArray.length"
+			>
 				<h4 class="section-title characters__title">
-					Characters<button class="button characters__button">view more</button>
+					Characters<button
+						class="button characters__button"
+						v-if="$store.state.animePage.charactersArray.length > 6"
+					>
+						view more
+					</button>
 				</h4>
 				<ul class="characters__list">
 					<li
@@ -98,14 +115,22 @@
 				</ul>
 			</section>
 
-			<section class="reviews">
+			<section
+				class="reviews"
+				v-if="$store.state.animePage.reviewsArray.length"
+			>
 				<h4 class="section-title reviews__title">
-					Reviews<button class="button reviews__button">view more</button>
+					Reviews<button
+						class="button reviews__button"
+						v-if="$store.state.animePage.reviewsArray.length > 4"
+					>
+						view more
+					</button>
 				</h4>
 				<ul class="reviews__list">
 					<li
 						class="reviews__item"
-						v-for="review in $store.state.animePage.reviewsArray.slice(0, 5)"
+						v-for="review in $store.state.animePage.reviewsArray.slice(0, 4)"
 						:key="review.mal_id"
 					>
 						<img
@@ -126,7 +151,10 @@
 				</ul>
 			</section>
 
-			<section class="recommendations">
+			<section
+				class="recommendations"
+				v-if="$store.state.animePage.recommendationsArray.length"
+			>
 				<h4 class="section-title">Recommendations</h4>
 				<div class="recommendations__list">
 					<slider
@@ -170,7 +198,7 @@ export default {
 		return {
 			textAbout: '',
 			isShowMore: false,
-			breakpoints: smallSlider.breakpoints
+			breakpoints: smallSlider.breakpoints,
 		}
 	},
 
@@ -184,12 +212,12 @@ export default {
 		}),
 
 		getTextAbout(flag) {
-			return flag
-				? this.$store.state.animePage.currentAnime?.synopsis
-				: `${this.$store.state.animePage.currentAnime?.synopsis.substring(
-						0,
-						250
-				  )}...`
+			const text = this.$store.state.animePage.currentAnime?.synopsis
+			if (text.length > 250) {
+				return flag ? text : `${text.substring(0, 250)}...`
+			} else {
+				return text
+			}
 		},
 	},
 }
@@ -202,34 +230,65 @@ export default {
 	padding-bottom: 30px
 	display: flex
 
+	@media (max-width: $screen-xs-max)
+		flex-direction: column
+		font-size: 14px
+
 .sidebar
 	width: 25%
 	margin-right: 15px
+	display: flex
+	flex-direction: column
+
+	@media (max-width: $screen-xs-max)
+		width: 100%
+		margin-bottom: 15px
+		flex-direction: row
 
 	&-image
 		width: 100%
+		margin-bottom: 10px
 		display: block
 		border-radius: 5px
 
+		@media (max-width: $screen-xs-max)
+			max-width: 40%
+			margin-bottom: 0
+			margin-right: 15px
+
 	&__list
 		padding: 0
-		margin-top: 10px
+		margin-top: 0
+		margin-bottom: 0
 		margin-bottom: 0
 		list-style: none
+
+	.hidden
+		display: none
+
+		@media (max-width: $screen-xs-max)
+			display: block
 
 	&__item-category
 		font-weight: 700
 
 .main-content
+	width: 100%
 	max-width: calc(75% - 20px)
 	display: flex
 	flex-direction: column
+
+	@media (max-width: $screen-xs-max)
+		max-width: 100%
 
 .anime-title
 	margin-top: 0
 	margin-bottom: 25px
 	font-size: 24px
 	font-weight: 800
+
+	@media (max-width: $screen-xs-max)
+		display: none
 
 .section-title
 	@include borderBottom
@@ -248,7 +307,10 @@ export default {
 	color: springgreen
 
 .about
-	margin-bottom: 50px
+	margin-bottom: 30px
+
+	@media (max-width: $screen-xs-max)
+		margin-bottom: 15px
 
 	&__button
 		margin-left: 5px
@@ -261,11 +323,20 @@ export default {
 .trailer
 	margin-bottom: 50px
 
+	@media (max-width: $screen-xs-max)
+		margin-bottom: 25px
+
 	&__video
+		margin-left: auto
+		margin-right: auto
 		margin-top: 15px
+		display: block
 
 .characters
 	margin-bottom: 50px
+
+	@media (max-width: $screen-xs-max)
+		margin-bottom: 25px
 
 	&__title
 		display: flex
@@ -276,11 +347,17 @@ export default {
 		margin-top: 10px
 		margin-bottom: 0
 		display: grid
+		justify-items: center
 		grid-template-columns: 1fr 1fr
-		grid-gap: 5px
+		grid-gap: 10px
 		list-style: none
 
+		@media (max-width: $screen-xs-max)
+			grid-template-columns: 1fr
+
 	&__item
+		max-width: 400px
+		width: 100%
 		padding: 5px
 		display: flex
 		border: 1px solid #a8a8a8
@@ -292,7 +369,8 @@ export default {
 	.character__image
 		max-width: 60px
 		margin-right: 10px
-		display: inline-block
+		display: block
+		border-radius: 5px
 
 	.character__name
 		margin-bottom: 5px
@@ -300,6 +378,9 @@ export default {
 
 .reviews
 	margin-bottom: 50px
+
+	@media (max-width: $screen-xs-max)
+		margin-bottom: 25px
 
 	&__title
 		display: flex
@@ -324,7 +405,8 @@ export default {
 	&__user-image
 		max-width: 60px
 		margin-right: 10px
-		display: inline-block
+		display: block
+		border-radius: 5px
 
 	&__username
 		margin-bottom: 5px
@@ -353,6 +435,10 @@ export default {
 		display: block
 		color: #000
 		text-decoration: none
+		transition: .2s
+
+		&:hover
+			opacity: .85
 
 	&__image
 		width: 100%
@@ -361,9 +447,10 @@ export default {
 		display: block
 		object-fit: cover
 		object-position: center
+		border-radius: 5px
 
 		@media (max-width: $screen-xs-max)
-			height: 120px
+			height: 130px
 
 	&__item-title
 		margin: 0

@@ -8,7 +8,6 @@ export const animePage = {
     charactersArray: [],
     reviewsArray: [],
     recommendationsArray: [],
-    // seasonalArray: [],
   }),
 
   mutations: {
@@ -27,74 +26,50 @@ export const animePage = {
   },
 
   actions: {
-    async getAnimeById({ commit }, id) {
+    async getAnimeById({ commit, dispatch }, id) {
       try {
-        const animeById = await axios.get(`https://api.jikan.moe/v4/anime/${id}`)
-        commit('setCurrentAnime', animeById.data.data)
+        const res = await axios.get(`https://api.jikan.moe/v4/anime/${id}`)
+        commit('setCurrentAnime', res.data.data)
+        dispatch('getCharacters', id)
+        dispatch('getReviews', id)
+        dispatch('getRecommendations', id)
+        window.scrollTo(0, 0)
       } catch (err) {
         console.error(err)
       }
-
-      try {
-        const characters = await axios.get(
-          `https://api.jikan.moe/v4/anime/${id}/characters`
-        )
-        commit('setCharactersArray', characters.data.data)
-      } catch (err) {
-        console.error(err)
-      }
-      
-      try {
-        const reviews = await axios.get(
-          `https://api.jikan.moe/v4/anime/${id}/reviews`
-        )
-        commit('setReviewsArray', reviews.data.data)
-      } catch (err) {
-        console.error(err)
-      }
-      
-      try {
-        const recommendations = await axios.get(
-          `https://api.jikan.moe/v4/anime/${id}/recommendations`
-        )
-        commit('setRecommendationsArray', recommendations.data.data)
-      } catch (err) {
-        console.error(err)
-      }
-      window.scrollTo(0, 0)
     },
 
-    // async getCharacters({ commit }, id) {
-    //   try {
-    //     const res = await axios.get(
-    //       `https://api.jikan.moe/v4/anime/${id}/characters`
-    //     )
-    //     commit('setCharactersArray', res.data.data)
-    //   } catch (err) {
-    //     console.error(err)
-    //   }
-    // },
+    async getCharacters({ commit }, id) {
+      try {
+        const res = await axios.get(
+          `https://api.jikan.moe/v4/anime/${id}/characters`
+        )
+        commit('setCharactersArray', res.data.data)
+      } catch (err) {
+        console.error(err)
+      }
+    },
 
-    // async getReviews({ commit }, id) {
-    //   try {
-    //     const res = await axios.get(
-    //       `https://api.jikan.moe/v4/anime/${id}/reviews`
-    //     )
-    //     commit('setReviewsArray', res.data.data)
-    //   } catch (err) {
-    //     console.error(err)
-    //   }
-    // },
+    async getReviews({ commit }, id) {
+      try {
+        const res = await axios.get(
+          `https://api.jikan.moe/v4/anime/${id}/reviews`
+        )
+        commit('setReviewsArray', res.data.data)
+      } catch (err) {
+        console.error(err)
+      }
+    },
 
-    // async getRecommendations({ commit }, id) {
-    //   try {
-    //     const res = await axios.get(
-    //       `https://api.jikan.moe/v4/anime/${id}/recommendations`
-    //     )
-    //     commit('setRecommendationsArray', res.data.data)
-    //   } catch (err) {
-    //     console.error(err)
-    //   }
-    // },
+    async getRecommendations({ commit }, id) {
+      try {
+        const res = await axios.get(
+          `https://api.jikan.moe/v4/anime/${id}/recommendations`
+        )
+        commit('setRecommendationsArray', res.data.data)
+      } catch (err) {
+        console.error(err)
+      }
+    },
   },
 }

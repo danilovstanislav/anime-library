@@ -1,10 +1,10 @@
 <template>
 	<footer class="footer">
 		<div class="footer__wrapper">
-			<router-link class="footer__logo" :to="{ name: 'HomePage' }"
-				>AnimeBase</router-link
-			>
 			<div class="footer__content">
+				<router-link class="footer__logo" :to="{ name: 'HomePage' }"
+					>AniBase</router-link
+				>
 				<ul class="footer__links-list">
 					<li class="footer__item">
 						<router-link class="footer__link" :to="{ name: 'HomePage' }">
@@ -32,14 +32,13 @@
 						</router-link>
 					</li>
 				</ul>
-				<div class="footer__copyright">
-					AnimeBase is a property of AnimeBase Co.,Ltd. ©2022 All Rights
-					Reserved.
-				</div>
-				<div class="footer__recaptcha">
-					This site is protected by reCAPTCHA and the Google Privacy Policy and
-					Terms of Service apply.
-				</div>
+			</div>
+			<div class="footer__copyright">
+				AnimeBase is a property of AnimeBase Co.,Ltd. ©2022 All Rights Reserved.
+			</div>
+			<div class="footer__recaptcha">
+				This site is protected by reCAPTCHA and the Google Privacy Policy and
+				Terms of Service apply.
 			</div>
 		</div>
 	</footer>
@@ -52,21 +51,22 @@ export default {}
 <style lang="sass" scoped>
 .footer
 	width: 100%
-	padding-top: 40px
-	padding-bottom: 15px
+	padding-top: 30px
+	padding-bottom: 30px
 	background-color: springgreen
 
 	&__wrapper
 		@include container
 		display: flex
-		align-items: center
-		justify-content: center
+		flex-direction: column
 
 	&__content
-		flex-grow: 1
+		margin-bottom: 15px
+		display: flex
+		align-items: center
 
 	&__logo
-		margin-right: 10px
+		margin-right: 5px
 		display: block
 		font-family: 'Akaya-Telivigala'
 		font-size: 24px
@@ -75,15 +75,20 @@ export default {}
 		color: #000
 
 	&__links-list
-		padding: 0
+		width: 100%
+		padding-left: 0
 		margin-top: 0
-		margin-bottom: 20px
+		margin-bottom: 0
 		display: flex
-		justify-content: center
+		justify-content: space-evenly
+		align-items: center
 		list-style-type: none
 
+		@media (max-width: $screen-xs-max)
+			flex-direction: column
+
 	&__item
-		min-width: 100px
+		min-width: 80px
 		padding: 8px 10px
 		transition: .2s
 		text-align: center
@@ -96,11 +101,20 @@ export default {}
 		color: #000
 		text-decoration-line: none
 
+		@media (max-width: $screen-s-max)
+			font-size: 14px
+
 	&__copyright
 		font-size: 14px
 		text-align: center
 
+		@media (max-width: $screen-s-max)
+			font-size: 12px
+
 	&__recaptcha
 		font-size: 12px
 		text-align: center
+
+		@media (max-width: $screen-s-max)
+			font-size: 10px
 </style>

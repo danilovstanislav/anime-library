@@ -9,13 +9,31 @@
 			<anime-card :animeCard="card" />
 		</slider>
 
-		<h3 class="section__title">Latest updates</h3>
+		<!-- <h3 class="section__title">Latest updates</h3>
 		<slider
 			v-slot="{ card }"
 			:contentArr="$store.state.homePage.recentEpisodes"
 			:breakpoints="bigBreakpoints"
 		>
 			<anime-video-card :animeCard="card" />
+		</slider> -->
+
+		<h3 class="section__title">Winter 2022</h3>
+		<slider
+			v-slot="{ card }"
+			:contentArr="$store.state.homePage.seasonNow"
+			:breakpoints="bigBreakpoints"
+		>
+			<anime-card :animeCard="card" />
+		</slider>
+
+		<h3 class="section__title">Top upcoming anime</h3>
+		<slider
+			v-slot="{ card }"
+			:contentArr="$store.state.homePage.seasonUpcoming"
+			:breakpoints="bigBreakpoints"
+		>
+			<anime-card :animeCard="card" />
 		</slider>
 	</div>
 </template>
@@ -43,13 +61,15 @@ export default {
 
 	created() {
 		this.getTopAnime()
-		this.getRecentEpisodes()
+		this.getSeasonNow()
+		this.getSeasonUpcoming()
 	},
 
 	methods: {
 		...mapActions({
 			getTopAnime: 'homePage/getTopAnime',
-			getRecentEpisodes: 'homePage/getRecentEpisodes',
+			getSeasonNow: 'homePage/getSeasonNow',
+			getSeasonUpcoming: 'homePage/getSeasonUpcoming',
 		}),
 	},
 }

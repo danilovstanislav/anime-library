@@ -51,7 +51,7 @@ export const smallSlider = {
       spaceBetween: 10,
     },
     320: {
-      slidesPerView: 3,
+      slidesPerView: 4,
       slidesPerGroup: 1,
       spaceBetween: 10,
     },

@@ -5,15 +5,19 @@ export const homePage = {
 
   state: () => ({
     topAnime: [],
-    recentEpisodes: [],
+    seasonNow: [],
+    seasonUpcoming: [],
   }),
 
   mutations: {
-    setTopAnime(state, topAnime) {
-      state.topAnime = topAnime
+    setTopAnime(state, payload) {
+      state.topAnime = payload
     },
-    setRecentEpisodes(state, recentEpisodes) {
-      state.recentEpisodes = recentEpisodes
+    setSeasonNow(state, payload) {
+      state.seasonNow = payload
+    },
+    setSeasonUpcoming(state, payload) {
+      state.seasonUpcoming = payload
     },
   },
 
@@ -29,11 +33,24 @@ export const homePage = {
       }
     },
 
-    async getRecentEpisodes({ state, commit }) {
-      if (!state.recentEpisodes.length) {
+    async getSeasonNow({ state, commit }) {
+      if (!state.seasonNow.length) {
         try {
-          const res = await axios.get('https://api.jikan.moe/v4/watch/episodes')
-          commit('setRecentEpisodes', res.data.data)
+          const res = await axios.get('https://api.jikan.moe/v4/seasons/now')
+          commit('setSeasonNow', res.data.data)
+        } catch (err) {
+          console.error(err)
+        }
+      }
+    },
+
+    async getSeasonUpcoming({ state, commit }) {
+      if (!state.seasonUpcoming.length) {
+        try {
+          const res = await axios.get(
+            'https://api.jikan.moe/v4/seasons/upcoming'
+          )
+          commit('setSeasonUpcoming', res.data.data)
         } catch (err) {
           console.error(err)
         }

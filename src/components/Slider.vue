@@ -2,7 +2,7 @@
 	<swiper
 		class="slider__container"
 		:breakpoints="breakpoints"
-		:simulate-touch="false"
+		:simulate-touch="true"
 		:modules="modules"
 		navigation
 	>

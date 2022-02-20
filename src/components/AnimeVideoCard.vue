@@ -1,5 +1,8 @@
 <template>
-	<div class="card">
+	<router-link
+		class="card"
+		:to="{ name: 'AnimePage', params: { animeId: animeCard.entry.mal_id } }"
+	>
 		<img
 			class="card__image"
 			:src="animeCard.entry.images.jpg.image_url"
@@ -9,7 +12,7 @@
 			<h4 class="card__episode">{{ animeCard.episodes[0].title }}</h4>
 			<div class="card__title">{{ animeCard.entry.title }}</div>
 		</div>
-	</div>
+	</router-link>
 </template>
 
 <script>
@@ -28,6 +31,7 @@ export default {
 	justify-content: flex-end
 	background-color: #fff
 	font-family: 'Open Sans'
+	border-radius: 5px
 	transition: .2s
 
 	@media (max-width: $screen-xs-max)

@@ -2,7 +2,7 @@
 	<header class="header">
 		<div class="header__wrapper">
 			<router-link class="header__logo" :to="{ name: 'HomePage' }"
-				>AnimeBase</router-link
+				>AniBase</router-link
 			>
 			<ul class="header__list">
 				<li class="header__item">

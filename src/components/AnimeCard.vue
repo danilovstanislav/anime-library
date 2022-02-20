@@ -66,7 +66,7 @@ export default {
 			height: 160px
 
 		@media (max-width: $screen-xs-max)
-			height: 150px
+			height: 250px
 
 	&__info
 		margin-top: 7px
