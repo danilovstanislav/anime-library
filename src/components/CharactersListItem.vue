@@ -2,9 +2,12 @@
 	<li class="character">
 		<img class="character-image" :src="image" alt="Character image" />
 		<div class="character__info">
-			<div class="character__name">
+			<router-link
+				class="character__name"
+				:to="{ name: 'CharacterPage', params: { charId: charId } }"
+			>
 				{{ name }}
-			</div>
+			</router-link>
 			<div class="character__role">{{ role }}</div>
 		</div>
 	</li>
@@ -12,7 +15,7 @@
 
 <script>
 export default {
-	props: ['name', 'role', 'image'],
+	props: ['name', 'role', 'image', 'charId'],
 }
 </script>
 

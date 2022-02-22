@@ -52,7 +52,6 @@
 						v-if="$store.state.animePage.charactersArray.length > 6"
 						:to="{
 							name: 'CharactersList',
-							props: { animeId: $store.state.animePage.currentAnime.mal_id },
 						}"
 					>
 						view more
@@ -70,7 +69,14 @@
 							alt="Character image"
 						/>
 						<div class="character__info">
-							<div class="character__name">{{ char.character.name }}</div>
+							<router-link
+								class="character__name"
+								:to="{
+									name: 'CharacterPage',
+									params: { charId: char.character.mal_id },
+								}"
+								>{{ char.character.name }}</router-link
+							>
 							<div class="character__role">{{ char.role }}</div>
 						</div>
 					</li>
@@ -304,6 +310,12 @@ export default {
 	.character__name
 		margin-bottom: 5px
 		font-weight: 700
+		color: #000
+		text-decoration: none
+
+		&:hover
+			text-decoration: underline
+			color: springgreen
 
 	&__button
 		text-decoration: none

@@ -10,6 +10,7 @@
 					:name="char.character.name"
 					:role="char.role"
 					:image="char.character.images.jpg.image_url"
+					:charId="char.character.mal_id"
 				/>
 			</ul>
 		</div>
