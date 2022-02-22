@@ -28,11 +28,14 @@
 				</button>
 			</section>
 
-			<section class="trailer">
+			<section
+				class="trailer"
+				v-if="$store.state.animePage.currentAnime.trailer.embed_url"
+			>
 				<h4 class="section-title">Official trailer</h4>
 				<iframe
 					class="trailer__video"
-					:src="$store.state.animePage.currentAnime?.trailer.embed_url"
+					:src="$store.state.animePage.currentAnime.trailer.embed_url"
 					frameborder="0"
 					allowfullscreen
 				>
@@ -44,12 +47,16 @@
 				v-if="$store.state.animePage.charactersArray.length"
 			>
 				<h4 class="section-title characters__title">
-					Characters<button
+					Characters<router-link
 						class="button characters__button"
 						v-if="$store.state.animePage.charactersArray.length > 6"
+						:to="{
+							name: 'CharactersList',
+							props: { animeId: $store.state.animePage.currentAnime.mal_id },
+						}"
 					>
 						view more
-					</button>
+					</router-link>
 				</h4>
 				<ul class="characters__list">
 					<li
@@ -94,10 +101,10 @@
 							class="reviews__user-image"
 						/>
 						<div class="reviews__info">
-							<div class="reviews__username">{{ review.user.username }}</div>
 							<div class="reviews__date">
-								{{ review.date.toLocaleString('ru') }}
+								{{ review.date }}
 							</div>
+							<div class="reviews__username">{{ review.user.username }}</div>
 							<div class="reviews__text">
 								{{ `${review.review.substring(0, 250)}...` }}
 							</div>
@@ -145,11 +152,13 @@
 import Slider from '@/components/Slider.vue'
 import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import { mapActions } from 'vuex'
+
 export default {
 	components: {
 		Slider,
 		AnimePageSidebar,
 	},
+
 	data() {
 		return {
 			textAbout: '',
@@ -167,7 +176,7 @@ export default {
 		}),
 
 		getTextAbout(flag) {
-			const text = this.$store.state.animePage.currentAnime?.synopsis
+			const text = this.$store.state.animePage.currentAnime.synopsis
 			if (text.length > 250) {
 				return flag ? text : `${text.substring(0, 250)}...`
 			} else {
@@ -295,6 +304,12 @@ export default {
 	.character__name
 		margin-bottom: 5px
 		font-weight: 700
+
+	&__button
+		text-decoration: none
+
+		&:hover
+			text-decoration: underline
 
 .reviews
 	margin-bottom: 50px

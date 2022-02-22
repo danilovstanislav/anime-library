@@ -12,6 +12,11 @@ const routes = [
     name: 'AnimePage',
     component: () => import('@/pages/AnimePage.vue'),
   },
+  {
+    path: '/anime/:animeId/characters',
+    name: 'CharactersList',
+    component: () => import('@/pages/CharactersList.vue'),
+  },
 ]
 
 const router = createRouter({
