@@ -66,11 +66,13 @@ export default {}
 		margin-bottom: 10px
 		display: block
 		border-radius: 5px
+		object-fit: cover
+		object-position: center
 
 		@media (max-width: $screen-xs-max)
 			max-width: 40%
 			margin-bottom: 0
-			margin-right: 15px
+			margin-right: 10px
 
 	&__list
 		padding: 0
@@ -78,6 +80,10 @@ export default {}
 		margin-bottom: 0
 		margin-bottom: 0
 		list-style: none
+
+		.anime-title
+			margin-top: 0
+			margin-bottom: 10px
 
 	.hidden
 		display: none

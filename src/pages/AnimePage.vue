@@ -32,8 +32,6 @@
 				<h4 class="section-title">Official trailer</h4>
 				<iframe
 					class="trailer__video"
-					width="330"
-					height="200"
 					:src="$store.state.animePage.currentAnime?.trailer.embed_url"
 					frameborder="0"
 					allowfullscreen
@@ -246,6 +244,9 @@ export default {
 		margin-bottom: 25px
 
 	&__video
+		max-width: 330px
+		width: 100%
+		height: 200px
 		margin-left: auto
 		margin-right: auto
 		margin-top: 15px
