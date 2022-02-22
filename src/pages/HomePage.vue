@@ -4,25 +4,16 @@
 		<slider
 			v-slot="{ card }"
 			:contentArr="$store.state.homePage.topAnime"
-			:breakpoints="bigBreakpoints"
+			sliderSize="wideSlider"
 		>
 			<anime-card :animeCard="card" />
 		</slider>
-
-		<!-- <h3 class="section__title">Latest updates</h3>
-		<slider
-			v-slot="{ card }"
-			:contentArr="$store.state.homePage.recentEpisodes"
-			:breakpoints="bigBreakpoints"
-		>
-			<anime-video-card :animeCard="card" />
-		</slider> -->
 
 		<h3 class="section__title">Winter 2022</h3>
 		<slider
 			v-slot="{ card }"
 			:contentArr="$store.state.homePage.seasonNow"
-			:breakpoints="bigBreakpoints"
+			sliderSize="wideSlider"
 		>
 			<anime-card :animeCard="card" />
 		</slider>
@@ -31,7 +22,7 @@
 		<slider
 			v-slot="{ card }"
 			:contentArr="$store.state.homePage.seasonUpcoming"
-			:breakpoints="bigBreakpoints"
+			sliderSize="wideSlider"
 		>
 			<anime-card :animeCard="card" />
 		</slider>
@@ -43,7 +34,6 @@ import Slider from '@/components/Slider.vue'
 import AnimeCard from '@/components/AnimeCard.vue'
 import AnimeVideoCard from '@/components/AnimeVideoCard.vue'
 import { mapActions } from 'vuex'
-import { bigSlider } from '@/plugins/slider'
 
 export default {
 	name: 'HomePage',
@@ -51,12 +41,6 @@ export default {
 		Slider,
 		AnimeCard,
 		AnimeVideoCard,
-	},
-
-	data() {
-		return {
-			bigBreakpoints: bigSlider.breakpoints,
-		}
 	},
 
 	created() {

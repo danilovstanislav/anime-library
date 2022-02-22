@@ -1,49 +1,6 @@
 <template>
 	<div class="container">
-		<aside class="sidebar">
-			<img
-				:src="$store.state.animePage.currentAnime?.images.jpg.large_image_url"
-				alt="Anime poster"
-				class="sidebar-image"
-			/>
-			<ul class="sidebar__list">
-				<li class="sidebar__item">
-					<h2 class="anime-title hidden">
-						{{
-							$store.state.animePage.currentAnime?.title_english
-								? $store.state.animePage.currentAnime?.title_english
-								: $store.state.animePage.currentAnime?.title
-						}}
-					</h2>
-				</li>
-				<li class="sidebar__item">
-					<span class="sidebar__item-category">Type:</span>
-					{{ $store.state.animePage.currentAnime?.type }}
-				</li>
-				<li class="sidebar__item">
-					<span class="sidebar__item-category">Episodes:</span>
-					{{ $store.state.animePage.currentAnime?.episodes }}
-				</li>
-				<li class="sidebar__item">
-					<span class="sidebar__item-category">Status:</span>
-					{{ $store.state.animePage.currentAnime?.status }}
-				</li>
-				<li class="sidebar__item">
-					<span class="sidebar__item-category">Premiered:</span>
-					{{ $store.state.animePage.currentAnime?.aired.string }}
-				</li>
-				<li class="sidebar__item">
-					<span class="sidebar__item-category">Genres:</span>
-					{{
-						`${$store.state.animePage.currentAnime?.genres[0].name}, ${$store.state.animePage.currentAnime?.genres[1]?.name}`
-					}}
-				</li>
-				<li class="sidebar__item">
-					<span class="sidebar__item-category">Duration:</span>
-					{{ $store.state.animePage.currentAnime?.duration }}
-				</li>
-			</ul>
-		</aside>
+		<anime-page-sidebar />
 		<div class="main-content">
 			<h2 class="anime-title">
 				{{
@@ -160,7 +117,7 @@
 					<slider
 						v-slot="{ card }"
 						:contentArr="$store.state.animePage.recommendationsArray"
-						:breakpoints="breakpoints"
+						sliderSize="smallSlider"
 					>
 						<router-link
 							class="recommendations__item"
@@ -188,17 +145,17 @@
 
 <script>
 import Slider from '@/components/Slider.vue'
+import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import { mapActions } from 'vuex'
-import { smallSlider } from '@/plugins/slider'
 export default {
 	components: {
 		Slider,
+		AnimePageSidebar,
 	},
 	data() {
 		return {
 			textAbout: '',
 			isShowMore: false,
-			breakpoints: smallSlider.breakpoints,
 		}
 	},
 
@@ -233,44 +190,6 @@ export default {
 	@media (max-width: $screen-xs-max)
 		flex-direction: column
 		font-size: 14px
-
-.sidebar
-	width: 25%
-	margin-right: 15px
-	display: flex
-	flex-direction: column
-
-	@media (max-width: $screen-xs-max)
-		width: 100%
-		margin-bottom: 15px
-		flex-direction: row
-
-	&-image
-		width: 100%
-		margin-bottom: 10px
-		display: block
-		border-radius: 5px
-
-		@media (max-width: $screen-xs-max)
-			max-width: 40%
-			margin-bottom: 0
-			margin-right: 15px
-
-	&__list
-		padding: 0
-		margin-top: 0
-		margin-bottom: 0
-		margin-bottom: 0
-		list-style: none
-
-	.hidden
-		display: none
-
-		@media (max-width: $screen-xs-max)
-			display: block
-
-	&__item-category
-		font-weight: 700
 
 .main-content
 	width: 100%

@@ -1,7 +1,7 @@
 <template>
 	<swiper
 		class="slider__container"
-		:breakpoints="breakpoints"
+		:breakpoints="getSliderSize"
 		:simulate-touch="true"
 		:modules="modules"
 		navigation
@@ -15,6 +15,7 @@
 import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue'
 import { Navigation } from 'swiper'
 import 'swiper/swiper-bundle.min.css'
+import { wideSlider, smallSlider } from '@/plugins/slider'
 
 export default {
 	components: {
@@ -23,12 +24,22 @@ export default {
 	},
 	props: {
 		contentArr: Array,
-		breakpoints: Object,
 	},
 	data() {
 		return {
 			modules: [Navigation],
 		}
+	},
+	computed: {
+		getSliderSize() {
+			const size = this.$attrs.sliderSize
+
+			if (size === 'wideSlider') {
+				return wideSlider.breakpoints
+			} else if (size === 'smallSlider') {
+				return smallSlider.breakpoints
+			}
+		},
 	},
 }
 </script>

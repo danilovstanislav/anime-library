@@ -1,4 +1,4 @@
-export const bigSlider = {
+export const wideSlider = {
   breakpoints: {
     1200: {
       slidesPerView: 7,
