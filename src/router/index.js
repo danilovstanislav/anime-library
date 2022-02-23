@@ -18,9 +18,14 @@ const routes = [
     component: () => import('@/pages/CharactersList.vue'),
   },
   {
-    path: '/character/:charId',
+    path: '/anime/:animeId/characters/:charId',
     name: 'CharacterPage',
     component: () => import('@/pages/CharacterPage.vue'),
+  },
+  {
+    path: '/anime/:animeId/reviews',
+    name: 'ReviewsPage',
+    component: () => import('@/pages/ReviewsPage.vue'),
   },
 ]
 

@@ -2,15 +2,11 @@
 	<div class="container">
 		<anime-page-sidebar />
 		<div class="main-content">
-			<h2 class="anime-title">
-				{{
-					$store.state.animePage.currentAnime?.title_english
-						? $store.state.animePage.currentAnime?.title_english
-						: $store.state.animePage.currentAnime?.title
-				}}
-			</h2>
+			<anime-page-title />
+
+			<!-- section About -->
 			<section class="about">
-				<h4 class="section-title">About</h4>
+				<anime-page-section-title>About</anime-page-section-title>
 				{{ getTextAbout(isShowMore) }}
 				<button
 					class="button about__button"
@@ -28,11 +24,12 @@
 				</button>
 			</section>
 
+			<!-- section Trailer -->
 			<section
 				class="trailer"
 				v-if="$store.state.animePage.currentAnime.trailer.embed_url"
 			>
-				<h4 class="section-title">Official trailer</h4>
+				<anime-page-section-title>Official trailer</anime-page-section-title>
 				<iframe
 					class="trailer__video"
 					:src="$store.state.animePage.currentAnime.trailer.embed_url"
@@ -42,32 +39,37 @@
 				</iframe>
 			</section>
 
+			<!-- section Characters -->
 			<section
 				class="characters"
 				v-if="$store.state.animePage.charactersArray.length"
 			>
-				<h4 class="section-title characters__title">
-					Characters<router-link
-						class="button characters__button"
-						v-if="$store.state.animePage.charactersArray.length > 6"
-						:to="{
-							name: 'CharactersList',
-						}"
-					>
-						view more
-					</router-link>
-				</h4>
+				<anime-page-section-title
+					:routerPath="{
+						name: 'CharactersList',
+						params: $store.state.animePage.currentAnime.mal_id,
+					}"
+					:viewMoreButton="$store.state.animePage.charactersArray.length > 6"
+					>Characters</anime-page-section-title
+				>
 				<ul class="characters__list">
 					<li
 						class="characters__item"
 						v-for="char in $store.state.animePage.charactersArray.slice(0, 6)"
 						:key="char.mal_id"
 					>
-						<img
-							class="character__image"
-							:src="char.character.images.jpg.image_url"
-							alt="Character image"
-						/>
+						<router-link
+							:to="{
+								name: 'CharacterPage',
+								params: { charId: char.character.mal_id },
+							}"
+						>
+							<img
+								class="character__image"
+								:src="char.character.images.jpg.image_url"
+								alt="Character image"
+							/>
+						</router-link>
 						<div class="character__info">
 							<router-link
 								class="character__name"
@@ -83,18 +85,19 @@
 				</ul>
 			</section>
 
+			<!-- section Reviews -->
 			<section
 				class="reviews"
 				v-if="$store.state.animePage.reviewsArray.length"
 			>
-				<h4 class="section-title reviews__title">
-					Reviews<button
-						class="button reviews__button"
-						v-if="$store.state.animePage.reviewsArray.length > 4"
-					>
-						view more
-					</button>
-				</h4>
+				<anime-page-section-title
+					:routerPath="{
+						name: 'ReviewsPage',
+						params: { animeId: $store.state.animePage.currentAnime.mal_id },
+					}"
+					:viewMoreButton="$store.state.animePage.reviewsArray.length > 4"
+					>Reviews</anime-page-section-title
+				>
 				<ul class="reviews__list">
 					<li
 						class="reviews__item"
@@ -157,12 +160,16 @@
 <script>
 import Slider from '@/components/Slider.vue'
 import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
+import AnimePageTitle from '@/components/AnimePageTitle.vue'
+import AnimePageSectionTitle from '@/components/AnimePageSectionTitle.vue'
 import { mapActions } from 'vuex'
 
 export default {
 	components: {
 		Slider,
 		AnimePageSidebar,
+		AnimePageTitle,
+		AnimePageSectionTitle,
 	},
 
 	data() {
@@ -213,20 +220,8 @@ export default {
 	@media (max-width: $screen-xs-max)
 		max-width: 100%
 
-.anime-title
-	margin-top: 0
-	margin-bottom: 25px
-	font-size: 24px
-	font-weight: 800
-
-	@media (max-width: $screen-xs-max)
-		display: none
-
-.section-title
-	@include borderBottom
-	padding-bottom: 2px
-	margin: 0
-	font-weight: 700
+		&:deep(.anime-title)
+			display: none
 
 .button
 	padding: 0
@@ -236,7 +231,10 @@ export default {
 	font-size: 14px
 	font-weight: 700
 	cursor: pointer
-	color: springgreen
+	color: $main-color
+
+	&:hover
+		text-decoration: underline
 
 .about
 	margin-bottom: 30px
@@ -315,13 +313,7 @@ export default {
 
 		&:hover
 			text-decoration: underline
-			color: springgreen
-
-	&__button
-		text-decoration: none
-
-		&:hover
-			text-decoration: underline
+			color: $main-color
 
 .reviews
 	margin-bottom: 50px

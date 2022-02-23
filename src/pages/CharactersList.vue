@@ -7,10 +7,7 @@
 				<characters-list-item
 					v-for="char in $store.state.animePage.charactersArray"
 					:key="char.character.mal_id"
-					:name="char.character.name"
-					:role="char.role"
-					:image="char.character.images.jpg.image_url"
-					:charId="char.character.mal_id"
+					:char="char"
 				/>
 			</ul>
 		</div>

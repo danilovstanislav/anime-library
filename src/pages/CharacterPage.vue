@@ -2,32 +2,43 @@
 	<div class="character">
 		<img
 			class="character-image"
-			:src="$store.state.characterPage.currentChar.images.jpg.image_url"
+			:src="currentChar.images.jpg.image_url"
 			alt="Character image"
 		/>
 		<div class="character__wrapper">
 			<h3 class="character-name">
-				{{ $store.state.characterPage.currentChar.name }}
+				{{ currentChar.name }}
 			</h3>
 			<p class="character-description">
-				{{ $store.state.characterPage.currentChar.about }}
+				{{ currentChar.about }}
 			</p>
 		</div>
 	</div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import axios from 'axios'
 
 export default {
+	data() {
+		return {
+			currentChar: {},
+		}
+	},
+
 	created() {
 		this.getCurrentChar(this.$route.params.charId)
 	},
 
 	methods: {
-		...mapActions({
-			getCurrentChar: 'characterPage/getCurrentChar',
-		}),
+		async getCurrentChar(id) {
+			try {
+				const res = await axios.get(`https://api.jikan.moe/v4/characters/${id}`)
+				this.currentChar = res.data.data
+			} catch (err) {
+				console.error(err)
+			}
+		},
 	},
 }
 </script>
@@ -46,8 +57,8 @@ export default {
 		max-width: 40%
 		margin-right: 10px
 		display: block
-		object-fit: cover
-		object-position: center
+		object-fit: contain
+		object-position: top
 
 		@media(max-width: $screen-xs-max)
 			max-width: 50%

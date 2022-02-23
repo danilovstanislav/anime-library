@@ -1,21 +1,28 @@
 <template>
 	<li class="character">
-		<img class="character-image" :src="image" alt="Character image" />
+		<img
+			class="character-image"
+			:src="char.character.images.jpg.image_url"
+			alt="Character image"
+		/>
 		<div class="character__info">
 			<router-link
 				class="character__name"
-				:to="{ name: 'CharacterPage', params: { charId: charId } }"
+				:to="{
+					name: 'CharacterPage',
+					params: { charId: char.character.mal_id },
+				}"
 			>
-				{{ name }}
+				{{ char.character.name }}
 			</router-link>
-			<div class="character__role">{{ role }}</div>
+			<div class="character__role">{{ char.role }}</div>
 		</div>
 	</li>
 </template>
 
 <script>
 export default {
-	props: ['name', 'role', 'image', 'charId'],
+	props: ['char'],
 }
 </script>
 
@@ -39,8 +46,14 @@ export default {
 		border-radius: 5px
 
 	&__name
-		font-weight: 700
 		margin-bottom: 10px
+		text-decoration: none
+		color: #000
+		font-weight: 700
+
+		&:hover
+			color: $main-color
+			text-decoration: underline
 
 	&:nth-child(even)
 		background-color: #ebebeb

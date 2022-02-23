@@ -4,7 +4,7 @@ export const animePage = {
   namespaced: true,
 
   state: () => ({
-    currentAnime: null,
+    currentAnime: {},
     charactersArray: [],
     reviewsArray: [],
     recommendationsArray: [],

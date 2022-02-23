@@ -1,18 +1,18 @@
 <template>
 	<div class="home">
-		<h3 class="section__title">Top anime</h3>
+		<h3 class="section__title">Winter 2022</h3>
 		<slider
 			v-slot="{ card }"
-			:contentArr="$store.state.homePage.topAnime"
+			:contentArr="$store.state.homePage.seasonNow"
 			sliderSize="wideSlider"
 		>
 			<anime-card :animeCard="card" />
 		</slider>
 
-		<h3 class="section__title">Winter 2022</h3>
+		<h3 class="section__title">Top anime</h3>
 		<slider
 			v-slot="{ card }"
-			:contentArr="$store.state.homePage.seasonNow"
+			:contentArr="$store.state.homePage.topAnime"
 			sliderSize="wideSlider"
 		>
 			<anime-card :animeCard="card" />

@@ -53,7 +53,7 @@ export default {}
 	width: 100%
 	padding-top: 30px
 	padding-bottom: 30px
-	background-color: springgreen
+	background-color: $main-color
 
 	&__wrapper
 		@include container
