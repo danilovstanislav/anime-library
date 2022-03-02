@@ -72,6 +72,7 @@ export default {
 		display: flex
 		align-items: flex-start
 		border: 1px solid #a8a8a8
+		overflow-x: hidden
 
 		&:not(:last-child)
 			margin-bottom: 10px
