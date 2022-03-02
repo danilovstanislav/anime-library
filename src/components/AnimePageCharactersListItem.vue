@@ -1,6 +1,7 @@
 <template>
 	<li class="characters__item">
 		<router-link
+			class="character__link"
 			:to="{
 				name: 'CharacterInfoPage',
 				params: { charId: char.character.mal_id },
@@ -52,9 +53,14 @@ export default {
 .character__info
 	display: inline-block
 
-.character__image
+.character__link
+	width: 100%
 	max-width: 60px
 	margin-right: 10px
+	display: block
+
+.character__image
+	width: 100%
 	display: block
 
 .character__name
