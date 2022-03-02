@@ -10,7 +10,7 @@ export const animePage = {
       animeImageAlt: null,
       categories: [],
     },
-    trailerVideo: null,
+    trailer: {},
     charactersArray: [],
     reviewsArray: [],
     recommendationsArray: [],
@@ -49,8 +49,10 @@ export const animePage = {
       ]
     },
 
-    SET_TRAILER_VIDEO(state) {
-      state.trailerVideo = state.currentAnime.trailer.embed_url
+    SET_TRAILER(state) {
+      state.trailer.url = state.currentAnime.trailer.url
+      state.trailer.embed_url = state.currentAnime.trailer.embed_url
+      state.trailer.image = state.currentAnime.trailer.image
     },
 
     SET_CHARACTERS_ARRAY(state, payload) {
@@ -72,7 +74,7 @@ export const animePage = {
         const res = await axios.get(`https://api.jikan.moe/v4/anime/${id}`)
         commit('SET_CURRENT_ANIME', res.data.data)
         commit('SET_ANIME_INFO')
-        commit('SET_TRAILER_VIDEO')
+        commit('SET_TRAILER')
         dispatch('getCharacters', id)
         dispatch('getReviews', id)
         dispatch('getRecommendations', id)
