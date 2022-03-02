@@ -1,29 +1,19 @@
 <template>
 	<div class="home">
 		<h3 class="section__title">Winter 2022</h3>
-		<slider
-			v-slot="{ card }"
-			:contentArr="$store.state.homePage.seasonNow"
-			sliderSize="wideSlider"
-		>
-			<anime-card :animeCard="card" />
+		<slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
+			<transition name="anime-card">
+				<anime-card :animeCard="card" />
+			</transition>
 		</slider>
 
 		<h3 class="section__title">Top anime</h3>
-		<slider
-			v-slot="{ card }"
-			:contentArr="$store.state.homePage.topAnime"
-			sliderSize="wideSlider"
-		>
+		<slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
 			<anime-card :animeCard="card" />
 		</slider>
 
 		<h3 class="section__title">Top upcoming anime</h3>
-		<slider
-			v-slot="{ card }"
-			:contentArr="$store.state.homePage.seasonUpcoming"
-			sliderSize="wideSlider"
-		>
+		<slider v-slot="{ card }" :contentArr="seasonUpcoming" sliderSize="wide">
 			<anime-card :animeCard="card" />
 		</slider>
 	</div>
@@ -33,7 +23,7 @@
 import Slider from '@/components/Slider.vue'
 import AnimeCard from '@/components/AnimeCard.vue'
 import AnimeVideoCard from '@/components/AnimeVideoCard.vue'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	name: 'HomePage',
@@ -47,6 +37,14 @@ export default {
 		this.getTopAnime()
 		this.getSeasonNow()
 		this.getSeasonUpcoming()
+	},
+
+	computed: {
+		...mapState({
+			topAnime: (state) => state.homePage.topAnime,
+			seasonNow: (state) => state.homePage.seasonNow,
+			seasonUpcoming: (state) => state.homePage.seasonUpcoming,
+		}),
 	},
 
 	methods: {

@@ -1,9 +1,25 @@
 @mixin container
-  width: 100%
-  max-width: 1200px
-  padding-left: 10px
-  padding-right: 10px
-  margin: 0 auto
+	width: 100%
+	max-width: 1200px
+	padding-left: 10px
+	padding-right: 10px
+	margin: 0 auto
 
 @mixin borderBottom
-  border-bottom: 2px solid #a8a8a8
+	border-bottom: 2px solid #a8a8a8
+
+@mixin button
+	padding: 6px 8px
+	background-color: #393939
+	border: 2px solid transparent
+	border-radius: 5px
+	cursor: pointer
+	color: $main-color
+	font-weight: 700
+	font-family: inherit
+	transition: .2s
+
+	&:hover
+		border-color: $main-color
+		background-color: #fff
+		color: #393939

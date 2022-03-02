@@ -5,6 +5,7 @@
 		:simulate-touch="true"
 		:modules="modules"
 		navigation
+		:rewind="true"
 	>
 		<swiper-slide v-for="card in contentArr" :key="card.mal_id">
 			<slot :card="card" />
@@ -34,9 +35,9 @@ export default {
 		getSliderSize() {
 			const size = this.$attrs.sliderSize
 
-			if (size === 'wideSlider') {
+			if (size === 'wide') {
 				return wideSlider.breakpoints
-			} else if (size === 'smallSlider') {
+			} else if (size === 'small') {
 				return smallSlider.breakpoints
 			}
 		},
@@ -49,4 +50,7 @@ export default {
 	max-width: 1200px
 	padding-left: 10px
 	padding-right: 10px
+
+	.swiper-button-next
+		background-color: red
 </style>

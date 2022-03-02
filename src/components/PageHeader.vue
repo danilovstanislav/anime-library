@@ -48,18 +48,17 @@ export default {}
 		list-style-type: none
 
 	&__item
-		min-width: 100px
-		padding: 8px 8px
+		min-width: 90px
 		transition: .2s
 		text-align: center
 
-		&:hover
-			background-color: #fff
-			font-weight: 700
-
 	&__link
+		@include button
 		display: block
-		font-weight: 700
-		color: #000
 		text-decoration-line: none
+		color: #fff
+		text-transform: uppercase
+
+		&:hover
+			border-color: #393939
 </style>

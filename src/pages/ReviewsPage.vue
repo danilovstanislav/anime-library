@@ -1,38 +1,57 @@
 <template>
-	<div class="reviews">
-		<anime-page-sidebar />
-		<div class="reviews__main">
-			<h2 class="reviews__title">Reviews</h2>
-			<ul class="reviews__list">
-				<li
-					class="reviews__item"
-					v-for="review in $store.state.animePage.reviewsArray"
+	<template-anime-page>
+		<template v-slot:title> Reviews </template>
+		<template v-slot:mainContent>
+			<transition-group
+				class="reviews__list"
+				name="reviews-list"
+				tag="ul"
+				appear
+			>
+				<reviews-page-item
+					v-for="review in reviewsArray"
 					:key="review.mal_id"
-				>
-					<img :src="review.user.images.jpg.image_url" alt="User image" />
-					<div class="reviews__item__username">
-						{{ review.user.username }}
-					</div>
-					<div class="reviews__item__episodes-watched">
-						{{ review.episodes_watched }}
-					</div>
-					<div class="reviews__item__review">
-						{{ review.review }}
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
+					:review="review"
+				/>
+			</transition-group>
+		</template>
+	</template-anime-page>
 </template>
 
 <script>
-import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
+import TemplateAnimePage from '@/components/TemplateAnimePage.vue'
+import ReviewsPageItem from '@/components/ReviewsPageItem.vue'
+import { mapState } from 'vuex'
+
 export default {
 	components: {
-		AnimePageSidebar,
+		TemplateAnimePage,
+		ReviewsPageItem,
+	},
+
+	computed: {
+		...mapState({
+			reviewsArray: (state) => state.animePage.reviewsArray,
+		}),
 	},
 }
 </script>
 
 <style lang="sass" scoped>
+.reviews__list
+	padding-left: 0
+	margin-top: 0
+	margin-bottom: 0
+	list-style: none
+
+.reviews-list-enter-from
+	opacity: 0
+	transform: translateX(50%)
+
+.reviews-list-enter-to
+	opacity: 1
+	transform: translateX(0)
+
+.reviews-list-enter-active
+	transition: all .5s ease
 </style>

@@ -5,22 +5,63 @@ export const animePage = {
 
   state: () => ({
     currentAnime: {},
+    animeInfo: {
+      animeImage: null,
+      animeImageAlt: null,
+      categories: [],
+    },
+    trailerVideo: null,
     charactersArray: [],
     reviewsArray: [],
     recommendationsArray: [],
   }),
 
   mutations: {
-    setCurrentAnime(state, payload) {
+    SET_CURRENT_ANIME(state, payload) {
       state.currentAnime = payload
     },
-    setCharactersArray(state, payload) {
+
+    SET_ANIME_INFO(state) {
+      state.animeInfo.animeImage = state.currentAnime.images.jpg.large_image_url
+      state.animeInfo.animeImageAlt = state.currentAnime.title
+      state.animeInfo.categories = [
+        { key: 'Type', value: state.currentAnime.type },
+        {
+          key: 'Episodes',
+          value: state.currentAnime.episodes,
+        },
+        {
+          key: 'Status',
+          value: state.currentAnime.status,
+        },
+        {
+          key: 'Premiered',
+          value: state.currentAnime.aired.string,
+        },
+        {
+          key: 'Genres',
+          value: `${state.currentAnime.genres[0].name}, ${state.currentAnime.genres[1]?.name}`,
+        },
+        {
+          key: 'Duration',
+          value: state.currentAnime.duration,
+        },
+      ]
+    },
+
+    SET_TRAILER_VIDEO(state) {
+      state.trailerVideo = state.currentAnime.trailer.embed_url
+    },
+
+    SET_CHARACTERS_ARRAY(state, payload) {
       state.charactersArray = payload
     },
-    setReviewsArray(state, payload) {
+
+    SET_REVIEWS_ARRAY(state, payload) {
       state.reviewsArray = payload
     },
-    setRecommendationsArray(state, payload) {
+
+    SET_RECOMMENDATIONS_ARRAY(state, payload) {
       state.recommendationsArray = payload
     },
   },
@@ -29,7 +70,9 @@ export const animePage = {
     async getAnimeById({ commit, dispatch }, id) {
       try {
         const res = await axios.get(`https://api.jikan.moe/v4/anime/${id}`)
-        commit('setCurrentAnime', res.data.data)
+        commit('SET_CURRENT_ANIME', res.data.data)
+        commit('SET_ANIME_INFO')
+        commit('SET_TRAILER_VIDEO')
         dispatch('getCharacters', id)
         dispatch('getReviews', id)
         dispatch('getRecommendations', id)
@@ -44,7 +87,7 @@ export const animePage = {
         const res = await axios.get(
           `https://api.jikan.moe/v4/anime/${id}/characters`
         )
-        commit('setCharactersArray', res.data.data)
+        commit('SET_CHARACTERS_ARRAY', res.data.data)
       } catch (err) {
         state.charactersArray = []
         console.error(err)
@@ -56,7 +99,7 @@ export const animePage = {
         const res = await axios.get(
           `https://api.jikan.moe/v4/anime/${id}/reviews`
         )
-        commit('setReviewsArray', res.data.data)
+        commit('SET_REVIEWS_ARRAY', res.data.data)
       } catch (err) {
         state.reviewsArray = []
         console.error(err)
@@ -68,7 +111,7 @@ export const animePage = {
         const res = await axios.get(
           `https://api.jikan.moe/v4/anime/${id}/recommendations`
         )
-        commit('setRecommendationsArray', res.data.data)
+        commit('SET_RECOMMENDATIONS_ARRAY', res.data.data)
       } catch (err) {
         state.recommendationsArray = []
         console.error(err)

@@ -1,15 +1,23 @@
 <template>
 	<li class="character">
-		<img
-			class="character-image"
-			:src="char.character.images.jpg.image_url"
-			alt="Character image"
-		/>
+		<router-link
+			class="character__link"
+			:to="{
+				name: 'CharacterInfoPage',
+				params: { charId: char.character.mal_id },
+			}"
+		>
+			<img
+				class="character-image"
+				:src="char.character.images.jpg.image_url"
+				:alt="char.character.name || 'Character image'"
+			/>
+		</router-link>
 		<div class="character__info">
 			<router-link
-				class="character__name"
+				class="character__link character__name"
 				:to="{
-					name: 'CharacterPage',
+					name: 'CharacterInfoPage',
 					params: { charId: char.character.mal_id },
 				}"
 			>
@@ -29,21 +37,26 @@ export default {
 <style lang="sass" scoped>
 .character
 	width: 100%
-	max-height: 125px
+	max-height: 110px
 	padding-top: 5px
 	padding-bottom: 5px
 	padding-left: 5px
 	display: flex
-	border-radius: 5px
+
+	&:not(:last-child)
+		border-bottom: 2px solid #a3a3a3
+
+	&__link
+		width: 100%
+		max-width: 80px
+		margin-right: 10px
 
 	&-image
 		width: 100%
-		max-width: 75px
-		margin-right: 10px
+		height: 100%
 		display: block
 		object-fit: cover
 		object-position: center
-		border-radius: 5px
 
 	&__name
 		margin-bottom: 10px
