@@ -20,10 +20,15 @@ export const wideSlider = {
       slidesPerGroup: 2,
       spaceBetween: 10,
     },
-    320: {
+    375: {
       slidesPerView: 3,
       slidesPerGroup: 1,
       spaceBetween: 8,
+    },
+    325: {
+      slidesPerView: 2,
+      slidesPerGroup: 1,
+      spaceBetween: 15,
     },
   },
 }
@@ -53,7 +58,7 @@ export const smallSlider = {
     320: {
       slidesPerView: 4,
       slidesPerGroup: 1,
-      spaceBetween: 10,
+      spaceBetween: 7,
     },
   },
 }

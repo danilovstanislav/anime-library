@@ -80,9 +80,12 @@ export default {
 		text-overflow: ellipsis
 		overflow: hidden
 
+		@media (max-width: $screen-s-max)
+			font-size: 13px
+
 	&__episodes
 		color: lighten($dark-black-color, 25%)
 
-		@media (max-width: $screen-m-max)
+		@media (max-width: $screen-s-max)
 			font-size: 12px
 </style>
