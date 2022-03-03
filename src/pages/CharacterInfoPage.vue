@@ -1,5 +1,5 @@
 <template>
-	<div class="character">
+	<div class="character" v-show="currentChar">
 		<transition name="character-image" appear>
 			<img
 				class="character__image"
@@ -22,13 +22,6 @@
 					}}
 				</p>
 			</transition>
-
-			<!-- <p class="character-description" v-if="currentChar.about">
-					{{ currentChar.about }}
-				</p>
-				<p class="character-description" v-else>
-					<i>Sorry we don't have any information</i> 😥
-				</p> -->
 		</div>
 	</div>
 </template>
@@ -46,12 +39,6 @@ export default {
 	created() {
 		this.getCurrentChar(this.$route.params.charId)
 	},
-
-	// computed: {
-	// 	characterDescription() {
-
-	// 	}
-	// },
 
 	methods: {
 		async getCurrentChar(id) {
