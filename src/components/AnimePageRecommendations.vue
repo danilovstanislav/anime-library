@@ -80,11 +80,9 @@ export default {
 		.swiper-button-next
 			width: 38px
 			height: 38px
-			background-color: lighten($main-color, 25%)
-			border: 1px solid #1a1a1a
 
 			&::after
-				color: #1a1a1a
+				color: $dark-black-color
 
 	&__item
 		display: block

@@ -21,9 +21,9 @@ export const wideSlider = {
       spaceBetween: 10,
     },
     320: {
-      slidesPerView: 2,
+      slidesPerView: 3,
       slidesPerGroup: 1,
-      spaceBetween: 10,
+      spaceBetween: 8,
     },
   },
 }
