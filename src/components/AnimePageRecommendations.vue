@@ -88,19 +88,20 @@ export default {
 		display: block
 		color: #000
 		text-decoration: none
+		border-radius: 5px
 		overflow: hidden
-
-	&__image
-		width: 100%
-		height: 160px
-		margin-bottom: 5px
-		display: block
-		object-fit: cover
-		object-position: center
 		transition: all .2s ease
 
 		&:hover
 			opacity: .85
+
+	&__image
+		width: 100%
+		height: 160px
+		margin-bottom: 8px
+		display: block
+		object-fit: cover
+		object-position: center
 
 		@media (max-width: $screen-xs-max)
 			height: 130px
