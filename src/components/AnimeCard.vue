@@ -3,13 +3,11 @@
 		class="card"
 		:to="{ name: 'AnimePage', params: { animeId: animeCard.mal_id } }"
 	>
-		<div class="card__image-wrapper">
-			<img
-				class="card__image"
-				:src="animeCard.images.jpg.image_url"
-				alt="Anime poster"
-			/>
-		</div>
+		<img
+			class="card__image"
+			:src="animeCard.images.jpg.image_url"
+			:alt="cardTitle ?? 'Anime poster'"
+		/>
 		<div class="card__info">
 			<h4 class="card__title">
 				{{ cardTitle }}
@@ -46,64 +44,45 @@ export default {
 	padding-right: 10px
 
 .card
-	padding: 10px
+	width: 100%
 	display: flex
 	flex-direction: column
-	justify-content: flex-end
 	background-color: #fff
-	transition: .2s
+	border-radius: 5px
+	overflow: hidden
 	text-decoration: none
 	transition: all .2s ease
 
-	@media (max-width: $screen-xs-max)
-		padding: 5px
-
 	&:hover
 		box-shadow: 4px 4px 15px 2px rgba(34, 60, 80, 0.2)
-		opacity: .9
-
-	&__image-wrapper
-		width: 100%
-		overflow: hidden
+		opacity: .8
 
 	&__image
-		width: 100%
-		height: 190px
+		height: 200px
 		display: block
 		object-fit: cover
-		object-position: center
-
-		@media (max-width: $screen-s-max)
-			height: 160px
+		object-position: center center
 
 		@media (max-width: $screen-xs-max)
-			height: 250px
+			height: 190px
 
 	&__info
+		padding-left: 10px
+		padding-right: 10px
+		padding-bottom: 10px
 		margin-top: 7px
 
 	&__title
 		margin-top: 0
 		margin-bottom: 5px
-		color: #3f3f3f
-		font-size: 16px
+		color: $dark-black-color
 		white-space: nowrap
 		text-overflow: ellipsis
 		overflow: hidden
 
-		@media (max-width: $screen-m-max)
-			font-size: 15px
-
-		@media (max-width: $screen-xs-max)
-			font-size: 11px
-
 	&__episodes
-		color: #808080
-		font-size: 15px
+		color: lighten($dark-black-color, 25%)
 
 		@media (max-width: $screen-m-max)
-			font-size: 14px
-
-		@media (max-width: $screen-xs-max)
-			font-size: 11px
+			font-size: 12px
 </style>
