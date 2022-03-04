@@ -13,7 +13,6 @@
 export default {
 	data() {
 		return {
-			currentOffset: 0,
 			isButtonActive: false,
 		}
 	},
@@ -45,12 +44,6 @@ export default {
 			window.scroll({ top: 0, behavior: 'smooth' })
 		},
 	},
-
-	// watch: {
-	// 	curretnOffset(val) {
-
-	// 	},
-	// },
 }
 </script>
 <style lang="sass">
