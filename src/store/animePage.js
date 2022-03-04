@@ -13,7 +13,6 @@ export const animePage = {
     trailer: {},
     charactersArray: [],
     reviewsArray: [],
-    recommendationsArray: [],
   }),
 
   mutations: {
@@ -62,10 +61,6 @@ export const animePage = {
     SET_REVIEWS_ARRAY(state, payload) {
       state.reviewsArray = payload
     },
-
-    SET_RECOMMENDATIONS_ARRAY(state, payload) {
-      state.recommendationsArray = payload
-    },
   },
 
   actions: {
@@ -75,9 +70,6 @@ export const animePage = {
         commit('SET_CURRENT_ANIME', res.data.data)
         commit('SET_ANIME_INFO')
         commit('SET_TRAILER')
-        dispatch('getCharacters', id)
-        dispatch('getReviews', id)
-        dispatch('getRecommendations', id)
         window.scrollTo(0, 0)
       } catch (err) {
         console.error(err)
@@ -104,18 +96,6 @@ export const animePage = {
         commit('SET_REVIEWS_ARRAY', res.data.data)
       } catch (err) {
         state.reviewsArray = []
-        console.error(err)
-      }
-    },
-
-    async getRecommendations({ state, commit }, id) {
-      try {
-        const res = await axios.get(
-          `https://api.jikan.moe/v4/anime/${id}/recommendations`
-        )
-        commit('SET_RECOMMENDATIONS_ARRAY', res.data.data)
-      } catch (err) {
-        state.recommendationsArray = []
         console.error(err)
       }
     },

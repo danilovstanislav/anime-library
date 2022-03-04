@@ -5,7 +5,7 @@
 				class="sidebar-image"
 				v-show="animeInfo.animeImage"
 				:src="animeInfo.animeImage"
-				:alt="animeInfo.animeImageAlt || 'Anime image'"
+				:alt="animeInfo.animeImageAlt ?? 'Anime image'"
 			/>
 		</transition>
 		<div class="sidebar__wrapper">
@@ -43,17 +43,30 @@
 
 <script>
 import AnimeTitle from '@/components/AnimeTitle.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	components: {
 		AnimeTitle,
 	},
 
+	created() {
+		if (this.currentAnime === {}) {
+			this.getAnimeById(this.$route.params.animeId)
+		}
+	},
+
 	computed: {
 		...mapState({
+			currentAnime: (state) => state.animePage.currentAnime,
 			animeInfo: (state) => state.animePage.animeInfo,
 			trailer: (state) => state.animePage.trailer,
+		}),
+	},
+
+	methods: {
+		...mapActions({
+			getAnimeById: 'animePage/getAnimeById',
 		}),
 	},
 }

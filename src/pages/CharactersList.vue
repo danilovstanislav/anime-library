@@ -22,7 +22,7 @@
 import TemplateAnimePage from '@/components/TemplateAnimePage.vue'
 import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import CharactersListItem from '@/components/CharactersListItem.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -31,9 +31,21 @@ export default {
 		CharactersListItem,
 	},
 
+	created() {
+		if (this.charactersArray === []) {
+			this.getCharacters(this.$route.params.animeId)
+		}
+	},
+
 	computed: {
 		...mapState({
 			charactersArray: (state) => state.animePage.charactersArray,
+		}),
+	},
+
+	methods: {
+		...mapActions({
+			getCharacters: 'animePage/getCharacters',
 		}),
 	},
 }

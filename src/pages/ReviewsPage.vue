@@ -21,7 +21,7 @@
 <script>
 import TemplateAnimePage from '@/components/TemplateAnimePage.vue'
 import ReviewsPageItem from '@/components/ReviewsPageItem.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -29,9 +29,21 @@ export default {
 		ReviewsPageItem,
 	},
 
+	created() {
+		if (this.reviewsArray.length === 0) {
+			this.getReviews(this.$route.params.animeId)
+		}
+	},
+
 	computed: {
 		...mapState({
 			reviewsArray: (state) => state.animePage.reviewsArray,
+		}),
+	},
+
+	methods: {
+		...mapActions({
+			getReviews: 'animePage/getReviews',
 		}),
 	},
 }

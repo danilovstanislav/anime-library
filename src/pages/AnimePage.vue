@@ -28,11 +28,15 @@ export default {
 
 	created() {
 		this.getAnimeById(this.$route.params.animeId)
+		this.getCharacters(this.$route.params.animeId)
+		this.getReviews(this.$route.params.animeId)
 	},
 
 	methods: {
 		...mapActions({
 			getAnimeById: 'animePage/getAnimeById',
+			getCharacters: 'animePage/getCharacters',
+			getReviews: 'animePage/getReviews',
 		}),
 	},
 }

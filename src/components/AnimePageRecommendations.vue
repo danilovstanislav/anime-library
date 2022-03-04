@@ -32,17 +32,22 @@
 <script>
 import AnimePageSectionTitle from '@/components/AnimePageSectionTitle.vue'
 import Slider from '@/components/Slider.vue'
-import { mapState, mapActions } from 'vuex'
+import axios from 'axios'
+import { mapActions } from 'vuex'
 export default {
 	components: {
 		AnimePageSectionTitle,
 		Slider,
 	},
 
-	computed: {
-		...mapState({
-			recommendationsArray: (state) => state.animePage.recommendationsArray,
-		}),
+	data() {
+		return {
+			recommendationsArray: [],
+		}
+	},
+
+	created() {
+		this.getRecommendations(this.$route.params.animeId)
 	},
 
 	methods: {
@@ -54,6 +59,17 @@ export default {
 			window.scroll({ top: 0, behavior: 'smooth' })
 			if (window.pageYOffset === 0) {
 				this.getAnimeById(id)
+			}
+		},
+
+		async getRecommendations(id) {
+			try {
+				const res = await axios.get(
+					`https://api.jikan.moe/v4/anime/${id}/recommendations`
+				)
+				this.recommendationsArray = res.data.data
+			} catch (err) {
+				console.error(err)
 			}
 		},
 	},
