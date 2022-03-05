@@ -1,5 +1,5 @@
 <template>
-	<section class="recommendations" v-if="recommendationsArray.length">
+	<section class="recommendations" v-show="recommendationsArray.length">
 		<anime-page-section-title>Recommendations</anime-page-section-title>
 		<div class="recommendations__list">
 			<slider
@@ -13,7 +13,7 @@
 						name: 'AnimePage',
 						params: { animeId: card.entry.mal_id },
 					}"
-					@click="scrollTop(card.entry.mal_id)"
+					@click="recomendationsClickHandler(card.entry.mal_id)"
 				>
 					<img
 						class="recommendations__image"
@@ -32,8 +32,7 @@
 <script>
 import AnimePageSectionTitle from '@/components/AnimePageSectionTitle.vue'
 import Slider from '@/components/Slider.vue'
-import axios from 'axios'
-import { mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
 	components: {
 		AnimePageSectionTitle,
@@ -42,12 +41,14 @@ export default {
 
 	data() {
 		return {
-			recommendationsArray: [],
+			pageOffset: 0,
 		}
 	},
 
-	created() {
-		this.getRecommendations(this.$route.params.animeId)
+	computed: {
+		...mapState({
+			recommendationsArray: (state) => state.animePage.recommendationsArray,
+		}),
 	},
 
 	methods: {
@@ -55,22 +56,27 @@ export default {
 			getAnimeById: 'animePage/getAnimeById',
 		}),
 
-		scrollTop(id) {
-			window.scroll({ top: 0, behavior: 'smooth' })
-			if (window.pageYOffset === 0) {
-				this.getAnimeById(id)
-			}
-		},
+		...mapMutations({
+			SET_ANIME_INFO: 'animePage/SET_ANIME_INFO',
+			SET_TRAILER: 'animePage/SET_TRAILER',
+			SET_CHARACTERS_ARRAY: 'animePage/SET_CHARACTERS_ARRAY',
+			SET_REVIEWS_ARRAY: 'animePage/SET_REVIEWS_ARRAY',
+			SET_RECOMMENDATIONS_ARRAY: 'animePage/SET_RECOMMENDATIONS_ARRAY',
+		}),
 
-		async getRecommendations(id) {
-			try {
-				const res = await axios.get(
-					`https://api.jikan.moe/v4/anime/${id}/recommendations`
-				)
-				this.recommendationsArray = res.data.data
-			} catch (err) {
-				console.error(err)
-			}
+		recomendationsClickHandler(id) {
+			window.scroll({ top: 0, behavior: 'smooth' })
+			// this.SET_ANIME_INFO = {}
+			// this.SET_TRAILER = {}
+			// this.SET_CHARACTERS_ARRAY = []
+			// this.SET_REVIEWS_ARRAY = []
+			// this.SET_RECOMMENDATIONS_ARRAY = []
+			window.addEventListener('scroll', () => {
+				if (window.pageYOffset === 0) {
+					this.getAnimeById(id)
+				}
+			})
+			window.removeEventListener
 		},
 	},
 }

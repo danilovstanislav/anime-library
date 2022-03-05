@@ -1,5 +1,5 @@
 <template>
-	<section class="characters" v-if="charactersArray.length">
+	<section class="characters" v-show="charactersArray.length">
 		<anime-page-section-title
 			:routerPath="{
 				name: 'CharactersList',
@@ -9,30 +9,53 @@
 			>Characters</anime-page-section-title
 		>
 		<transition-group
-			v-show="charactersArray.length"
 			class="characters__list"
 			tag="ul"
 			name="characters-list"
 			appear
 		>
-			<anime-page-characters-list-item
+			<li
+				class="characters__item"
 				v-for="char in slicedCharactersArray"
 				:key="char.character.mal_id"
-				:char="char"
-			/>
+			>
+				<router-link
+					class="character__link"
+					:to="{
+						name: 'CharacterInfoPage',
+						params: { charId: char.character.mal_id },
+					}"
+				>
+					<img
+						class="character__image"
+						:src="char.character.images.jpg.image_url"
+						:alt="char.character.name ?? 'Character image'"
+					/>
+				</router-link>
+				<div class="character__info">
+					<router-link
+						class="character__name"
+						:to="{
+							name: 'CharacterInfoPage',
+							params: { charId: char.character.mal_id },
+						}"
+					>
+						{{ char.character.name }}
+					</router-link>
+					<div class="character__role">{{ char.role }}</div>
+				</div>
+			</li>
 		</transition-group>
 	</section>
 </template>
 
 <script>
 import AnimePageSectionTitle from '@/components/AnimePageSectionTitle.vue'
-import AnimePageCharactersListItem from '@/components/AnimePageCharactersListItem.vue'
 import { mapState } from 'vuex'
 
 export default {
 	components: {
 		AnimePageSectionTitle,
-		AnimePageCharactersListItem,
 	},
 
 	computed: {
@@ -71,6 +94,40 @@ export default {
 
 		@media (max-width: $screen-xs-max)
 			grid-template-columns: 1fr
+
+.characters__item
+	width: 100%
+	padding: 5px
+	display: flex
+	border: 1px solid #a8a8a8
+	border-radius: 5px
+
+	@media (max-width: $screen-m-max)
+		max-width: 400px
+
+.character__info
+	display: inline-block
+
+.character__link
+	width: 100%
+	max-width: 60px
+	margin-right: 10px
+	display: block
+
+.character__image
+	width: 100%
+	display: block
+	border-radius: 5px
+
+.character__name
+	margin-bottom: 5px
+	font-weight: 700
+	color: #000
+	text-decoration: none
+
+	&:hover
+		text-decoration: underline
+		color: $main-color
 
 .characters-list-enter-from
 	opacity: 0

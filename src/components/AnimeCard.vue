@@ -9,9 +9,9 @@
 			:alt="cardTitle ?? 'Anime poster'"
 		/>
 		<div class="card__info">
-			<h4 class="card__title">
+			<div class="card__title">
 				{{ cardTitle }}
-			</h4>
+			</div>
 			<div class="card__episodes">
 				{{ cardEpisodes }}
 			</div>
@@ -76,6 +76,7 @@ export default {
 		margin-top: 0
 		margin-bottom: 5px
 		color: $dark-black-color
+		font-weight: 700
 		white-space: nowrap
 		text-overflow: ellipsis
 		overflow: hidden

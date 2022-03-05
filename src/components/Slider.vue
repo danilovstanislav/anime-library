@@ -24,7 +24,10 @@ export default {
 		SwiperSlide,
 	},
 	props: {
-		contentArr: Array,
+		contentArr: {
+			type: Array,
+			required: true,
+		},
 	},
 	data() {
 		return {

@@ -2,9 +2,7 @@
 	<div class="home">
 		<h3 class="section__title">Winter 2022</h3>
 		<slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
-			<transition name="anime-card">
-				<anime-card :animeCard="card" />
-			</transition>
+			<anime-card :animeCard="card" />
 		</slider>
 
 		<h3 class="section__title">Top anime</h3>

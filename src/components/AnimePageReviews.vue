@@ -1,17 +1,18 @@
 <template>
-	<section class="reviews" v-if="reviewsArray.length">
+	<section class="reviews" v-show="reviewsArray.length">
 		<anime-page-section-title
 			:routerPath="{
 				name: 'ReviewsPage',
 				params: { animeId: currentAnime.mal_id },
 			}"
 			:viewMoreButton="reviewsArray.length > 4"
-			>Reviews</anime-page-section-title
 		>
+			Reviews
+		</anime-page-section-title>
 		<ul class="reviews__list">
 			<li
 				class="reviews__item"
-				v-for="review in reviewsArray.slice(0, 5)"
+				v-for="review in slicedReviewsArray"
 				:key="review.mal_id"
 			>
 				<img
@@ -46,6 +47,10 @@ export default {
 			currentAnime: (state) => state.animePage.currentAnime,
 			reviewsArray: (state) => state.animePage.reviewsArray,
 		}),
+
+		slicedReviewsArray() {
+			return this.reviewsArray.slice(0, 5)
+		},
 	},
 }
 </script>

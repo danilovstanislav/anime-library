@@ -1,7 +1,7 @@
 <template>
-	<section class="about">
+	<section class="about" v-show="currentAnime.synopsis">
 		<anime-page-section-title>About</anime-page-section-title>
-		<p class="about__text" v-show="currentAnime.synopsis">
+		<p class="about__text">
 			{{ isReadMoreClicked ? textAbout : shortTextAbout }}
 		</p>
 		<button
@@ -35,7 +35,7 @@ export default {
 		}),
 
 		textAbout() {
-			return this.currentAnime.synopsis || ''
+			return this.currentAnime.synopsis ?? ''
 		},
 
 		shortTextAbout() {

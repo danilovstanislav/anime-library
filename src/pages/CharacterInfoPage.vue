@@ -15,11 +15,7 @@
 			</transition>
 			<transition name="character-description" appear>
 				<p class="character__description">
-					{{
-						currentChar.about
-							? currentChar.about
-							: 'Sorry we do not have any information 😥'
-					}}
+					{{ currentChar.about ?? 'Sorry we do not have any information 😥' }}
 				</p>
 			</transition>
 		</div>
