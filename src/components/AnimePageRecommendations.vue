@@ -10,7 +10,7 @@
 				<router-link
 					class="recommendations__item"
 					:to="{
-						name: 'AnimePage',
+						name: 'AnimePageDefault',
 						params: { animeId: card.entry.mal_id },
 					}"
 					@click="recomendationsClickHandler(card.entry.mal_id)"
@@ -32,17 +32,11 @@
 <script>
 import AnimePageSectionTitle from '@/components/AnimePageSectionTitle.vue'
 import Slider from '@/components/Slider.vue'
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
 	components: {
 		AnimePageSectionTitle,
 		Slider,
-	},
-
-	data() {
-		return {
-			pageOffset: 0,
-		}
 	},
 
 	computed: {
@@ -52,6 +46,15 @@ export default {
 	},
 
 	methods: {
+		...mapMutations({
+			SET_CURRENT_ANIME: 'animePage/SET_CURRENT_ANIME',
+			SET_ANIME_INFO: 'animePage/SET_ANIME_INFO',
+			SET_TRAILER: 'animePage/SET_TRAILER',
+			SET_CHARACTERS_ARRAY: 'animePage/SET_CHARACTERS_ARRAY',
+			SET_REVIEWS_ARRAY: 'animePage/SET_REVIEWS_ARRAY',
+			SET_RECOMMENDATIONS_ARRAY: 'animePage/SET_RECOMMENDATIONS_ARRAY',
+		}),
+
 		...mapActions({
 			getAnimeById: 'animePage/getAnimeById',
 		}),
@@ -59,12 +62,21 @@ export default {
 		recomendationsClickHandler(id) {
 			const scrollToTop = () => {
 				if (window.pageYOffset === 0) {
+					this.SET_CURRENT_ANIME({})
+					this.SET_ANIME_INFO({
+						animeImage: null,
+						animeImageAlt: null,
+						categories: [],
+					})
+					this.SET_TRAILER({})
+					this.SET_CHARACTERS_ARRAY([])
+					this.SET_REVIEWS_ARRAY([])
+					this.SET_RECOMMENDATIONS_ARRAY([])
 					this.getAnimeById(id)
 					window.removeEventListener('scroll', scrollToTop)
 				}
 			}
 			window.addEventListener('scroll', scrollToTop)
-
 			window.scroll({ top: 0, behavior: 'smooth' })
 		},
 	},
@@ -124,8 +136,8 @@ export default {
 			height: 130px
 
 	&__item-title
-		font-weight: 700
-		font-size: 14px
+		font-family: 'Fredoka-SemiBold'
+		font-size: 15px
 		white-space: nowrap
 		text-overflow: ellipsis
 		overflow: hidden

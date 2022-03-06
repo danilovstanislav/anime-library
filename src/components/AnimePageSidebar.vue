@@ -1,9 +1,9 @@
 <template>
-	<aside class="sidebar">
+	<aside class="sidebar" v-show="Object.keys(animeInfo).length">
 		<transition name="sidebar-image" appear>
 			<img
 				class="sidebar-image"
-				v-show="animeInfo.animeImage"
+				v-if="animeInfo.animeImage"
 				:src="animeInfo.animeImage"
 				:alt="animeInfo.animeImageAlt ?? 'Anime image'"
 			/>
@@ -26,7 +26,12 @@
 				</li>
 			</transition-group>
 			<transition name="trailer-link" appear>
-				<a class="sidebar__trailer-link" :href="trailer.url" target="_blank">
+				<a
+					v-if="trailer.url"
+					class="sidebar__trailer-link"
+					:href="trailer.url"
+					target="_blank"
+				>
 					Watch Trailer
 					<svg
 						class="sidebar__trailer-link__icon"
