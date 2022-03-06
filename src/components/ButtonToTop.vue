@@ -51,11 +51,10 @@ export default {
 	@include button
 	width: 50px
 	height: 50px
-	padding: 0
-	display: block
+	margin-top: auto
 	position: fixed
-	bottom: 35px
-	right: 30px
+	bottom: 20%
+	left: 10%
 	font-size: 22px
 	z-index: 10
 
