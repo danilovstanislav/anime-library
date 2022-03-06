@@ -54,7 +54,6 @@ export default {
 	transition: all .2s ease
 
 	&:hover
-		box-shadow: 4px 4px 15px 2px rgba(34, 60, 80, 0.2)
 		opacity: .8
 
 	&__image

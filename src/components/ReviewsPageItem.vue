@@ -34,8 +34,7 @@ export default {
 			return text.substring(0, 350) + '...'
 		},
 
-		handleReadMoreButton(rev) {
-			console.log(rev)
+		handleReadMoreButton() {
 			this.isReadMoreClicked = !this.isReadMoreClicked
 			this.isReadMoreClicked
 				? (this.buttonContent = 'Read less')

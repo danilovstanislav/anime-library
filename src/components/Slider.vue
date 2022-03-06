@@ -50,10 +50,5 @@ export default {
 
 <style lang="sass" scoped>
 .slider__container
-	max-width: 1200px
-	padding-left: 10px
-	padding-right: 10px
-
-	.swiper-button-next
-		background-color: red
+	max-width: $content-width
 </style>
