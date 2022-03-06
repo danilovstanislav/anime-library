@@ -37,7 +37,7 @@ export default {
 <style lang="sass" scoped>
 .character
 	width: 100%
-	max-height: 110px
+	height: 110px
 	padding-top: 5px
 	padding-bottom: 5px
 	padding-left: 5px

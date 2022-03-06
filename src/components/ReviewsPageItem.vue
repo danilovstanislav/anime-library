@@ -43,7 +43,7 @@ export default {
 	},
 }
 </script>
-<style lang="sass">
+<style lang="sass" scoped>
 .reviews__item
 	padding-top: 15px
 	padding-bottom: 15px

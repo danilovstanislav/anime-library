@@ -15,10 +15,6 @@
 	</header>
 </template>
 
-<script>
-export default {}
-</script>
-
 <style lang='sass' scoped>
 .header
 	width: 100%
