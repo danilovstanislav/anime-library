@@ -4,6 +4,7 @@
 		:to="{ name: 'AnimePageDefault', params: { animeId: animeCard.mal_id } }"
 	>
 		<img
+			v-show="Object.keys(animeCard).length"
 			class="card__image"
 			:src="animeCard.images.jpg.image_url"
 			:alt="cardTitle ?? 'Anime poster'"
@@ -54,7 +55,8 @@ export default {
 	transition: all .2s ease
 
 	&:hover
-		opacity: .8
+		opacity: .85
+		box-shadow: -12px 0 20px -12px rgba(0, 0, 0, 0.35), 12px 0 20px -12px rgba(0, 0, 0, 0.35)
 
 	&__image
 		height: 200px

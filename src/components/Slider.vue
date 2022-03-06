@@ -55,13 +55,13 @@ export default {
 	max-width: $content-width
 
 .slider-card-enter-from
-	opactiy: 0
-	transform: scale(0.7)
+	opacity: 0
+	transform: scaleX(0.6)
 
 .slider-card-enter-to
-	opactiy: 1
-	transform: scale(1)
+	opacity: 1
+	transform: scaleX(1)
 
 .slider-card-enter-active
-	transition: all .4s ease
+	transition: 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
 </style>
