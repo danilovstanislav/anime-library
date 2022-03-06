@@ -3,19 +3,26 @@
 		<transition name="character-image" appear>
 			<img
 				class="character__image"
-				:src="currentChar.images?.jpg.image_url"
-				alt="Character image"
+				v-if="currentChar.images"
+				:src="currentChar.images.jpg.image_url"
+				:alt="currentChar.name ?? 'Character image'"
 			/>
 		</transition>
 		<div class="character__wrapper">
 			<transition name="character-name" appear>
-				<h3 class="character__name" v-show="currentChar.name">
+				<h3 class="character__name" v-if="currentChar.name">
 					{{ currentChar.name }}
 				</h3>
 			</transition>
 			<transition name="character-description" appear>
-				<p class="character__description">
-					{{ currentChar.about ?? 'Sorry we do not have any information 😥' }}
+				<p
+					v-if="currentChar.hasOwnProperty('about')"
+					class="character__description"
+					:class="{
+						'no-info': !currentChar.about,
+					}"
+				>
+					{{ currentChar.about ?? `Sorry we don't have any information` }}
 				</p>
 			</transition>
 		</div>
@@ -34,6 +41,10 @@ export default {
 
 	created() {
 		this.getCurrentChar(this.$route.params.charId)
+	},
+
+	unmounted() {
+		this.currentChar = {}
 	},
 
 	methods: {
@@ -62,7 +73,7 @@ export default {
 	&__image
 		width: 40%
 		max-width: 300px
-		margin-right: 10px
+		margin-right: 15px
 		display: block
 		object-fit: contain
 		object-position: top
@@ -83,6 +94,9 @@ export default {
 		margin-bottom: 0
 		white-space: pre-line
 
+.no-info
+	font-style: italic
+
 .character-image-enter-active,
 .character-name-enter-active,
 .character-description-enter-active
@@ -90,11 +104,11 @@ export default {
 
 .character-image-enter-from
 	opacity: 0
-	transform: scale(0.6)
+	transform: translateX(-50px)
 
 .character-image-enter-to
 	opacity: 1
-	transform: scale(1)
+	transform: translateX(0)
 
 .character-name-enter-to
 	opacity: 1
@@ -105,8 +119,10 @@ export default {
 	transform: translateY(-20px)
 
 .character-description-enter-from
-	transform: translateX(100px)
+	opacity: 0
+	transform: translateX(50px)
 
 .character-description-enter-to
+	opacity: 1
 	transform: translateX(0)
 </style>
