@@ -56,27 +56,16 @@ export default {
 			getAnimeById: 'animePage/getAnimeById',
 		}),
 
-		...mapMutations({
-			SET_ANIME_INFO: 'animePage/SET_ANIME_INFO',
-			SET_TRAILER: 'animePage/SET_TRAILER',
-			SET_CHARACTERS_ARRAY: 'animePage/SET_CHARACTERS_ARRAY',
-			SET_REVIEWS_ARRAY: 'animePage/SET_REVIEWS_ARRAY',
-			SET_RECOMMENDATIONS_ARRAY: 'animePage/SET_RECOMMENDATIONS_ARRAY',
-		}),
-
 		recomendationsClickHandler(id) {
-			window.scroll({ top: 0, behavior: 'smooth' })
-			// this.SET_ANIME_INFO = {}
-			// this.SET_TRAILER = {}
-			// this.SET_CHARACTERS_ARRAY = []
-			// this.SET_REVIEWS_ARRAY = []
-			// this.SET_RECOMMENDATIONS_ARRAY = []
-			window.addEventListener('scroll', () => {
+			const scrollToTop = () => {
 				if (window.pageYOffset === 0) {
 					this.getAnimeById(id)
+					window.removeEventListener('scroll', scrollToTop)
 				}
-			})
-			window.removeEventListener
+			}
+			window.addEventListener('scroll', scrollToTop)
+
+			window.scroll({ top: 0, behavior: 'smooth' })
 		},
 	},
 }
@@ -105,6 +94,12 @@ export default {
 
 			&::after
 				color: $dark-black-color
+
+		.swiper-button-prev
+			left: 5px
+
+		.swiper-button-next
+			right: 5px
 
 	&__item
 		display: block
