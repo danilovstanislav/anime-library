@@ -8,7 +8,9 @@
 		:rewind="true"
 	>
 		<swiper-slide v-for="card in contentArr" :key="card.mal_id">
-			<slot :card="card" />
+			<transition name="slider-card" appear>
+				<slot :card="card" />
+			</transition>
 		</swiper-slide>
 	</swiper>
 </template>
@@ -51,4 +53,15 @@ export default {
 <style lang="sass" scoped>
 .slider__container
 	max-width: $content-width
+
+.slider-card-enter-from
+	opactiy: 0
+	transform: scale(0.7)
+
+.slider-card-enter-to
+	opactiy: 1
+	transform: scale(1)
+
+.slider-card-enter-active
+	transition: all .4s ease
 </style>

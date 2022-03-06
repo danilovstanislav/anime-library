@@ -24,35 +24,11 @@ export const animePage = {
     SET_ANIME_INFO(state, payload) {
       state.animeInfo.animeImage = payload.animeImage
       state.animeInfo.animeImageAlt = payload.animeImageAlt
-      state.animeInfo.categories = [
-        { key: 'Type', value: payload.categories.type },
-        {
-          key: 'Episodes',
-          value: payload.categories.episodes,
-        },
-        {
-          key: 'Status',
-          value: payload.categories.status,
-        },
-        {
-          key: 'Premiered',
-          value: payload.categories.aired,
-        },
-        {
-          key: 'Genres',
-          value: payload.categories.genres,
-        },
-        {
-          key: 'Duration',
-          value: payload.categories.duration,
-        },
-      ]
+      state.animeInfo.categories = payload.categories
     },
 
     SET_TRAILER(state, payload) {
-      state.trailer.url = payload.url
-      state.trailer.embed_url = payload.embed_url
-      state.trailer.image = payload.image
+      state.trailer.url = payload
     },
 
     SET_CHARACTERS_ARRAY(state, payload) {
@@ -76,23 +52,34 @@ export const animePage = {
         commit('SET_ANIME_INFO', {
           animeImage: state.currentAnime.images.jpg.large_image_url,
           animeImageAlt: state.currentAnime.title,
-          categories: {
-            type: state.currentAnime.type,
-            episodes: state.currentAnime.episodes,
-            status: state.currentAnime.status,
-            aired: state.currentAnime.aired.string,
-            genres: state.currentAnime.genres
-              .map((i) => i.name)
-              .slice(0, 3)
-              .join(' '),
-            duration: state.currentAnime.duration,
-          },
+          categories: [
+            { key: 'Type', value: state.currentAnime.type },
+            {
+              key: 'Episodes',
+              value: state.currentAnime.episodes,
+            },
+            {
+              key: 'Status',
+              value: state.currentAnime.status,
+            },
+            {
+              key: 'Premiered',
+              value: state.currentAnime.aired.string,
+            },
+            {
+              key: 'Genres',
+              value: state.currentAnime.genres
+                .map((i) => i.name)
+                .slice(0, 3)
+                .join(' '),
+            },
+            {
+              key: 'Duration',
+              value: state.currentAnime.duration,
+            },
+          ],
         })
-        commit('SET_TRAILER', {
-          url: state.currentAnime.trailer.url,
-          embed_url: state.currentAnime.trailer.embed_url,
-          image: state.currentAnime.trailer.image,
-        })
+        commit('SET_TRAILER', state.currentAnime.trailer.url)
         dispatch('getCharacters', id)
         dispatch('getReviews', id)
         dispatch('getRecommendations', id)

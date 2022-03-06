@@ -1,31 +1,36 @@
 <template>
-	<div class="character" v-show="currentChar">
-		<transition name="character-image" appear>
-			<img
-				class="character__image"
-				v-if="currentChar.images"
-				:src="currentChar.images.jpg.image_url"
-				:alt="currentChar.name ?? 'Character image'"
-			/>
-		</transition>
-		<div class="character__wrapper">
-			<transition name="character-name" appear>
-				<h2 class="character__name" v-if="currentChar.name">
-					{{ currentChar.name }}
-				</h2>
+	<div class="character">
+		<div class="container" v-show="Object.keys(currentChar).length">
+			<transition name="character-image" appear>
+				<img
+					class="character__image"
+					v-if="currentChar.images"
+					:src="currentChar.images.jpg.image_url"
+					:alt="currentChar.name ?? 'Character image'"
+				/>
 			</transition>
-			<transition name="character-description" appear>
-				<p
-					v-if="currentChar.hasOwnProperty('about')"
-					class="character__description"
-					:class="{
-						'no-info': !currentChar.about,
-					}"
-				>
-					{{ currentChar.about ?? `Sorry we don't have any information` }}
-				</p>
-			</transition>
+			<div class="character__wrapper">
+				<transition name="character-name" appear>
+					<h2 class="character__name" v-if="currentChar.name">
+						{{ currentChar.name }}
+					</h2>
+				</transition>
+				<transition name="character-description" appear>
+					<p
+						v-if="currentChar.hasOwnProperty('about')"
+						class="character__description"
+						:class="{
+							'no-info': !currentChar.about,
+						}"
+					>
+						{{ currentChar.about ?? `Sorry we don't have any information` }}
+					</p>
+				</transition>
+			</div>
 		</div>
+		<h2 class="character__error" v-if="errorCatcher">
+			Ooops... Something went wrong. Try reloading. 😢
+		</h2>
 	</div>
 </template>
 
@@ -36,6 +41,7 @@ export default {
 	data() {
 		return {
 			currentChar: {},
+			errorCatcher: false,
 		}
 	},
 
@@ -52,8 +58,13 @@ export default {
 			try {
 				const res = await axios.get(`https://api.jikan.moe/v4/characters/${id}`)
 				this.currentChar = res.data.data
+				this.errorCatcher = false
 			} catch (err) {
 				console.error(err)
+				const errStatus = err.response.data.status
+				if (errStatus >= 400 && errStatus <= 500) {
+					this.errorCatcher = true
+				}
 			}
 		},
 	},
@@ -62,13 +73,17 @@ export default {
 
 <style lang="sass" scoped>
 .character
-	@include container
 	padding-top: 30px
 	padding-bottom: 30px
-	display: flex
+	position: relative
 
-	@media(max-width: $screen-xs-max)
-		flex-direction: column
+	.container
+		@include container
+		width: 100%
+		display: flex
+
+		@media(max-width: $screen-xs-max)
+			flex-direction: column
 
 	&__image
 		width: 40%
@@ -93,6 +108,22 @@ export default {
 		margin-top: 0
 		margin-bottom: 0
 		white-space: pre-line
+
+	&__error
+		width: 100%
+		padding-left: 10px
+		padding-right: 10px
+		margin-top: 0
+		margin-bottom: 0
+		position: absolute
+		top: 30%
+		left: 50%
+		transform: translate(-50%, -50%)
+		text-align: center
+		font-size: 28px
+
+		@media(max-width: $screen-xs-max)
+			font-size: 22px
 
 .no-info
 	font-style: italic
