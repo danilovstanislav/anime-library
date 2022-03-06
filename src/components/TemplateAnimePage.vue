@@ -3,8 +3,8 @@
 		<anime-page-sidebar />
 		<main class="main">
 			<anime-title />
-			<h2 class="main__title">
-				<slot name="title"> </slot>
+			<h2 class="page__title">
+				<slot name="pageTitle"> </slot>
 			</h2>
 			<slot name="mainContent"> </slot>
 		</main>
@@ -42,7 +42,7 @@ export default {
 		@media (max-width: $screen-xs-max)
 			max-width: 100%
 
-		&__title
+		.page__title
 			margin-top: 0
 			margin-bottom: 10px
 			font-size: 22px

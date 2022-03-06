@@ -1,17 +1,17 @@
 <template>
 	<div class="home">
 		<div class="container">
-			<h3 class="section__title">Winter 2022</h3>
+			<h2 class="section__title">Winter 2022</h2>
 			<slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
 				<anime-card :animeCard="card" />
 			</slider>
 
-			<h3 class="section__title">Top anime</h3>
+			<h2 class="section__title">Top anime</h2>
 			<slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
 				<anime-card :animeCard="card" />
 			</slider>
 
-			<h3 class="section__title">Top upcoming anime</h3>
+			<h2 class="section__title">Top upcoming anime</h2>
 			<slider v-slot="{ card }" :contentArr="seasonUpcoming" sliderSize="wide">
 				<anime-card :animeCard="card" />
 			</slider>
@@ -22,7 +22,6 @@
 <script>
 import Slider from '@/components/Slider.vue'
 import AnimeCard from '@/components/AnimeCard.vue'
-import AnimeVideoCard from '@/components/AnimeVideoCard.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -30,7 +29,6 @@ export default {
 	components: {
 		Slider,
 		AnimeCard,
-		AnimeVideoCard,
 	},
 
 	created() {
@@ -71,7 +69,8 @@ export default {
 	@include borderBottom
 	padding-bottom: 2px
 	margin-bottom: 10px
-	color: #181818
+	font-size: 22px
+	color: $dark-black-color
 
 	&:not(:first-child)
 		margin-top: 30px

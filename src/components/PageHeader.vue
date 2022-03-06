@@ -34,7 +34,7 @@ export default {}
 	&__logo
 		margin-right: 15px
 		display: block
-		font-family: 'Akaya-Telivigala'
+		font-family: 'Fredoka-SemiBold'
 		font-size: 28px
 		line-height: .9
 		text-decoration: none

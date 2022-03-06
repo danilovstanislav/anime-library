@@ -9,7 +9,7 @@
 		>
 			Reviews
 		</anime-page-section-title>
-		<ul class="reviews__list">
+		<transition-group class="reviews__list" tag="ul" name="reviews-list" appear>
 			<li
 				class="reviews__item"
 				v-for="review in slicedReviewsArray"
@@ -25,12 +25,12 @@
 						{{ review.date }}
 					</div>
 					<div class="reviews__username">{{ review.user.username }}</div>
-					<div class="reviews__text">
+					<p class="reviews__text">
 						{{ review.review.substring(0, 250) }}...
-					</div>
+					</p>
 				</div>
 			</li>
-		</ul>
+		</transition-group>
 	</section>
 </template>
 
@@ -93,7 +93,22 @@ export default {
 		margin-bottom: 5px
 		font-weight: 700
 
+	&__text
+		margin-top: 0
+		margin-bottom: 0
+
 	&__date
 		margin-bottom: 5px
 		font-size: 14px
+
+.reviews-list-enter-from
+	opacity: 0
+	transform: translateX(150px)
+	
+.reviews-list-enter-to
+	opacity: 1
+	transform: translateX(0)
+
+.reviews-list-enter-active
+	transition: all .4s ease
 </style>

@@ -10,9 +10,9 @@
 		</transition>
 		<div class="character__wrapper">
 			<transition name="character-name" appear>
-				<h3 class="character__name" v-if="currentChar.name">
+				<h2 class="character__name" v-if="currentChar.name">
 					{{ currentChar.name }}
-				</h3>
+				</h2>
 			</transition>
 			<transition name="character-description" appear>
 				<p
@@ -87,7 +87,7 @@ export default {
 	&__name
 		margin-top: 0
 		margin-bottom: 10px
-		font-size: 22px
+		font-size: 24px
 
 	&__description
 		margin-top: 0

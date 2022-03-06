@@ -1,8 +1,8 @@
 <template>
 	<div class="title__wrapper">
-		<h4 class="section-title">
+		<h2 class="section-title">
 			<slot></slot>
-		</h4>
+		</h2>
 		<router-link
 			class="button-view-more"
 			v-if="routerPath && viewMoreButton"
@@ -37,7 +37,7 @@ export default {
 .section-title
 	margin: 0
 	font-weight: 700
-	font-size: 18px
+	font-size: 20px
 
 .button-view-more
 	@include button

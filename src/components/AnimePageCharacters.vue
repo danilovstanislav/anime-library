@@ -138,5 +138,5 @@ export default {
 	transform: scale(1)
 
 .characters-list-enter-active
-	transition: all .5s ease
+	transition: all .4s ease
 </style>

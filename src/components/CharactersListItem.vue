@@ -1,5 +1,5 @@
 <template>
-	<li class="character">
+	<li class="character" v-show="char">
 		<router-link
 			class="character__link"
 			:to="{
@@ -48,7 +48,7 @@ export default {
 
 	&__link
 		width: 100%
-		max-width: 80px
+		max-width: 60px
 		margin-right: 10px
 
 	&-image
