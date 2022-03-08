@@ -1,25 +1,47 @@
 <template>
 	<header class="header">
 		<div class="header__wrapper">
-			<router-link class="header__logo" :to="{ name: 'HomePage' }"
+			<router-link
+				class="header__logo"
+				:to="{ name: 'HomePage' }"
+				@click="clickLogoHandler"
 				>AniBase</router-link
 			>
 			<ul class="header__list">
-				<li class="header__item">
+				<!-- <li class="header__item">
 					<router-link class="header__link" :to="{ name: 'HomePage' }"
 						>Home</router-link
 					>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 	</header>
 </template>
+
+<script>
+export default {
+	methods: {
+		clickLogoHandler() {
+			const scrollToTop = () => {
+				if (window.pageYOffset === 0) {
+					window.removeEventListener('scroll', scrollToTop)
+				} 
+			}
+			window.addEventListener('scroll', scrollToTop)
+			window.scroll({ top: 0, behavior: 'smooth' })
+		},
+	},
+}
+</script>
 
 <style lang='sass' scoped>
 .header
 	width: 100%
 	padding-top: 20px
 	padding-bottom: 20px
+	position: sticky
+	top: 0
+	z-index: 100
 	background-color: $main-color
 
 	&__wrapper
@@ -34,7 +56,7 @@
 		font-size: 28px
 		line-height: .9
 		text-decoration: none
-		color: #000
+		color: $dark-black-color
 
 	&__list
 		padding: 0
