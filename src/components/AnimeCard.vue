@@ -1,7 +1,7 @@
 <template>
 	<router-link
 		class="card"
-		:to="{ name: 'AnimePageDefault', params: { animeId: animeCard.mal_id } }"
+		:to="{ name: 'AnimePageMain', params: { animeId: animeCard.mal_id } }"
 	>
 		<img
 			v-show="Object.keys(animeCard).length"
@@ -19,6 +19,7 @@
 		</div>
 	</router-link>
 </template>
+
 <script>
 export default {
 	props: {

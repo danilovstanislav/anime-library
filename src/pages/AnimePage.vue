@@ -1,17 +1,19 @@
 <template>
 	<div class="container">
-		<anime-page-sidebar />
+		<AnimePageSidebar />
 		<div class="main">
-			<anime-title />
+			<AnimeTitle />
+			<AnimePageMainTabs />
 			<router-view />
 		</div>
-		<button-to-top />
+		<ButtonToTop />
 	</div>
 </template>
 
 <script>
 import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import AnimeTitle from '@/components/AnimeTitle.vue'
+import AnimePageMainTabs from '@/components/AnimePageMainTabs.vue'
 import ButtonToTop from '@/components/ButtonToTop.vue'
 import { mapMutations, mapActions } from 'vuex'
 
@@ -19,6 +21,7 @@ export default {
 	components: {
 		AnimePageSidebar,
 		AnimeTitle,
+		AnimePageMainTabs,
 		ButtonToTop,
 	},
 
