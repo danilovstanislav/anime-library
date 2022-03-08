@@ -72,7 +72,7 @@ export default {}
 		font-size: 24px
 		line-height: .9
 		text-decoration: none
-		color: #000
+		color: $dark-black-color
 
 	&__links-list
 		width: 100%

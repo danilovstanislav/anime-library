@@ -1,9 +1,8 @@
 <template>
 	<div class="character">
 		<div class="container" v-show="Object.keys(currentChar).length">
-			<transition name="character-image" appear>
+			<transition class="character__image" name="character-image" appear>
 				<img
-					class="character__image"
 					v-if="currentChar.images"
 					:src="currentChar.images.jpg.image_url"
 					:alt="currentChar.name ?? 'Character image'"
@@ -79,22 +78,23 @@ export default {
 
 	.container
 		@include container
-		width: 100%
 		display: flex
+		align-items: flex-start
 
 		@media(max-width: $screen-xs-max)
 			flex-direction: column
 
 	&__image
-		width: 40%
+		width: 100%
 		max-width: 300px
+		padding-left: 10px
+		padding-right: 10px
 		margin-right: 15px
 		display: block
 		object-fit: contain
 		object-position: top
 
 		@media(max-width: $screen-xs-max)
-			max-width: 50%
 			margin-right: auto
 			margin-left: auto
 			margin-bottom: 10px
@@ -135,11 +135,11 @@ export default {
 
 .character-image-enter-from
 	opacity: 0
-	transform: translateX(-50px)
+	transform: scaleX(0.6)
 
 .character-image-enter-to
 	opacity: 1
-	transform: translateX(0)
+	transform: scaleX(1)
 
 .character-name-enter-to
 	opacity: 1
