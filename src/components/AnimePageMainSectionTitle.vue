@@ -7,7 +7,7 @@
 			class="button-view-more"
 			v-if="routerPath && viewMoreButton"
 			:to="routerPath"
-			@click="scrollToTop"
+			@click="clickHandler"
 		>
 			View more
 		</router-link>
@@ -18,7 +18,7 @@
 export default {
 	props: ['routerPath', 'viewMoreButton'],
 	methods: {
-		scrollToTop() {
+		clickHandler() {
 			window.scroll({ top: 0, behavior: 'smooth' })
 		},
 	},

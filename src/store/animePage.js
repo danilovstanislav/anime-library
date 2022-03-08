@@ -54,18 +54,9 @@ export const animePage = {
           animeImageAlt: state.currentAnime.title,
           categories: [
             { key: 'Type', value: state.currentAnime.type },
-            {
-              key: 'Episodes',
-              value: state.currentAnime.episodes,
-            },
-            {
-              key: 'Status',
-              value: state.currentAnime.status,
-            },
-            {
-              key: 'Premiered',
-              value: state.currentAnime.aired.string,
-            },
+            { key: 'Episodes', value: state.currentAnime.episodes },
+            { key: 'Status', value: state.currentAnime.status },
+            { key: 'Premiered', value: state.currentAnime.aired.string },
             {
               key: 'Genres',
               value: state.currentAnime.genres
@@ -73,10 +64,7 @@ export const animePage = {
                 .slice(0, 3)
                 .join(' '),
             },
-            {
-              key: 'Duration',
-              value: state.currentAnime.duration,
-            },
+            { key: 'Duration', value: state.currentAnime.duration },
           ],
         })
         commit('SET_TRAILER', state.currentAnime.trailer.url)

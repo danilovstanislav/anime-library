@@ -4,8 +4,7 @@
 			v-for="tab in tabs"
 			:key="tab.pathName"
 			class="tabs__item"
-			:class="{ selected: selectedTab === tab.pathName }"
-			@click="tabHandler(tab)"
+			:class="{ selected: this.$route.name === tab.pathName }"
 		>
 			<router-link class="tabs__link" :to="{ name: tab.pathName }">
 				{{ tab.label }}
@@ -23,21 +22,11 @@ export default {
 				{ label: 'Characters', pathName: 'AnimePageCharacters' },
 				{ label: 'Reviews', pathName: 'AnimePageReviews' },
 			],
-			selectedTab: null,
 		}
-	},
-
-	created() {
-		this.selectedTab = this.$route.name
-	},
-
-	methods: {
-		tabHandler(tab) {
-			this.selectedTab = tab.pathName
-		},
 	},
 }
 </script>
+
 <style lang="sass" scoped>
 .tabs
 	width: 100%
