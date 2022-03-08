@@ -51,11 +51,11 @@ export default {
 
 .reviews-list-enter-from
 	opacity: 0
-	transform: translateX(50%)
+	transform: scaleY(0.6)
 
 .reviews-list-enter-to
 	opacity: 1
-	transform: translateX(0)
+	transform: scaleY(1)
 
 .reviews-list-enter-active
 	transition: all .4s ease
