@@ -2,19 +2,19 @@
 	<div class="home">
 		<div class="container">
 			<h2 class="section__title">Winter 2022</h2>
-			<slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
-				<anime-card :animeCard="card" />
-			</slider>
+			<Slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
+				<AnimeCard :animeCard="card" />
+			</Slider>
 
 			<h2 class="section__title">Top anime</h2>
-			<slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
-				<anime-card :animeCard="card" />
-			</slider>
+			<Slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
+				<AnimeCard :animeCard="card" />
+			</Slider>
 
 			<h2 class="section__title">Top upcoming anime</h2>
-			<slider v-slot="{ card }" :contentArr="seasonUpcoming" sliderSize="wide">
-				<anime-card :animeCard="card" />
-			</slider>
+			<Slider v-slot="{ card }" :contentArr="seasonUpcoming" sliderSize="wide">
+				<AnimeCard :animeCard="card" />
+			</Slider>
 		</div>
 	</div>
 </template>

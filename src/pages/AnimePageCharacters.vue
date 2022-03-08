@@ -6,7 +6,7 @@
 		name="characters-list"
 		appear
 	>
-		<characters-list-item
+		<CharactersListItem
 			v-for="char in charactersArray"
 			:key="char.character.mal_id"
 			:char="char"

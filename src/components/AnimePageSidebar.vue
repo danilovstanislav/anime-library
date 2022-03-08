@@ -9,7 +9,7 @@
 			/>
 		</transition>
 		<div class="sidebar__wrapper">
-			<anime-title />
+			<AnimeTitle />
 			<transition-group
 				class="sidebar__list"
 				tag="ul"

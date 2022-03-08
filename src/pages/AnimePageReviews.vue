@@ -1,7 +1,7 @@
 <template>
 	<h2 class="reviews__title">Reviews</h2>
 	<transition-group class="reviews__list" name="reviews-list" tag="ul" appear>
-		<reviews-page-item
+		<ReviewsPageItem
 			v-for="review in reviewsArray"
 			:key="review.mal_id"
 			:review="review"
