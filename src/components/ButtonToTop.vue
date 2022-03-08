@@ -58,6 +58,9 @@ export default {
 	font-size: 22px
 	z-index: 10
 
+	@media(max-width: $screen-s-max)
+		display: none
+
 .button-to-top-enter-from,
 .button-to-top-leave-to
 	opacity: 0
