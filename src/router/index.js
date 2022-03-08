@@ -14,18 +14,18 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'AnimePageDefault',
-        component: () => import('@/components/AnimePageDefault.vue'),
+        name: 'AnimePageMain',
+        component: () => import('@/pages/AnimePageMain.vue'),
       },
       {
         path: 'characters',
-        name: 'CharactersList',
-        component: () => import('@/pages/CharactersList.vue'),
+        name: 'AnimePageCharacters',
+        component: () => import('@/pages/AnimePageCharacters.vue'),
       },
       {
         path: 'reviews',
-        name: 'ReviewsPage',
-        component: () => import('@/pages/ReviewsPage.vue'),
+        name: 'AnimePageReviews',
+        component: () => import('@/pages/AnimePageReviews.vue'),
       },
     ],
   },
