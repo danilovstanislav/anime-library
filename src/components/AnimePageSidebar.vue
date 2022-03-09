@@ -90,13 +90,13 @@ export default {
 		width: 100%
 		margin-bottom: 15px
 		flex-direction: row
-		justify-content: center
+		align-items: flex-start
 
 	&-image
 		width: 100%
 		margin-bottom: 10px
 		display: block
-		object-fit: cover
+		object-fit: contain
 		object-position: center
 		border-radius: 5px
 
