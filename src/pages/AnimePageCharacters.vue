@@ -1,26 +1,54 @@
 <template>
-	<h2 class="characters__title">Characters</h2>
-	<transition-group
-		class="characters__list"
-		tag="ul"
-		name="characters-list"
-		appear
-	>
-		<CharactersListItem
-			v-for="char in charactersArray"
-			:key="char.character.mal_id"
-			:char="char"
-		/>
-	</transition-group>
+	<section class="characters">
+		<h2 class="characters__title">Characters</h2>
+		<div class="characters__filter">
+			<label for="filter" class="filter__label">Search by name:</label>
+			<input
+				v-model="filterInp"
+				type="text"
+				class="filter__input"
+				name="filter"
+				placeholder="Search of character"
+			/>
+		</div>
+		<TransitionGroup
+			class="characters__list"
+			v-if="filteredCharactersArray.length"
+			tag="ul"
+			@before-enter="onBeforeEnter"
+			@enter="onEnter"
+			@leave="onLeave"
+			:css="false"
+			appear
+		>
+			<CharactersListItem
+				v-for="(char, index) in filteredCharactersArray"
+				:key="char.character.mal_id"
+				:data-index="index"
+				:char="char"
+			/>
+		</TransitionGroup>
+		<h2 class="empty-search" v-else>Sorry, can not find the character 😥</h2>
+	</section>
 </template>
 
 <script>
 import CharactersListItem from '@/components/CharactersListItem.vue'
 import { mapState, mapActions } from 'vuex'
+import { gsap } from 'gsap'
 
 export default {
 	components: {
 		CharactersListItem,
+	},
+
+	data() {
+		return {
+			filterInp: '',
+			page: 1,
+			hasNextPage: false,
+			showCardsNumber: 10,
+		}
 	},
 
 	created() {
@@ -29,24 +57,104 @@ export default {
 		}
 	},
 
+	mounted() {
+		window.addEventListener('scroll', this.handleScroll)
+	},
+
+	unmounted() {
+		window.removeEventListener('scroll', this.handleScroll)
+	},
+
 	computed: {
 		...mapState({
 			charactersArray: (state) => state.animePage.charactersArray,
 		}),
+
+		filteredCharactersArray() {
+			const end = this.page * this.showCardsNumber
+
+			const filteredArr = this.charactersArray.filter((char) => {
+				const charName = char.character.name.toLowerCase()
+				const input = this.filterInp.toLowerCase()
+				return charName.includes(input)
+			})
+
+			this.hasNextPage = filteredArr.length > end
+
+			return filteredArr.slice(0, end)
+		},
 	},
 
 	methods: {
 		...mapActions({
 			getCharacters: 'animePage/getCharacters',
 		}),
+
+		handleScroll(e) {
+			const el = document.querySelector('.characters__list')
+			if (
+				el.getBoundingClientRect().bottom < window.innerHeight &&
+				this.hasNextPage
+			) {
+				this.page += 1
+			}
+		},
+
+		onBeforeEnter(el) {
+			el.style.opacity = 0
+			el.style.transform = 'translateX(100px)'
+		},
+
+		onEnter(el, done) {
+			gsap.to(el, {
+				opacity: 1,
+				transform: 'translateX(0)',
+				delay: el.dataset.index * 0.01,
+				onComplete: done,
+			})
+		},
+
+		onLeave(el, done) {
+			gsap.to(el, {
+				opacity: 0,
+				height: 0,
+				transform: 'translateX(100px)',
+				delay: el.dataset.index * 0.01,
+				onComplete: done,
+			})
+		},
 	},
 }
 </script>
 
 <style lang="sass" scoped>
+.characters
+	width: 100%
+	height: 100%
+	position: relative
+
 .characters__title
 	margin-top: 0
 	margin-bottom: 10px
+
+.characters__filter
+	margin-bottom: 10px
+	display: flex
+	align-items: center
+	justify-content: center
+
+	.filter__label
+		margin-right: 10px
+		font-weight: 700
+
+	.filter__input
+		width: 100%
+		max-width: 250px
+		padding: 4px 8px
+		font-size: 18px
+
+		&:focus
+			outline: none
 
 .characters__list
 	width: 100%
@@ -57,14 +165,9 @@ export default {
 	flex-direction: column
 	list-style: none
 
-.characters-list-enter-from
-	opacity: 0
-	transform: translateX(100px)
-
-.characters-list-enter-to
-	opacity: 1
-	transform: translateX(0)
-
-.characters-list-enter-active
-	transition: all .4s ease
+.empty-search
+	position: absolute
+	top: 50%
+	left: 50%
+	transform: translate(-50%, -50%)
 </style>
