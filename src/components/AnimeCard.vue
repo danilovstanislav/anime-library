@@ -10,11 +10,14 @@
 			:alt="cardTitle ?? 'Anime poster'"
 		/>
 		<div class="card__info">
-			<div class="card__title">
+			<div class="card__info__item card__title">
 				{{ cardTitle }}
 			</div>
-			<div class="card__episodes">
-				{{ cardEpisodes }}
+			<div class="card__info__item">
+				{{ cardEpisodesAndType }}
+			</div>
+			<div class="card__info__item">
+				{{ cardYear }}
 			</div>
 		</div>
 	</router-link>
@@ -31,9 +34,17 @@ export default {
 				? this.animeCard.title_english
 				: this.animeCard.title
 		},
-		cardEpisodes() {
+
+		cardEpisodesAndType() {
 			const ep = this.animeCard.episodes
-			return `${ep ? ep : ''} ${ep > 0 ? 'ep.' : 'Soon'}`
+			const epString = ep ? ep + ' ep.' : null
+			const type = this.animeCard.type ?? ''
+			return epString ? `${epString} | ${type}` : type
+		},
+
+		cardYear() {
+			const year = this.animeCard.aired.prop.from.year
+			return year ? year : 'Soon'
 		},
 	},
 }
@@ -60,13 +71,9 @@ export default {
 		box-shadow: -12px 0 20px -12px rgba(0, 0, 0, 0.35), 12px 0 20px -12px rgba(0, 0, 0, 0.35)
 
 	&__image
-		height: 200px
 		display: block
 		object-fit: cover
 		object-position: center center
-
-		@media (max-width: $screen-xs-max)
-			height: 190px
 
 	&__info
 		padding-left: 10px
@@ -74,21 +81,19 @@ export default {
 		padding-bottom: 10px
 		margin-top: 7px
 
+		@media (max-width: $screen-s-max)
+			font-size: 14px
+
+		&__item
+			color: lighten($dark-black-color, 25%)
+
+			&:not(:last-child)
+				margin-bottom: 5px
+
 	&__title
-		margin-top: 0
-		margin-bottom: 5px
 		color: $dark-black-color
 		font-weight: 700
 		white-space: nowrap
 		text-overflow: ellipsis
 		overflow: hidden
-
-		@media (max-width: $screen-s-max)
-			font-size: 13px
-
-	&__episodes
-		color: lighten($dark-black-color, 25%)
-
-		@media (max-width: $screen-s-max)
-			font-size: 12px
 </style>
