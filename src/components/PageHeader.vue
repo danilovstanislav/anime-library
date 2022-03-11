@@ -4,15 +4,18 @@
 			<router-link
 				class="header__logo"
 				:to="{ name: 'HomePage' }"
-				@click="clickLogoHandler"
+				@click="clickHandler"
 				>AniBase</router-link
 			>
 			<ul class="header__list">
-				<!-- <li class="header__item">
-					<router-link class="header__link" :to="{ name: 'HomePage' }"
-						>Home</router-link
+				<li class="header__item">
+					<router-link
+						class="header__link"
+						:to="{ name: 'SearchPage' }"
+						@click="clickHandler"
+						>Search</router-link
 					>
-				</li> -->
+				</li>
 			</ul>
 		</div>
 	</header>
@@ -21,11 +24,11 @@
 <script>
 export default {
 	methods: {
-		clickLogoHandler() {
+		clickHandler() {
 			const scrollToTop = () => {
 				if (window.pageYOffset === 0) {
 					window.removeEventListener('scroll', scrollToTop)
-				} 
+				}
 			}
 			window.addEventListener('scroll', scrollToTop)
 			window.scroll({ top: 0, behavior: 'smooth' })
