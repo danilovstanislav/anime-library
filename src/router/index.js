@@ -8,6 +8,11 @@ const routes = [
     component: HomePage,
   },
   {
+    path: '/:pathMatch(.*)*',
+    name: 'PageNotFound',
+    component: () => import('@/pages/PageNotFound.vue'),
+  },
+  {
     path: '/anime/:animeId',
     name: 'AnimePage',
     component: () => import('@/pages/AnimePage.vue'),
@@ -35,9 +40,9 @@ const routes = [
     component: () => import('@/pages/CharacterInfoPage.vue'),
   },
   {
-    path: '/:pathMatch(.*)*',
-    name: 'PageNotFound',
-    component: () => import('@/pages/PageNotFound.vue'),
+    path: '/search',
+    name: 'SearchPage',
+    component: () => import('@/pages/SearchPage.vue'),
   },
 ]
 
