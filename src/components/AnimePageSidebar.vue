@@ -98,7 +98,7 @@ export default {
 		display: block
 		object-fit: contain
 		object-position: center
-		border-radius: 5px
+		border-radius: 10px
 
 		@media (max-width: $screen-xs-max)
 			max-width: 45%

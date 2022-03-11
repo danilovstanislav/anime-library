@@ -41,7 +41,7 @@ export default {
 		width: 100%
 		max-width: 120px
 		background-color: $main-color
-		border-radius: 5px
+		border-radius: 10px
 
 		&:not(:last-child)
 			margin-right: 10px

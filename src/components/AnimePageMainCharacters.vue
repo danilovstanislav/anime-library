@@ -100,7 +100,7 @@ export default {
 	padding: 5px
 	display: flex
 	border: 1px solid #a8a8a8
-	border-radius: 5px
+	border-radius: 10px
 
 	@media (max-width: $screen-m-max)
 		max-width: 400px
@@ -117,7 +117,7 @@ export default {
 .character__image
 	width: 100%
 	display: block
-	border-radius: 5px
+	border-radius: 10px
 
 .character__name
 	margin-bottom: 5px

@@ -77,7 +77,7 @@ export default {
 		display: flex
 		align-items: flex-start
 		border: 1px solid #a8a8a8
-		border-radius: 5px
+		border-radius: 10px
 		overflow-x: hidden
 
 		&:not(:last-child)
@@ -87,7 +87,7 @@ export default {
 		max-width: 60px
 		margin-right: 10px
 		display: block
-		border-radius: 5px
+		border-radius: 10px
 
 	&__username
 		margin-bottom: 5px

@@ -117,7 +117,7 @@ export default {
 		display: block
 		color: #000
 		text-decoration: none
-		border-radius: 5px
+		border-radius: 10px
 		overflow: hidden
 		transition: all .2s ease
 

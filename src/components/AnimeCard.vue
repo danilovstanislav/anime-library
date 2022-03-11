@@ -61,7 +61,7 @@ export default {
 	display: flex
 	flex-direction: column
 	background-color: #fff
-	border-radius: 5px
+	border-radius: 10px
 	overflow: hidden
 	text-decoration: none
 	transition: all .2s ease
