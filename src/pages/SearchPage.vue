@@ -4,6 +4,7 @@
 			<div class="search__input-wrapper">
 				<input
 					class="search__input"
+					type="text"
 					v-model="input"
 					placeholder="Search of anime"
 					@keypress.enter="getAnimeList(input)"
@@ -141,7 +142,6 @@ export default {
 		border: 1px solid $dark-black-color
 		border-radius: 10px 0 0 10px
 		font-size: 18px
-		font-family: 'Fredoka-Regular', sans-serif
 
 		&:focus
 			outline: none
