@@ -1,20 +1,30 @@
 <template>
 	<div class="home">
 		<div class="container">
-			<h2 class="section__title">Winter 2022</h2>
-			<Slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
-				<AnimeCard :animeCard="card" />
-			</Slider>
+			<div class="slider__wrapper">
+				<h2 class="section__title">Winter 2022</h2>
+				<Slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
+					<AnimeCard :animeCard="card" />
+				</Slider>
+			</div>
 
-			<h2 class="section__title">Top anime</h2>
-			<Slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
-				<AnimeCard :animeCard="card" />
-			</Slider>
+			<div class="slider__wrapper">
+				<h2 class="section__title">Top anime</h2>
+				<Slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
+					<AnimeCard :animeCard="card" />
+				</Slider>
+			</div>
 
-			<h2 class="section__title">Top upcoming anime</h2>
-			<Slider v-slot="{ card }" :contentArr="seasonUpcoming" sliderSize="wide">
-				<AnimeCard :animeCard="card" />
-			</Slider>
+			<div class="slider__wrapper">
+				<h2 class="section__title">Top upcoming anime</h2>
+				<Slider
+					v-slot="{ card }"
+					:contentArr="seasonUpcoming"
+					sliderSize="wide"
+				>
+					<AnimeCard :animeCard="card" />
+				</Slider>
+			</div>
 		</div>
 	</div>
 </template>
@@ -59,7 +69,38 @@ export default {
 .home
 	padding-top: 40px
 	padding-bottom: 40px
-	background-color: #e6e6e6
+	background-color: $bc-grey-color
+
+.slider__wrapper
+	width: 100%
+	margin: 0 auto
+
+	&:not(:last-child)
+		margin-bottom: 30px
+
+	@media (max-width: $screen-m-max)
+		max-width: 800px
+
+	@media (max-width: $screen-s-max)
+		max-width: 650px
+
+	@media (max-width: $screen-xs-max)
+		max-width: 400px
+
+	&:deep(.card__image)
+		height: 260px
+
+		@media (max-width: $screen-m-max)
+			height: 260px
+
+		@media (max-width: $screen-s-max)
+			height: 210px
+
+		@media (max-width: $screen-xs-max)
+			height: 170px
+
+		@media (max-width: $screen-xs-min)
+			height: 205px
 
 .container
 	@include container
@@ -71,7 +112,4 @@ export default {
 	margin-bottom: 10px
 	font-size: 22px
 	color: $dark-black-color
-
-	&:not(:first-child)
-		margin-top: 30px
 </style>

@@ -126,14 +126,23 @@ export default {
 
 	&__image
 		width: 100%
-		height: 160px
+		height: 185px
 		margin-bottom: 8px
 		display: block
 		object-fit: cover
 		object-position: center
 
+		@media (max-width: $screen-m-max)
+			height: 170px
+
+		@media (max-width: $screen-s-max)
+			height: 175px
+
 		@media (max-width: $screen-xs-max)
-			height: 130px
+			height: 205px
+
+		@media (max-width: $screen-xs-min)
+			height: 215px
 
 	&__item-title
 		font-family: 'Fredoka-SemiBold'
