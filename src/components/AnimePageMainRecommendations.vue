@@ -32,7 +32,7 @@
 <script>
 import AnimePageMainSectionTitle from '@/components/AnimePageMainSectionTitle.vue'
 import Slider from '@/components/Slider.vue'
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
 	components: {
 		AnimePageMainSectionTitle,
@@ -46,38 +46,27 @@ export default {
 	},
 
 	methods: {
-		...mapMutations({
-			SET_CURRENT_ANIME: 'animePage/SET_CURRENT_ANIME',
-			SET_ANIME_INFO: 'animePage/SET_ANIME_INFO',
-			SET_TRAILER: 'animePage/SET_TRAILER',
-			SET_CHARACTERS_ARRAY: 'animePage/SET_CHARACTERS_ARRAY',
-			SET_REVIEWS_ARRAY: 'animePage/SET_REVIEWS_ARRAY',
-			SET_RECOMMENDATIONS_ARRAY: 'animePage/SET_RECOMMENDATIONS_ARRAY',
-		}),
-
 		...mapActions({
 			getAnimeById: 'animePage/getAnimeById',
+			removeAllData: 'animePage/removeAllData',
 		}),
 
 		recomendationsClickHandler(id) {
 			const scrollToTop = () => {
 				if (window.pageYOffset === 0) {
-					this.SET_CURRENT_ANIME({})
-					this.SET_ANIME_INFO({
-						animeImage: null,
-						animeImageAlt: null,
-						categories: [],
-					})
-					this.SET_TRAILER({})
-					this.SET_CHARACTERS_ARRAY([])
-					this.SET_REVIEWS_ARRAY([])
-					this.SET_RECOMMENDATIONS_ARRAY([])
+					this.removeAllData()
 					this.getAnimeById(id)
 					window.removeEventListener('scroll', scrollToTop)
 				}
 			}
-			window.addEventListener('scroll', scrollToTop)
-			window.scroll({ top: 0, behavior: 'smooth' })
+
+			if (window.pageYOffset === 0) {
+				this.removeAllData()
+				this.getAnimeById(id)
+			} else {
+				window.addEventListener('scroll', scrollToTop)
+				window.scroll({ top: 0, behavior: 'smooth' })
+			}
 		},
 	},
 }

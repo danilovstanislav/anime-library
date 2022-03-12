@@ -71,7 +71,6 @@ export const animePage = {
         dispatch('getCharacters', id)
         dispatch('getReviews', id)
         dispatch('getRecommendations', id)
-        window.scroll({ top: 0, behavior: 'smooth' })
       } catch (err) {
         console.error(err)
       }
@@ -111,6 +110,19 @@ export const animePage = {
         commit('SET_RECOMMENDATIONS_ARRAY', [])
         console.error(err)
       }
+    },
+
+    removeAllData({ commit }) {
+      commit('SET_CURRENT_ANIME', {})
+      commit('SET_ANIME_INFO', {
+        animeImage: null,
+        animeImageAlt: null,
+        categories: [],
+      })
+      commit('SET_TRAILER', {})
+      commit('SET_CHARACTERS_ARRAY', [])
+      commit('SET_REVIEWS_ARRAY', [])
+      commit('SET_RECOMMENDATIONS_ARRAY', [])
     },
   },
 }
