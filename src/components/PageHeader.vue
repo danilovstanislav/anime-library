@@ -17,12 +17,18 @@
 					>
 				</li>
 			</ul>
+			<SearchInput />
 		</div>
 	</header>
 </template>
 
 <script>
+import SearchInput from '@/components/SearchInput.vue'
 export default {
+	components: {
+		SearchInput,
+	},
+
 	methods: {
 		clickHandler() {
 			const scrollToTop = () => {
@@ -82,4 +88,19 @@ export default {
 
 		&:hover
 			border-color: #393939
+
+	&:deep(.search__input-wrapper)
+		max-width: 300px
+		height: 30px
+		margin-bottom: 0
+		margin-left: auto
+
+		.search__input__button
+			padding-left: 4px
+			padding-right: 4px
+
+		.search__input-icon
+			width: 15px
+			height: 15px
+
 </style>
