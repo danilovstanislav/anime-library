@@ -5,7 +5,7 @@
 
 			<div class="results__title" v-show="resultsString.length">
 				<span class="results__title__content"> Search results for </span>
-				<span class="results__title__search"> '{{ resultsString }}' </span>
+				<span class="results__title__search"> "{{ resultsString }}" </span>
 				<button
 					class="results__remove-button"
 					@click="clearResultsHandler"

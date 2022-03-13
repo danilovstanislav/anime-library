@@ -20,7 +20,7 @@
 						:src="card.entry.images.jpg.image_url"
 						alt="Anime image"
 					/>
-					<div class="recommendations__item-title">
+					<div class="recommendations__item-title" :title="card.entry.title">
 						{{ card.entry.title }}
 					</div>
 				</router-link>

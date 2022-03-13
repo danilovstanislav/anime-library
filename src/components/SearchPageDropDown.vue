@@ -17,7 +17,7 @@
 						:alt="searchTitle(search) ?? 'Anime image'"
 					/>
 					<div class="dropdown__item__info">
-						<div class="dropdown__item__title">
+						<div class="dropdown__item__title" :title="searchTitle(search)">
 							{{ searchTitle(search) }}
 						</div>
 						<div class="dropdown__item__episodes">
@@ -68,7 +68,7 @@ export default {
 
 	computed: {
 		slicedSearchResult() {
-			return this.searchResult.slice(0, 6)
+			return this.searchResult.slice(0, 5)
 		},
 	},
 
@@ -81,7 +81,7 @@ export default {
 			const ep = search.episodes
 			const epString = ep ? ep + ' ep.' : null
 			const type = search.type ?? ''
-			return epString ? `${epString} | ${type}` : type
+			return epString ? `${type} | ${epString}` : type
 		},
 
 		cardYear(search) {
@@ -124,6 +124,7 @@ export default {
 	top: calc(100% + 5px)
 	left: 0
 	z-index: 100
+	overflow: hidden
 	background-color: #fff
 	border-radius: 10px
 	border: 1px solid $dark-black-color
@@ -138,6 +139,19 @@ export default {
 .dropdown__item
 	width: 100%
 
+	&__info
+		overflow: hidden
+
+	&__image
+		max-width: 40px
+		margin-right: 10px
+		display: block
+
+	&__title
+		font-family: 'Fredoka-SemiBold', sans-serif
+		white-space: nowrap
+		text-overflow: ellipsis
+
 .dropdown__link
 	width: 100%
 	padding: 8px 12px
@@ -147,24 +161,14 @@ export default {
 	border-radius: 10px
 	color: $dark-black-color
 	text-decoration: none
-	white-space: nowrap
-	text-overflow: ellipsis
-	overflow: hidden
+	// white-space: nowrap
+	// text-overflow: ellipsis
+	// overflow: hidden
 	transition: all .2s ease
 
 	&:hover
 		background-color: $main-pink
 		color: #fff
-
-	.dropdown__item__image
-		max-width: 40px
-		margin-right: 10px
-		display: block
-
-	// .dropdown__item__title
-	// 	white-space: nowrap
-	// 	text-overflow: ellipsis
-	// 	overflow: hidden
 
 .dropdown__loading
 	width: 100%

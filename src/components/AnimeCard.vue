@@ -10,7 +10,7 @@
 			:alt="cardTitle ?? 'Anime poster'"
 		/>
 		<div class="card__info">
-			<div class="card__info__item card__title">
+			<div class="card__info__item card__title" :title="cardTitle">
 				{{ cardTitle }}
 			</div>
 			<div class="card__info__item">

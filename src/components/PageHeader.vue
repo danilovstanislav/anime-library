@@ -95,10 +95,6 @@ export default {
 		margin-bottom: 0
 		margin-left: auto
 
-		.search__input__button
-			padding-left: 4px
-			padding-right: 4px
-
 		.search__input-icon
 			width: 15px
 			height: 15px
