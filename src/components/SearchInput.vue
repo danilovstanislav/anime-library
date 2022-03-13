@@ -98,7 +98,8 @@ export default {
 			const res = await this.getSearchResults()
 			if (res.length) {
 				sessionStorage.setItem('searchedArray', JSON.stringify(res))
-				this.$emit('setSearchedArray', res)
+				sessionStorage.setItem('lastSearch', JSON.stringify(this.input))
+				this.$emit('setSearchedArray', { responseArr: res, search: this.input })
 				this.inputResultArray = []
 			}
 

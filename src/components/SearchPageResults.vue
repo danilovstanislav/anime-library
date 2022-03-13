@@ -1,7 +1,7 @@
 <template>
-	<ul class="search__list">
+	<ul class="results__list">
 		<li
-			class="search__item"
+			class="results__item"
 			v-for="search in searchedArray"
 			:key="search.mal_id"
 		>
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.search__list
+.results__list
 	padding-left: 0
 	margin-top: 0
 	margin-bottom: 0
