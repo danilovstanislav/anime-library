@@ -13,7 +13,7 @@ export default {}
 	border: 4px solid $bc-grey-color
 	border-radius: 50%
 	border-top: 4px solid $main-pink
-	animation: spin 1s linear infinite
+	animation: spin .5s linear infinite
 
 @keyframes spin
 	0%
