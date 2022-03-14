@@ -1,5 +1,5 @@
 <template>
-	<section class="characters">
+	<section class="characters" v-if="charactersArray">
 		<h2 class="characters__title">Characters</h2>
 		<div class="characters__filter">
 			<label for="filter" class="filter__label">Search by name:</label>
@@ -11,24 +11,27 @@
 				placeholder="Search of character"
 			/>
 		</div>
-		<TransitionGroup
-			class="characters__list"
+		<ul
 			v-if="filteredCharactersArray.length"
-			tag="ul"
-			@before-enter="onBeforeEnter"
-			@enter="onEnter"
-			@leave="onLeave"
-			:css="false"
-			appear
+			ref="charList"
+			class="characters__list"
 		>
-			<CharactersListItem
-				v-for="(char, index) in filteredCharactersArray"
-				:key="char.character.mal_id"
-				:data-index="index"
-				:char="char"
-			/>
-		</TransitionGroup>
-		<h2 class="empty-search" v-else>Sorry, can not find the character 😥</h2>
+			<TransitionGroup
+				@before-enter="onBeforeEnter"
+				@enter="onEnter"
+				@leave="onLeave"
+				:css="false"
+				appear
+			>
+				<CharactersListItem
+					v-for="(char, index) in filteredCharactersArray"
+					:key="char.character.mal_id"
+					:data-index="index"
+					:char="char"
+				/>
+			</TransitionGroup>
+		</ul>
+		<div class="empty-search" v-else>Sorry, can not find the character 😥</div>
 	</section>
 </template>
 
@@ -58,11 +61,11 @@ export default {
 	},
 
 	mounted() {
-		window.addEventListener('scroll', this.handleScroll)
+		window.addEventListener('scroll', this.scrollHandler)
 	},
 
 	unmounted() {
-		window.removeEventListener('scroll', this.handleScroll)
+		window.removeEventListener('scroll', this.scrollHandler)
 	},
 
 	computed: {
@@ -90,14 +93,16 @@ export default {
 			getCharacters: 'animePage/getCharacters',
 		}),
 
-		handleScroll(e) {
-			const el = document.querySelector('.characters__list')
-			if (
-				el.getBoundingClientRect().bottom < window.innerHeight &&
-				this.hasNextPage
-			) {
-				this.page += 1
-			}
+		scrollHandler() {
+			const el = this.$refs.charList
+			if (el) {
+				if (
+					el.getBoundingClientRect().bottom <= window.innerHeight &&
+					this.hasNextPage
+				) {
+					this.page += 1
+				}
+			} else return
 		},
 
 		onBeforeEnter(el) {
@@ -131,6 +136,7 @@ export default {
 .characters
 	width: 100%
 	height: 100%
+	min-height: 50vh
 	position: relative
 
 .characters__title
@@ -170,4 +176,7 @@ export default {
 	top: 50%
 	left: 50%
 	transform: translate(-50%, -50%)
+	text-align: center
+	font-size: 24px
+	font-family: 'Fredoka-Bold', sans-serif
 </style>
