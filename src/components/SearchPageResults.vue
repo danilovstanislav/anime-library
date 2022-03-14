@@ -1,6 +1,6 @@
 <template>
 	<div class="results__list__wrapper">
-		<ul class="results__list" ref="resultsList" v-if="searchedResults.length">
+		<ul class="results__list" ref="resultsList">
 			<li
 				class="results__item"
 				v-for="search in searchedResults"
@@ -9,7 +9,13 @@
 				<AnimeCard :animeCard="search" />
 			</li>
 		</ul>
-		<div class="results__loading" v-else>
+
+		<div class="results__load-more" v-show="isLoadMore">
+			<span class="results__load-more__title"> Loading </span>
+			<LoadingCircle />
+		</div>
+
+		<div class="results__loading" v-show="searchedResults.length === 0">
 			<span class="results__loading__title"> Loading </span>
 			<LoadingCircle />
 		</div>
@@ -25,6 +31,12 @@ export default {
 	components: {
 		AnimeCard,
 		LoadingCircle,
+	},
+
+	data() {
+		return {
+			isLoadMore: false,
+		}
 	},
 
 	computed: {
@@ -49,15 +61,17 @@ export default {
 			getSearchResults: 'searchPage/getSearchResults',
 		}),
 
-		scrollHandler() {
+		async scrollHandler() {
 			const el = this.$refs.resultsList
 			if (el) {
 				if (
 					el.getBoundingClientRect().bottom < window.innerHeight &&
 					this.hasNextPage
 				) {
-					this.getSearchResults()
 					window.removeEventListener('scroll', this.scrollHandler)
+					this.isLoadMore = true
+					await this.getSearchResults()
+					this.isLoadMore = false
 				}
 			} else return
 		},
@@ -101,9 +115,24 @@ export default {
 		@media(max-width: $screen-xs-max)
 			height: 200px
 
+.results__loading,
+.results__load-more
+	margin-top: 40px
+	margin-bottom: 15px
+	display: flex
+	align-items: center
+	justify-content: center
+
+	&__title
+		margin-right: 10px
+		font-size: 24px
+		font-family: 'Fredoka-Semibold', sans-serif
+		animation: pulse 1s linear infinite alternate
+
 .results__loading
 	display: flex
 	align-items: center
+	justify-content: center
 	position: absolute
 	top: 35%
 	left: 50%
