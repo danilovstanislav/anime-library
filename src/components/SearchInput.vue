@@ -1,5 +1,12 @@
 <template>
 	<div class="search__input-wrapper">
+		<label
+			v-show="this.input.length"
+			@click="this.input = ''"
+			for="animeSearch"
+			class="search__input__label"
+		>
+		</label>
 		<input
 			v-model="input"
 			@keypress.enter="getAnimeList()"
@@ -7,6 +14,7 @@
 			class="search__input"
 			type="text"
 			placeholder="Search of anime"
+			name="animeSearch"
 		/>
 		<SearchPageDropDown
 			@closeDropdown="this.isDropdownOpen = false"
@@ -17,7 +25,7 @@
 		<button
 			class="search__input__button"
 			@click="getAnimeList()"
-			:disabled="input.length < 3"
+			:disabled="input.length <= 2"
 		>
 			<svg
 				class="search__input-icon"
@@ -34,8 +42,8 @@
 
 <script>
 import SearchPageDropDown from '@/components/SearchPageDropDown.vue'
-import axios from 'axios'
 import _ from 'lodash'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -50,59 +58,38 @@ export default {
 		}
 	},
 
-	methods: {
-		async getSearchResults() {
-			if (this.input.length < 3) {
-				return []
-			}
-			const searchParams = {
-				q: this.input,
-				sort: 'desc',
-				order_by: 'score',
-				min_score: 1,
-			}
-			const API_URL = 'https://api.jikan.moe/v4/anime'
-			let accumulateArray = []
+	computed: {
+		...mapState({
+			searchedResults: (state) => state.searchPage.searchedResults,
+			lastSearch: (state) => state.searchPage.lastSearch,
+		}),
+	},
 
-			try {
-				const res = await axios({
-					methods: 'GET',
-					url: API_URL,
-					params: searchParams,
-				})
-				accumulateArray.push(...res.data.data)
-				const pages = res.data.pagination.last_visible_page
-				for (let i = 2; i <= pages; i++) {
-					const res = await axios({
-						methods: 'GET',
-						url: API_URL,
-						params: {
-							...searchParams,
-							page: i,
-						},
-					})
-					accumulateArray = [...accumulateArray, ...res.data.data]
-				}
-				return accumulateArray
-			} catch (error) {
-				console.error(error)
-			}
-		},
+	methods: {
+		...mapMutations({
+			SET_CURRENT_PAGE: 'searchPage/SET_CURRENT_PAGE',
+			SET_SEARCHED_RESULTS: 'searchPage/SET_SEARCHED_RESULTS',
+		}),
+
+		...mapActions({
+			getSearchResults: 'searchPage/getSearchResults',
+			getInputDropdown: 'searchPage/getInputDropdown',
+		}),
 
 		debounceSearchResults: _.debounce(async function () {
-			const res = await this.getSearchResults()
+			const res = await this.getInputDropdown(this.input)
 			this.inputResultArray = res ?? []
-		}, 2000),
+		}, 1000),
 
 		async getAnimeList() {
-			const res = await this.getSearchResults()
-			if (res.length) {
-				sessionStorage.setItem('searchedArray', JSON.stringify(res))
-				sessionStorage.setItem('lastSearch', JSON.stringify(this.input))
-				this.$emit('setSearchedArray', { responseArr: res, search: this.input })
-				this.inputResultArray = []
+			this.isDropdownOpen = false
+			if (this.input !== '' && this.input !== this.lastSearch) {
+				this.SET_SEARCHED_RESULTS([])
 			}
-
+			await this.getSearchResults(this.input)
+			// if (this.searchedResults.length) {
+			// 	this.inputResultArray = []
+			// }
 			this.$router.replace({ name: 'SearchPage' })
 			window.scroll({ top: 0, behavior: 'smooth' })
 			this.input = ''
@@ -111,10 +98,13 @@ export default {
 
 	watch: {
 		input(val) {
-			if (val.length < 3) {
+			if (val.length >= 2) {
+				this.SET_CURRENT_PAGE(1)
+			}
+			if (val.length < 2) {
 				this.inputResultArray = []
 			}
-			val.length > 2
+			val.length >= 2
 				? (this.isDropdownOpen = true)
 				: (this.isDropdownOpen = false)
 		},
@@ -133,16 +123,36 @@ export default {
 	align-items: center
 	position: relative
 
+	.label-icon
+		width: 13px
+		height: 13px
+
 .search__input
 	width: 100%
 	height: 100%
-	padding: 6px 10px
+	padding-top: 6px
+	padding-bottom: 6px
+	padding-left: 10px
+	padding-right: 30px
 	border: 1px solid $dark-black-color
 	border-radius: 10px 0 0 10px
 	font-size: 18px
 
 	&:focus
 		outline: none
+
+	&__label
+		width: 15px
+		height: 15px
+		content: url(../assets/icons/delete-icon.svg)
+		position: absolute
+		top: 50%
+		right: calc(40px + 2px)
+		transform: translate(-50%, -50%)
+		cursor: pointer
+
+		&:hover
+			opacity: .8
 
 	&__button
 		width: 40px
@@ -161,8 +171,4 @@ export default {
 
 			.search__input-icon
 				fill: $main-pink
-
-	&-icon
-		width: 20px
-		height: 20px
 </style>

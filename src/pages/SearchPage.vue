@@ -1,15 +1,15 @@
 <template>
 	<section class="search">
 		<div class="container">
-			<SearchInput @setSearchedArray="setSearchedArray" />
+			<SearchInput />
 
-			<div class="results__title" v-show="resultsString.length">
+			<div class="results__title" v-show="searchedResults.length">
 				<span class="results__title__content"> Search results for </span>
-				<span class="results__title__search"> "{{ resultsString }}" </span>
+				<span class="results__title__search"> "{{ lastSearch }}" </span>
 				<button
 					class="results__remove-button"
 					@click="clearResultsHandler"
-					v-if="searchedArray.length"
+					v-if="searchedResults.length"
 				>
 					<svg
 						class="results__remove-button-icon"
@@ -30,11 +30,7 @@
 					Clear all
 				</button>
 			</div>
-
-			<SearchPageResults
-				v-if="searchedArray.length"
-				:searchedArray="searchedArray"
-			/>
+			<SearchPageResults v-if="searchedResults.length || lastSearch" />
 			<div class="search__tip" v-else>
 				Write the anime you want to find above.
 			</div>
@@ -45,6 +41,7 @@
 <script>
 import SearchInput from '@/components/SearchInput.vue'
 import SearchPageResults from '@/components/SearchPageResults.vue'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -52,41 +49,18 @@ export default {
 		SearchPageResults,
 	},
 
-	data() {
-		return {
-			resultsString: '',
-			searchedArray: [],
-		}
-	},
-
-	created() {
-		const storageSearchedArray = sessionStorage.getItem('searchedArray')
-		const storageLastSearch = sessionStorage.getItem('lastSearch')
-		if (storageSearchedArray) {
-			this.searchedArray = JSON.parse(storageSearchedArray)
-		}
-		if (storageLastSearch) {
-			this.resultsString = JSON.parse(storageLastSearch)
-		}
-	},
-
-	unmounted() {
-		this.inputResultArray = []
+	computed: {
+		...mapState({
+			lastSearch: (state) => state.searchPage.lastSearch,
+			searchedResults: (state) => state.searchPage.searchedResults,
+		}),
 	},
 
 	methods: {
-		clearResultsHandler() {
-			sessionStorage.setItem('searchedArray', [])
-			this.searchedArray = []
-			sessionStorage.setItem('lastSearch', '')
-			this.resultsString = ''
-		},
-
-		setSearchedArray(payload) {
-			const { responseArr, search } = payload
-			this.searchedArray = responseArr
-			this.resultsString = search
-		},
+		...mapActions({
+			getSearchResults: 'searchPage/getSearchResults',
+			clearResultsHandler: 'searchPage/clearResultsHandler',
+		}),
 	},
 }
 </script>
