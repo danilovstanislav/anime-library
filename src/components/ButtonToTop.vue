@@ -51,10 +51,9 @@ export default {
 	@include button
 	width: 50px
 	height: 50px
-	margin-top: auto
 	position: fixed
-	bottom: 20%
-	left: 10%
+	bottom: 5%
+	left: 5%
 	font-size: 22px
 	z-index: 10
 
@@ -64,7 +63,7 @@ export default {
 .button-to-top-enter-from,
 .button-to-top-leave-to
 	opacity: 0
-	transform: translateX(10px)
+	transform: translateX(-10px)
 
 .button-to-top-enter-to,
 .button-to-top-leave-from

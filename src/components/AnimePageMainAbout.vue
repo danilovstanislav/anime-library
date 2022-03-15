@@ -86,7 +86,7 @@ export default {
 			position: absolute
 			bottom: 0
 			left: 0
-			background: linear-gradient(to top, rgba(255,255,255, 1) 20%, rgba(255,255,255, 0) 80%)
+			background: linear-gradient(to top, rgba(255,255,255, 1) 15%, rgba(255,255,255, 0) 80%)
 			pointer-events: none
 
 	&__button
