@@ -3,7 +3,7 @@
 		<div class="container">
 			<SearchInput />
 
-			<div class="results__title" v-show="searchedResults.length">
+			<div class="results__title" v-if="searchedResults.length">
 				<span class="results__title__content"> Search results for </span>
 				<span class="results__title__search"> "{{ lastSearch }}" </span>
 				<button

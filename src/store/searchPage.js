@@ -15,33 +15,40 @@ export const searchPage = {
     hasNextPage: false,
     currentPage: 1,
     isWaitForResponse: false,
+    resultsNotFound: false,
   }),
 
   mutations: {
     SET_SEARCHED_RESULTS(state, payload) {
       state.searchedResults = payload
     },
+
     SET_LAST_SEARCH(state, payload) {
       state.lastSearch = payload
     },
+
     SET_HAS_NEXT_PAGE(state, payload) {
       state.hasNextPage = payload
     },
+
     SET_CURRENT_PAGE(state, payload) {
       state.currentPage = payload
     },
+
     SET_IS_WAIT_FOR_RESPONSE(state, payload) {
       state.isWaitForResponse = payload
+    },
+
+    SET_RESULTS_NOT_FOUND(state, payload) {
+      state.resultsNotFound = payload
     },
   },
 
   actions: {
     async getSearchResults({ state, commit }, inp) {
-      // if (inp?.length < 2 && state.lastSearch === '') {
-      // 	return []
-      // }
-      commit('SET_IS_WAIT_FOR_RESPONSE', true)
       commit('SET_LAST_SEARCH', inp ?? state.lastSearch)
+      commit('SET_IS_WAIT_FOR_RESPONSE', true)
+      commit('SET_RESULTS_NOT_FOUND', false)
       let accumulateArray = []
       const step = 2
 
@@ -62,18 +69,23 @@ export const searchPage = {
             commit('SET_CURRENT_PAGE', state.currentPage + 1)
           } else break
         }
-        commit('SET_IS_WAIT_FOR_RESPONSE', false)
-        if (state.searchedResults.length) {
-          commit('SET_SEARCHED_RESULTS', [
-            ...state.searchedResults,
-            ...accumulateArray,
-          ])
-        } else {
-          commit('SET_SEARCHED_RESULTS', [...accumulateArray])
-        }
       } catch (error) {
         console.error(error)
       }
+
+      if (state.searchedResults.length) {
+        commit('SET_SEARCHED_RESULTS', [
+          ...state.searchedResults,
+          ...accumulateArray,
+        ])
+      } else {
+        commit('SET_SEARCHED_RESULTS', [...accumulateArray])
+      }
+      commit('SET_IS_WAIT_FOR_RESPONSE', false)
+
+      state.searchedResults.length === 0
+        ? commit('SET_RESULTS_NOT_FOUND', true)
+        : commit('SET_RESULTS_NOT_FOUND', false)
     },
 
     async getInputDropdown({ state }, inp) {
@@ -91,7 +103,6 @@ export const searchPage = {
             ...state.searchParams,
           },
         })
-
         return [...res.data.data]
       } catch (error) {
         console.error(error)

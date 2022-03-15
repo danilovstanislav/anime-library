@@ -28,6 +28,10 @@
 			<span class="results__loading__title"> Loading </span>
 			<LoadingCircle />
 		</div>
+
+		<div class="results__not-found" v-if="resultsNotFound">
+			No results for "{{ lastSearch }}"
+		</div>
 	</div>
 </template>
 
@@ -52,8 +56,10 @@ export default {
 	computed: {
 		...mapState({
 			searchedResults: (state) => state.searchPage.searchedResults,
+			lastSearch: (state) => state.searchPage.lastSearch,
 			hasNextPage: (state) => state.searchPage.hasNextPage,
 			isWaitForResponse: (state) => state.searchPage.isWaitForResponse,
+			resultsNotFound: (state) => state.searchPage.resultsNotFound,
 		}),
 	},
 
@@ -96,7 +102,8 @@ export default {
 			gsap.to(el, {
 				opacity: 1,
 				transform: 'scale(1)',
-				delay: el.dataset.index * 0.03,
+				delay: el.dataset.index * 0.06,
+				duration: 0.3,
 				onComplete: done,
 			})
 		},
@@ -105,6 +112,7 @@ export default {
 			gsap.to(el, {
 				opacity: 0,
 				transform: 'scale(0.6)',
+				duration: 0.3,
 				onComplete: done,
 			})
 		},
@@ -182,4 +190,12 @@ export default {
 		opacity: .5
 	100%
 		opacity: 1
+
+.results__not-found
+	position: absolute
+	top: 35%
+	left: 50%
+	transform: translateX(-50%)
+	font-size: 22px
+	font-family: 'Fredoka-SemiBold', sans-serif
 </style>

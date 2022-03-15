@@ -16,12 +16,16 @@
 			placeholder="Search of anime"
 			name="animeSearch"
 		/>
-		<SearchPageDropDown
-			@closeDropdown="this.isDropdownOpen = false"
-			@clearInput="this.input = ''"
-			:searchResult="inputResultArray"
-			:isOpen="isDropdownOpen"
-		/>
+		<Transition @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
+			<SearchPageDropDown
+				@closeDropdown="this.isDropdownOpen = false"
+				@clearInput="this.input = ''"
+				:input="input"
+				:searchResult="inputResultArray"
+				:isOpen="isDropdownOpen"
+				:isGotResponse="isGotResponse"
+			/>
+		</Transition>
 		<button
 			class="search__input__button"
 			@click="getAnimeList()"
@@ -44,6 +48,7 @@
 import SearchPageDropDown from '@/components/SearchPageDropDown.vue'
 import _ from 'lodash'
 import { mapState, mapMutations, mapActions } from 'vuex'
+import { gsap } from 'gsap'
 
 export default {
 	components: {
@@ -55,6 +60,7 @@ export default {
 			input: '',
 			inputResultArray: [],
 			isDropdownOpen: false,
+			isGotResponse: false,
 		}
 	},
 
@@ -77,8 +83,10 @@ export default {
 		}),
 
 		debounceSearchResults: _.debounce(async function () {
+			this.isGotResponse = false
 			const res = await this.getInputDropdown(this.input)
-			this.inputResultArray = res ?? []
+			this.isGotResponse = true
+			res ? (this.inputResultArray = res) : (this.inputResultArray = [])
 		}, 1500),
 
 		async getAnimeList() {
@@ -91,14 +99,36 @@ export default {
 			window.scroll({ top: 0, behavior: 'smooth' })
 			this.input = ''
 		},
+
+		onBeforeEnter(el) {
+			el.style.opacity = 0
+			el.style.height = 0
+		},
+
+		onEnter(el, done) {
+			gsap.to(el, {
+				opacity: 1,
+				height: 'auto',
+				duration: 0.3,
+				onComplete: done,
+			})
+		},
+
+		onLeave(el, done) {
+			gsap.to(el, {
+				opacity: 0,
+				height: 0,
+				duration: 0.3,
+				onComplete: done,
+			})
+		},
 	},
 
 	watch: {
 		input(val) {
-			if (val === '') {
-				this.isDropdownOpen = false
-				this.SET_CURRENT_PAGE(1)
-			} else this.isDropdownOpen = true
+			this.SET_CURRENT_PAGE(1)
+			this.isGotResponse = false
+			val === '' ? (this.isDropdownOpen = false) : (this.isDropdownOpen = true)
 			if (val !== '') {
 				this.inputResultArray = []
 			}
