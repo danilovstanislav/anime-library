@@ -25,5 +25,6 @@ export default {
 	position: relative
 
 .page__content
+	min-height: 70vh
 	flex-grow: 1
 </style>
