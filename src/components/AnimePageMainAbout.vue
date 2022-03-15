@@ -8,7 +8,11 @@
 		>
 			{{ textAbout }}
 		</p>
-		<button class="about__button" @click="clickHandler">
+		<button
+			class="about__button"
+			@click="clickHandler"
+			v-if="textAboutLength >= 250"
+		>
 			{{ isReadMoreClicked ? 'Read less' : 'Read more' }}
 		</button>
 	</section>
@@ -38,6 +42,10 @@ export default {
 		textAbout() {
 			return this.currentAnime.synopsis ?? ''
 		},
+
+		textAboutLength() {
+			return this.textAbout.length
+		},
 	},
 
 	methods: {
@@ -46,11 +54,11 @@ export default {
 			if (this.isReadMoreClicked) {
 				gsap.fromTo(
 					this.$refs.textAbout,
-					{ height: '70px' },
+					{ height: '60px' },
 					{ height: 'auto', duration: 0.2 }
 				)
 			} else {
-				gsap.to(this.$refs.textAbout, { height: '70px', duration: 0.2 })
+				gsap.to(this.$refs.textAbout, { height: '60px', duration: 0.2 })
 			}
 		},
 	},
@@ -65,7 +73,7 @@ export default {
 		margin-bottom: 15px
 
 	&__text
-		height: 70px
+		height: 60px
 		margin-top: 10px
 		margin-bottom: 10px
 		position: relative
