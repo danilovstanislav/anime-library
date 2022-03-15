@@ -16,13 +16,7 @@
 			ref="charList"
 			class="characters__list"
 		>
-			<TransitionGroup
-				@before-enter="onBeforeEnter"
-				@enter="onEnter"
-				@leave="onLeave"
-				:css="false"
-				appear
-			>
+			<TransitionGroup @before-enter="onBeforeEnter" @enter="onEnter" appear>
 				<CharactersListItem
 					v-for="(char, index) in filteredCharactersArray"
 					:key="char.character.mal_id"
@@ -115,15 +109,6 @@ export default {
 				opacity: 1,
 				transform: 'translateX(0)',
 				delay: el.dataset.index * 0.05,
-				onComplete: done,
-			})
-		},
-
-		onLeave(el, done) {
-			gsap.to(el, {
-				opacity: 0,
-				height: 0,
-				transform: 'translateX(100px)',
 				onComplete: done,
 			})
 		},
