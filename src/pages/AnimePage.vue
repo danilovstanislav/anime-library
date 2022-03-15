@@ -6,7 +6,6 @@
 			<AnimePageMainTabs />
 			<router-view />
 		</div>
-		<ButtonToTop />
 	</div>
 </template>
 
@@ -14,7 +13,6 @@
 import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import AnimeTitle from '@/components/AnimeTitle.vue'
 import AnimePageMainTabs from '@/components/AnimePageMainTabs.vue'
-import ButtonToTop from '@/components/ButtonToTop.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -22,7 +20,6 @@ export default {
 		AnimePageSidebar,
 		AnimeTitle,
 		AnimePageMainTabs,
-		ButtonToTop,
 	},
 
 	created() {
