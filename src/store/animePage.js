@@ -4,6 +4,7 @@ export const animePage = {
   namespaced: true,
 
   state: () => ({
+    isRequested: false,
     currentAnime: {},
     animeInfo: {
       animeImage: null,
@@ -17,6 +18,10 @@ export const animePage = {
   }),
 
   mutations: {
+    SET_IS_REQUESTED(state, payload) {
+      state.isRequested = payload
+    },
+
     SET_CURRENT_ANIME(state, payload) {
       state.currentAnime = payload
     },
@@ -46,6 +51,7 @@ export const animePage = {
 
   actions: {
     async getAnimeById({ state, commit, dispatch }, id) {
+      commit('SET_IS_REQUESTED', true)
       try {
         const res = await axios.get(`https://api.jikan.moe/v4/anime/${id}`)
         commit('SET_CURRENT_ANIME', res.data.data)
@@ -68,6 +74,7 @@ export const animePage = {
           ],
         })
         commit('SET_TRAILER', state.currentAnime.trailer.url)
+        commit('SET_IS_REQUESTED', false)
         dispatch('getCharacters', id)
         dispatch('getReviews', id)
         dispatch('getRecommendations', id)

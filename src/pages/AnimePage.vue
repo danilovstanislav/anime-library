@@ -15,7 +15,7 @@ import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import AnimeTitle from '@/components/AnimeTitle.vue'
 import AnimePageMainTabs from '@/components/AnimePageMainTabs.vue'
 import ButtonToTop from '@/components/ButtonToTop.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -26,36 +26,28 @@ export default {
 	},
 
 	created() {
-		this.getAnimeById(this.$route.params.animeId)
+		if (Object.keys(this.currentAnime).length === 0 && !this.isRequested) {
+			this.getAnimeById(this.$route.params.animeId)
+		}
 	},
 
 	unmounted() {
-		this.SET_CURRENT_ANIME({})
-		this.SET_ANIME_INFO({
-			animeImage: null,
-			animeImageAlt: null,
-			categories: [],
-		})
-		this.SET_TRAILER({})
-		this.SET_CHARACTERS_ARRAY([])
-		this.SET_REVIEWS_ARRAY([])
-		this.SET_RECOMMENDATIONS_ARRAY([])
+		this.removeAllData()
+	},
+
+	computed: {
+		...mapState({
+			isRequested: (state) => state.animePage.isRequested,
+			currentAnime: (state) => state.animePage.currentAnime,
+		}),
 	},
 
 	methods: {
-		...mapMutations({
-			SET_CURRENT_ANIME: 'animePage/SET_CURRENT_ANIME',
-			SET_ANIME_INFO: 'animePage/SET_ANIME_INFO',
-			SET_TRAILER: 'animePage/SET_TRAILER',
-			SET_CHARACTERS_ARRAY: 'animePage/SET_CHARACTERS_ARRAY',
-			SET_REVIEWS_ARRAY: 'animePage/SET_REVIEWS_ARRAY',
-			SET_RECOMMENDATIONS_ARRAY: 'animePage/SET_RECOMMENDATIONS_ARRAY',
-		}),
-
 		...mapActions({
 			getAnimeById: 'animePage/getAnimeById',
 			getCharacters: 'animePage/getCharacters',
 			getReviews: 'animePage/getReviews',
+			removeAllData: 'animePage/removeAllData',
 		}),
 	},
 }
