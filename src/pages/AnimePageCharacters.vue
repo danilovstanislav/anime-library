@@ -114,7 +114,7 @@ export default {
 			gsap.to(el, {
 				opacity: 1,
 				transform: 'translateX(0)',
-				delay: el.dataset.index * 0.01,
+				delay: el.dataset.index * 0.05,
 				onComplete: done,
 			})
 		},
@@ -124,7 +124,6 @@ export default {
 				opacity: 0,
 				height: 0,
 				transform: 'translateX(100px)',
-				delay: el.dataset.index * 0.01,
 				onComplete: done,
 			})
 		},
