@@ -4,7 +4,7 @@
 			v-show="this.input.length"
 			@click="this.input = ''"
 			for="animeSearch"
-			class="search__input__label"
+			class="search__input__remove-icon"
 		>
 		</label>
 		<input
@@ -25,7 +25,7 @@
 		<button
 			class="search__input__button"
 			@click="getAnimeList()"
-			:disabled="input.length <= 2"
+			:disabled="input.length === 0"
 		>
 			<svg
 				class="search__input-icon"
@@ -79,7 +79,7 @@ export default {
 		debounceSearchResults: _.debounce(async function () {
 			const res = await this.getInputDropdown(this.input)
 			this.inputResultArray = res ?? []
-		}, 1000),
+		}, 1500),
 
 		async getAnimeList() {
 			this.isDropdownOpen = false
@@ -87,9 +87,6 @@ export default {
 				this.SET_SEARCHED_RESULTS([])
 			}
 			await this.getSearchResults(this.input)
-			// if (this.searchedResults.length) {
-			// 	this.inputResultArray = []
-			// }
 			this.$router.replace({ name: 'SearchPage' })
 			window.scroll({ top: 0, behavior: 'smooth' })
 			this.input = ''
@@ -98,15 +95,13 @@ export default {
 
 	watch: {
 		input(val) {
-			if (val.length >= 2) {
+			if (val === '') {
+				this.isDropdownOpen = false
 				this.SET_CURRENT_PAGE(1)
-			}
-			if (val.length < 2) {
+			} else this.isDropdownOpen = true
+			if (val !== '') {
 				this.inputResultArray = []
 			}
-			val.length >= 2
-				? (this.isDropdownOpen = true)
-				: (this.isDropdownOpen = false)
 		},
 	},
 }
@@ -123,10 +118,6 @@ export default {
 	align-items: center
 	position: relative
 
-	.label-icon
-		width: 13px
-		height: 13px
-
 .search__input
 	width: 100%
 	height: 100%
@@ -141,7 +132,7 @@ export default {
 	&:focus
 		outline: none
 
-	&__label
+	&__remove-icon
 		width: 15px
 		height: 15px
 		content: url(../assets/icons/delete-icon.svg)

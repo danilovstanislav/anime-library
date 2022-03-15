@@ -1,21 +1,30 @@
 <template>
 	<div class="results__list__wrapper">
 		<ul class="results__list" ref="resultsList">
-			<li
-				class="results__item"
-				v-for="search in searchedResults"
-				:key="search.mal_id"
+			<TransitionGroup
+				@before-enter="onBeforeEnter"
+				@enter="onEnter"
+				@leave="onLeave"
+				:css="false"
+				appear
 			>
-				<AnimeCard :animeCard="search" />
-			</li>
+				<li
+					class="results__item"
+					v-for="(search, index) in searchedResults"
+					:key="search.mal_id"
+					:data-index="index"
+				>
+					<AnimeCard :animeCard="search" />
+				</li>
+			</TransitionGroup>
 		</ul>
 
-		<div class="results__load-more" v-show="isLoadMore">
-			<span class="results__load-more__title"> Loading </span>
+		<div class="results__load-more" v-show="isLoadingMore">
+			<span class="results__load-more__title"> Wait. Loading more </span>
 			<LoadingCircle />
 		</div>
 
-		<div class="results__loading" v-show="searchedResults.length === 0">
+		<div class="results__loading" v-show="isWaitForResponse">
 			<span class="results__loading__title"> Loading </span>
 			<LoadingCircle />
 		</div>
@@ -26,6 +35,7 @@
 import AnimeCard from '@/components/AnimeCard.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import { mapState, mapActions } from 'vuex'
+import { gsap } from 'gsap'
 
 export default {
 	components: {
@@ -35,7 +45,7 @@ export default {
 
 	data() {
 		return {
-			isLoadMore: false,
+			isLoadingMore: false,
 		}
 	},
 
@@ -43,6 +53,7 @@ export default {
 		...mapState({
 			searchedResults: (state) => state.searchPage.searchedResults,
 			hasNextPage: (state) => state.searchPage.hasNextPage,
+			isWaitForResponse: (state) => state.searchPage.isWaitForResponse,
 		}),
 	},
 
@@ -69,11 +80,33 @@ export default {
 					this.hasNextPage
 				) {
 					window.removeEventListener('scroll', this.scrollHandler)
-					this.isLoadMore = true
+					this.isLoadingMore = true
 					await this.getSearchResults()
-					this.isLoadMore = false
+					this.isLoadingMore = false
 				}
 			} else return
+		},
+
+		onBeforeEnter(el) {
+			el.style.opacity = 0
+			el.style.transform = 'scale(0.6)'
+		},
+
+		onEnter(el, done) {
+			gsap.to(el, {
+				opacity: 1,
+				transform: 'scale(1)',
+				delay: el.dataset.index * 0.03,
+				onComplete: done,
+			})
+		},
+
+		onLeave(el, done) {
+			gsap.to(el, {
+				opacity: 0,
+				transform: 'scale(0.6)',
+				onComplete: done,
+			})
 		},
 	},
 }

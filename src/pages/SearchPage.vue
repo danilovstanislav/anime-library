@@ -8,7 +8,7 @@
 				<span class="results__title__search"> "{{ lastSearch }}" </span>
 				<button
 					class="results__remove-button"
-					@click="clearResultsHandler"
+					@click="clearResults"
 					v-if="searchedResults.length"
 				>
 					<svg
@@ -30,8 +30,8 @@
 					Clear all
 				</button>
 			</div>
-			<SearchPageResults v-if="searchedResults.length || lastSearch" />
-			<div class="search__tip" v-else>
+			<SearchPageResults />
+			<div class="search__tip" v-if="lastSearch === '' && !isWaitForResponse">
 				Write the anime you want to find above.
 			</div>
 		</div>
@@ -53,13 +53,14 @@ export default {
 		...mapState({
 			lastSearch: (state) => state.searchPage.lastSearch,
 			searchedResults: (state) => state.searchPage.searchedResults,
+			isWaitForResponse: (state) => state.searchPage.isWaitForResponse,
 		}),
 	},
 
 	methods: {
 		...mapActions({
 			getSearchResults: 'searchPage/getSearchResults',
-			clearResultsHandler: 'searchPage/clearResultsHandler',
+			clearResults: 'searchPage/clearResults',
 		}),
 	},
 }

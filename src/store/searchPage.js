@@ -14,6 +14,7 @@ export const searchPage = {
     searchedResults: [],
     hasNextPage: false,
     currentPage: 1,
+    isWaitForResponse: false,
   }),
 
   mutations: {
@@ -29,13 +30,17 @@ export const searchPage = {
     SET_CURRENT_PAGE(state, payload) {
       state.currentPage = payload
     },
+    SET_IS_WAIT_FOR_RESPONSE(state, payload) {
+      state.isWaitForResponse = payload
+    },
   },
 
   actions: {
     async getSearchResults({ state, commit }, inp) {
-      if (inp?.length < 2 && state.lastSearch === '') {
-        return []
-      }
+      // if (inp?.length < 2 && state.lastSearch === '') {
+      // 	return []
+      // }
+      commit('SET_IS_WAIT_FOR_RESPONSE', true)
       commit('SET_LAST_SEARCH', inp ?? state.lastSearch)
       let accumulateArray = []
       const step = 2
@@ -57,6 +62,7 @@ export const searchPage = {
             commit('SET_CURRENT_PAGE', state.currentPage + 1)
           } else break
         }
+        commit('SET_IS_WAIT_FOR_RESPONSE', false)
         if (state.searchedResults.length) {
           commit('SET_SEARCHED_RESULTS', [
             ...state.searchedResults,
@@ -71,9 +77,10 @@ export const searchPage = {
     },
 
     async getInputDropdown({ state }, inp) {
-      if (inp.length < 2) {
+      if (inp === '') {
         return []
       }
+
       try {
         const res = await axios({
           methods: 'GET',
@@ -91,7 +98,7 @@ export const searchPage = {
       }
     },
 
-    clearResultsHandler({ commit }) {
+    clearResults({ commit }) {
       commit('SET_SEARCHED_RESULTS', [])
       commit('SET_LAST_SEARCH', '')
       commit('SET_HAS_NEXT_PAGE', 1)
