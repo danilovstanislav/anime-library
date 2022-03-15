@@ -1,6 +1,6 @@
 <template>
-	<transition name="title" appear>
-		<h1 class="anime-title" v-show="animeTitle">
+	<transition @before-enter="onBeforeEnter" @enter="onEnter" appear>
+		<h1 class="anime-title" v-if="animeTitle">
 			{{ animeTitle }}
 		</h1>
 	</transition>
@@ -8,6 +8,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import { gsap } from 'gsap'
+
 export default {
 	computed: {
 		...mapState({
@@ -18,6 +20,21 @@ export default {
 			return this.currentAnime.title_english
 				? this.currentAnime.title_english
 				: this.currentAnime.title
+		},
+	},
+
+	methods: {
+		onBeforeEnter(el) {
+			el.style.opacity = 0
+			el.style.transform = 'translateY(-30px)'
+		},
+
+		onEnter(el) {
+			gsap.to(el, {
+				opacity: 1,
+				transform: 'translateX(0)',
+				ease: 'bounce.out',
+			})
 		},
 	},
 }
@@ -34,15 +51,4 @@ export default {
 		margin-bottom: 10px
 		display: none
 		font-size: 18px
-
-.title-enter-from
-	opacity: 0
-	transform: translateY(-15px)
-
-.title-enter-to
-	opacity: 1
-	transform: translateX(0)
-
-.title-enter-active
-	transition: all .4s ease
 </style>

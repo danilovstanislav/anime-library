@@ -8,16 +8,18 @@
 			:viewMoreButton="charactersArray.length > 6"
 			>Characters</AnimePageMainSectionTitle
 		>
-		<transition-group
+		<TransitionGroup
 			class="characters__list"
 			tag="ul"
-			name="characters-list"
+			@before-enter="onBeforeEnter"
+			@enter="onEnter"
 			appear
 		>
 			<li
 				class="characters__item"
-				v-for="char in slicedCharactersArray"
+				v-for="(char, index) in slicedCharactersArray"
 				:key="char.character.mal_id"
+				:data-index="index"
 			>
 				<router-link
 					class="character__link"
@@ -45,13 +47,14 @@
 					<div class="character__role">{{ char.role }}</div>
 				</div>
 			</li>
-		</transition-group>
+		</TransitionGroup>
 	</section>
 </template>
 
 <script>
 import AnimePageMainSectionTitle from '@/components/AnimePageMainSectionTitle.vue'
 import { mapState } from 'vuex'
+import { gsap } from 'gsap'
 
 export default {
 	components: {
@@ -66,6 +69,22 @@ export default {
 
 		slicedCharactersArray() {
 			return this.charactersArray.slice(0, 6)
+		},
+	},
+
+	methods: {
+		onBeforeEnter(el) {
+			el.style.opacity = 0
+			el.style.transform = 'scale(0.6)'
+		},
+
+		onEnter(el, done) {
+			gsap.to(el, {
+				opacity: 1,
+				transform: 'scale(1)',
+				delay: el.dataset.index * 0.08,
+				onComplete: done,
+			})
 		},
 	},
 }
