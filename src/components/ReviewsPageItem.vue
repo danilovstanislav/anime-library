@@ -9,45 +9,51 @@
 			<div class="reviews__item__username">
 				{{ review.user.username }}
 			</div>
-			<div class="reviews__item__review">
-				{{ isReadMoreClicked ? review.review : getShortText(review.review) }}
+			<div
+				class="reviews__item__review"
+				:class="{ opened: isReadMoreClicked }"
+				ref="reviewContent"
+			>
+				{{ review.review }}
 			</div>
-			<button class="reviews-button" @click="handleReadMoreButton()">
-				{{ buttonContent }}
+			<button class="reviews-button" @click="clickHandler">
+				{{ isReadMoreClicked ? 'Read Less' : 'Read More' }}
 			</button>
 		</div>
 	</li>
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
 	props: ['review'],
 	data() {
 		return {
 			isReadMoreClicked: false,
-			reviewText: '',
-			buttonContent: 'Read more',
 		}
 	},
 
 	methods: {
-		getShortText(text) {
-			return text.substring(0, 350) + '...'
-		},
-
-		handleReadMoreButton() {
+		clickHandler() {
 			this.isReadMoreClicked = !this.isReadMoreClicked
-			this.isReadMoreClicked
-				? (this.buttonContent = 'Read less')
-				: (this.buttonContent = 'Read more')
+			if (this.isReadMoreClicked) {
+				gsap.fromTo(
+					this.$refs.reviewContent,
+					{ height: '70px' },
+					{ height: 'auto', duration: 0.3 }
+				)
+			} else {
+				gsap.to(this.$refs.reviewContent, { height: '70px', duration: 0.3 })
+			}
 		},
 	},
 }
 </script>
 <style lang="sass" scoped>
 .reviews__item
-	padding-top: 15px
-	padding-bottom: 15px
+	padding-top: 20px
+	padding-bottom: 20px
 	padding-left: 10px
 	padding-right: 10px
 	display: flex
@@ -55,9 +61,6 @@ export default {
 
 	&:not(:last-child)
 		border-bottom: 2px solid #a3a3a3
-
-	&:nth-child(even)
-		background-color: #ebebeb
 
 	&__image
 		width: 100%
@@ -71,7 +74,24 @@ export default {
 		font-weight: 700
 
 	&__review
+		height: 70px
 		margin-bottom: 10px
+		position: relative
+		overflow-y: hidden
+
+		&::after
+			width: 100%
+			height: 100%
+			content: ''
+			position: absolute
+			bottom: 0
+			left: 0
+			background: linear-gradient(to top, rgba(255,255,255, 1) 20%, rgba(255,255,255, 0) 80%)
+			pointer-events: none
+
+.opened
+	&::after
+		display: none
 
 .reviews-button
 	@include button
