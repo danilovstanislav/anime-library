@@ -52,11 +52,7 @@ export default {
 		clickHandler() {
 			this.isReadMoreClicked = !this.isReadMoreClicked
 			if (this.isReadMoreClicked) {
-				gsap.fromTo(
-					this.$refs.textAbout,
-					{ height: '60px' },
-					{ height: 'auto', duration: 0.2 }
-				)
+				gsap.to(this.$refs.textAbout, { height: 'auto', duration: 0.2 })
 			} else {
 				gsap.to(this.$refs.textAbout, { height: '60px', duration: 0.2 })
 			}
