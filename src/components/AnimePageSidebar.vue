@@ -1,16 +1,16 @@
 <template>
 	<aside class="sidebar" v-show="Object.keys(animeInfo).length">
-		<transition name="sidebar-image" appear>
+		<Transition name="sidebar-image" appear>
 			<img
 				class="sidebar-image"
 				v-if="animeInfo.animeImage"
 				:src="animeInfo.animeImage"
 				:alt="animeInfo.animeImageAlt ?? 'Anime image'"
 			/>
-		</transition>
+		</Transition>
 		<div class="sidebar__wrapper">
 			<AnimeTitle />
-			<transition-group
+			<TransitionGroup
 				class="sidebar__list"
 				tag="ul"
 				name="sidebar-list"
@@ -24,8 +24,8 @@
 					<span class="sidebar__item-category"> {{ cat.key }}: </span>
 					{{ cat.value }}
 				</li>
-			</transition-group>
-			<transition name="trailer-link" appear>
+			</TransitionGroup>
+			<Transition name="trailer-link" appear>
 				<a
 					v-if="trailer.url"
 					class="sidebar__trailer-link"
@@ -43,7 +43,7 @@
 						/>
 					</svg>
 				</a>
-			</transition>
+			</Transition>
 		</div>
 	</aside>
 </template>
