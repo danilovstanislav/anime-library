@@ -1,6 +1,6 @@
 <template>
 	<div class="dropdown__wrapper" v-show="isOpen">
-		<ul class="dropdown__list" v-if="searchResult.length" ref="dropdown">
+		<ul class="dropdown__list" v-if="searchResult.length">
 			<TransitionGroup
 				@before-enter="onBeforeEnter"
 				@enter="onEnter"
@@ -78,14 +78,6 @@ export default {
 		isGotResponse: {
 			type: Boolean,
 		},
-	},
-
-	mounted() {
-		window.addEventListener('click', (e) => {
-			if (e.target !== this.$refs.dropdown) {
-				this.$emit('closeDropdown')
-			}
-		})
 	},
 
 	computed: {

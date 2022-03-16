@@ -1,16 +1,18 @@
 <template>
 	<div class="search__input-wrapper">
 		<label
-			v-show="this.input.length"
-			@click="this.input = ''"
+			v-show="input.length"
+			@click="input = ''"
 			for="animeSearch"
 			class="search__input__remove-icon"
 		>
 		</label>
 		<input
 			v-model="input"
-			@keypress.enter="getAnimeList()"
-			@input="debounceSearchResults()"
+			@keypress.enter="getAnimeList"
+			@input="debounceSearchResults"
+			@click="inputClickHandler"
+			ref="searchInput"
 			class="search__input"
 			type="text"
 			placeholder="Search of anime"
@@ -18,8 +20,7 @@
 		/>
 		<Transition @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
 			<SearchPageDropDown
-				@closeDropdown="this.isDropdownOpen = false"
-				@clearInput="this.input = ''"
+				@clearInput="input = ''"
 				:input="input"
 				:searchResult="inputResultArray"
 				:isOpen="isDropdownOpen"
@@ -64,6 +65,14 @@ export default {
 		}
 	},
 
+	mounted() {
+		window.addEventListener('click', (e) => {
+			if (e.target !== this.$refs.searchInput) {
+				this.isDropdownOpen = false
+			}
+		})
+	},
+
 	computed: {
 		...mapState({
 			searchedResults: (state) => state.searchPage.searchedResults,
@@ -98,6 +107,12 @@ export default {
 			this.$router.replace({ name: 'SearchPage' })
 			window.scroll({ top: 0, behavior: 'smooth' })
 			this.input = ''
+		},
+
+		inputClickHandler() {
+			if (this.input !== '') {
+				this.isDropdownOpen = true
+			}
 		},
 
 		onBeforeEnter(el) {
