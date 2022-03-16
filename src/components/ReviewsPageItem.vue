@@ -38,9 +38,17 @@ export default {
 		clickHandler() {
 			this.isReadMoreClicked = !this.isReadMoreClicked
 			if (this.isReadMoreClicked) {
-				gsap.to(this.$refs.reviewContent, { height: 'auto', duration: 0.3 })
+				gsap.to(this.$refs.reviewContent, {
+					height: 'auto',
+					duration: 0.4,
+					ease: 'Circ.easeOut',
+				})
 			} else {
-				gsap.to(this.$refs.reviewContent, { height: '70px', duration: 0.3 })
+				gsap.to(this.$refs.reviewContent, {
+					height: '70px',
+					duration: 0.4,
+					ease: 'Circ.easeOut',
+				})
 			}
 		},
 	},

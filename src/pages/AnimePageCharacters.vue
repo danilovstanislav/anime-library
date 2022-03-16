@@ -101,14 +101,14 @@ export default {
 
 		onBeforeEnter(el) {
 			el.style.opacity = 0
-			el.style.transform = 'translateX(100px)'
+			el.style.transform = 'translateX(35%)'
 		},
 
 		onEnter(el, done) {
 			gsap.to(el, {
 				opacity: 1,
 				transform: 'translateX(0)',
-				delay: el.dataset.index * 0.05,
+				delay: el.dataset.index * 0.03,
 				onComplete: done,
 			})
 		},

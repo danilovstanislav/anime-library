@@ -75,14 +75,15 @@ export default {
 	methods: {
 		onBeforeEnter(el) {
 			el.style.opacity = 0
-			el.style.transform = 'scale(0.6)'
+			el.style.transform = 'translateY(50%)'
 		},
 
 		onEnter(el, done) {
 			gsap.to(el, {
 				opacity: 1,
-				transform: 'scale(1)',
-				delay: el.dataset.index * 0.08,
+				transform: 'translateY(0)',
+				duration: 0.5,
+				delay: el.dataset.index * 0.1,
 				onComplete: done,
 			})
 		},

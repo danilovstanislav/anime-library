@@ -1,17 +1,21 @@
 <template>
 	<h2 class="reviews__title">Reviews</h2>
-	<transition-group class="reviews__list" name="reviews-list" tag="ul" appear>
-		<ReviewsPageItem
-			v-for="review in reviewsArray"
-			:key="review.mal_id"
-			:review="review"
-		/>
-	</transition-group>
+	<ul class="reviews__list">
+		<TransitionGroup @before-enter="onBeforeEnter" @enter="onEnter" appear>
+			<ReviewsPageItem
+				v-for="(review, index) in reviewsArray"
+				:key="review.mal_id"
+				:data-index="index"
+				:review="review"
+			/>
+		</TransitionGroup>
+	</ul>
 </template>
 
 <script>
 import ReviewsPageItem from '@/components/ReviewsPageItem.vue'
 import { mapState, mapActions } from 'vuex'
+import { gsap } from 'gsap'
 
 export default {
 	components: {
@@ -34,6 +38,20 @@ export default {
 		...mapActions({
 			getReviews: 'animePage/getReviews',
 		}),
+
+		onBeforeEnter(el) {
+			el.style.opacity = 0
+			el.style.transform = 'scaleX(0.5)'
+		},
+
+		onEnter(el, done) {
+			gsap.to(el, {
+				opacity: 1,
+				transform: 'scaleX(1)',
+				delay: el.dataset.index * 0.1,
+				onComplete: done,
+			})
+		},
 	},
 }
 </script>
@@ -48,15 +66,4 @@ export default {
 .reviews__title
 	margin-top: 0
 	margin-bottom: 10px
-
-.reviews-list-enter-from
-	opacity: 0
-	transform: scaleY(0.6)
-
-.reviews-list-enter-to
-	opacity: 1
-	transform: scaleY(1)
-
-.reviews-list-enter-active
-	transition: all .4s ease
 </style>

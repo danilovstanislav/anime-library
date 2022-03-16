@@ -1,10 +1,10 @@
 <template>
-	<section class="about" v-show="currentAnime.synopsis">
+	<section class="about">
 		<AnimePageMainSectionTitle>About</AnimePageMainSectionTitle>
 		<p
 			class="about__text"
-			:class="{ opened: isReadMoreClicked }"
 			ref="textAbout"
+			:class="{ opened: isReadMoreClicked }"
 		>
 			{{ textAbout }}
 		</p>
@@ -52,9 +52,17 @@ export default {
 		clickHandler() {
 			this.isReadMoreClicked = !this.isReadMoreClicked
 			if (this.isReadMoreClicked) {
-				gsap.to(this.$refs.textAbout, { height: 'auto', duration: 0.2 })
+				gsap.to(this.$refs.textAbout, {
+					height: 'auto',
+					duration: 0.2,
+					ease: 'Power3.easeOut',
+				})
 			} else {
-				gsap.to(this.$refs.textAbout, { height: '60px', duration: 0.2 })
+				gsap.to(this.$refs.textAbout, {
+					height: '60px',
+					duration: 0.2,
+					ease: 'Power3.easeOut',
+				})
 			}
 		},
 	},

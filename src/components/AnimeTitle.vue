@@ -1,9 +1,9 @@
 <template>
-	<transition @before-enter="onBeforeEnter" @enter="onEnter" appear>
-		<h1 class="anime-title" v-if="animeTitle">
+	<Transition @before-enter="onBeforeEnter" @enter="onEnter" appear>
+		<h1 class="anime-title">
 			{{ animeTitle }}
 		</h1>
-	</transition>
+	</Transition>
 </template>
 
 <script>
@@ -26,14 +26,15 @@ export default {
 	methods: {
 		onBeforeEnter(el) {
 			el.style.opacity = 0
-			el.style.transform = 'translateY(-30px)'
+			el.style.transform = 'translateY(-150%)'
 		},
 
 		onEnter(el) {
 			gsap.to(el, {
 				opacity: 1,
 				transform: 'translateX(0)',
-				ease: 'bounce.out',
+				duration: 0.7,
+				ease: 'Bounce.easeOut',
 			})
 		},
 	},
