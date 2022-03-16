@@ -24,25 +24,10 @@
 
 <script>
 import SearchInput from '@/components/SearchInput.vue'
-import { gsap } from 'gsap'
 
 export default {
 	components: {
 		SearchInput,
-	},
-
-	data() {
-		return {
-			currentScroll: null,
-		}
-	},
-
-	mounted() {
-		window.addEventListener('scroll', this.getCurrentScroll)
-	},
-
-	unmounted() {
-		window.addEventListener('scroll', this.getCurrentScroll)
 	},
 
 	methods: {
@@ -54,26 +39,6 @@ export default {
 			}
 			window.addEventListener('scroll', scrollToTop)
 			window.scroll({ top: 0, behavior: 'smooth' })
-		},
-
-		getCurrentScroll() {
-			this.currentScroll = window.pageYOffset
-		},
-	},
-
-	watch: {
-		currentScroll(v, oldVal) {
-			if (v > oldVal) {
-				gsap.to(this.$refs.header, {
-					opacity: 0,
-					duration: 0.5,
-				})
-			} else {
-				gsap.to(this.$refs.header, {
-					opacity: 1,
-					duration: 0.3,
-				})
-			}
 		},
 	},
 }
