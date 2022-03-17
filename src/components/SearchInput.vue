@@ -93,7 +93,7 @@ export default {
 
 		debounceSearchResults: _.debounce(async function () {
 			this.isGotResponse = false
-			const res = await this.getInputDropdown(this.input)
+			const res = await this.getInputDropdown(this.input.trim())
 			this.isGotResponse = true
 			res ? (this.inputResultArray = res) : (this.inputResultArray = [])
 		}, 1500),
@@ -103,7 +103,7 @@ export default {
 			if (this.input !== '' && this.input !== this.lastSearch) {
 				this.SET_SEARCHED_RESULTS([])
 			}
-			await this.getSearchResults(this.input)
+			await this.getSearchResults(this.input.trim())
 			this.$router.replace({ name: 'SearchPage' })
 			window.scroll({ top: 0, behavior: 'smooth' })
 			this.input = ''
