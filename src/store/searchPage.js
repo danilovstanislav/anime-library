@@ -71,6 +71,8 @@ export const searchPage = {
         }
       } catch (error) {
         console.error(error)
+      } finally {
+        commit('SET_IS_WAIT_FOR_RESPONSE', false)
       }
 
       if (state.searchedResults.length) {
@@ -81,7 +83,6 @@ export const searchPage = {
       } else {
         commit('SET_SEARCHED_RESULTS', [...accumulateArray])
       }
-      commit('SET_IS_WAIT_FOR_RESPONSE', false)
 
       state.searchedResults.length === 0
         ? commit('SET_RESULTS_NOT_FOUND', true)
