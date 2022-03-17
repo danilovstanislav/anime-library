@@ -65,19 +65,13 @@ export default {
 	},
 
 	props: {
-		input: {
-			type: String,
-		},
 		searchResult: {
 			type: Array,
 			required: true,
 		},
-		isOpen: {
-			type: Boolean,
-		},
-		isGotResponse: {
-			type: Boolean,
-		},
+		input: String,
+		isOpen: Boolean,
+		isGotResponse: Boolean,
 	},
 
 	computed: {
