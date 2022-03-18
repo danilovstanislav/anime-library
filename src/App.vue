@@ -25,9 +25,9 @@ export default {
 	min-height: 100vh
 	display: flex
 	flex-direction: column
-	position: relative
 
 .page__content
 	min-height: 70vh
 	flex-grow: 1
+	position: relative
 </style>
