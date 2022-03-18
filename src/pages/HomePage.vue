@@ -1,5 +1,5 @@
 <template>
-	<div class="home">
+	<div class="home" v-if="checkLength">
 		<div class="container">
 			<div class="slider__wrapper">
 				<h2 class="section__title">Winter 2022</h2>
@@ -27,11 +27,13 @@
 			</div>
 		</div>
 	</div>
+	<LoadingPage v-else />
 </template>
 
 <script>
 import Slider from '@/components/Slider.vue'
 import AnimeCard from '@/components/AnimeCard.vue'
+import LoadingPage from '@/components/LoadingPage.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -39,6 +41,7 @@ export default {
 	components: {
 		Slider,
 		AnimeCard,
+		LoadingPage,
 	},
 
 	created() {
@@ -53,6 +56,14 @@ export default {
 			seasonNow: (state) => state.homePage.seasonNow,
 			seasonUpcoming: (state) => state.homePage.seasonUpcoming,
 		}),
+
+		checkLength() {
+			return (
+				this.topAnime.length &&
+				this.seasonNow.length &&
+				this.seasonUpcoming.length
+			)
+		},
 	},
 
 	methods: {

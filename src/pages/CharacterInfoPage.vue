@@ -1,6 +1,6 @@
 <template>
-	<div class="character">
-		<div class="container" v-show="Object.keys(currentChar).length">
+	<div class="character" v-if="Object.keys(currentChar).length">
+		<div class="container">
 			<transition class="character__image" name="character-image" appear>
 				<img
 					v-if="currentChar.images"
@@ -27,20 +27,26 @@
 				</transition>
 			</div>
 		</div>
-		<h2 class="character__error" v-if="errorCatcher">
+		<h2 class="character__error" v-if="error">
 			Ooops... Something went wrong. Try reloading. 😢
 		</h2>
 	</div>
+	<LoadingPage v-else />
 </template>
 
 <script>
+import LoadingPage from '@/components/LoadingPage.vue'
 import axios from 'axios'
 
 export default {
+	components: {
+		LoadingPage,
+	},
+
 	data() {
 		return {
 			currentChar: {},
-			errorCatcher: false,
+			error: false,
 		}
 	},
 
@@ -57,12 +63,12 @@ export default {
 			try {
 				const res = await axios.get(`https://api.jikan.moe/v4/characters/${id}`)
 				this.currentChar = res.data.data
-				this.errorCatcher = false
+				this.error = false
 			} catch (err) {
 				console.error(err)
 				const errStatus = err.response.data.status
 				if (errStatus >= 400 && errStatus <= 500) {
-					this.errorCatcher = true
+					this.error = true
 				}
 			}
 		},

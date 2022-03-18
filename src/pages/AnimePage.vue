@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="container" v-if="Object.keys(this.currentAnime).length">
 		<AnimePageSidebar />
 		<div class="main">
 			<AnimeTitle />
@@ -7,12 +7,14 @@
 			<router-view />
 		</div>
 	</div>
+	<LoadingPage v-else />
 </template>
 
 <script>
 import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import AnimeTitle from '@/components/AnimeTitle.vue'
 import AnimePageMainTabs from '@/components/AnimePageMainTabs.vue'
+import LoadingPage from '@/components/LoadingPage.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -20,6 +22,7 @@ export default {
 		AnimePageSidebar,
 		AnimeTitle,
 		AnimePageMainTabs,
+		LoadingPage,
 	},
 
 	created() {
