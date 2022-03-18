@@ -1,7 +1,9 @@
 <template>
 	<div class="page__body">
 		<page-header />
-		<router-view class="page__content" />
+		<div class="page__content">
+			<router-view />
+		</div>
 		<page-footer />
 	</div>
 </template>
@@ -19,6 +21,7 @@ export default {
 
 <style lang="sass" scoped>
 .page__body
+	min-width: 100%
 	min-height: 100vh
 	display: flex
 	flex-direction: column
