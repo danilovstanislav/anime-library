@@ -113,8 +113,8 @@ export const searchPage = {
     clearResults({ commit }) {
       commit('SET_SEARCHED_RESULTS', [])
       commit('SET_LAST_SEARCH', '')
-      commit('SET_HAS_NEXT_PAGE', 1)
-      commit('SET_CURRENT_PAGE', false)
+      commit('SET_HAS_NEXT_PAGE', false)
+      commit('SET_CURRENT_PAGE', 1)
     },
   },
 }
