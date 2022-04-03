@@ -2,6 +2,7 @@
 	<router-link
 		class="card"
 		:to="{ name: 'AnimePageMain', params: { animeId: animeCard.mal_id } }"
+		@click="cardClickHandler"
 	>
 		<img
 			v-show="Object.keys(animeCard).length"
@@ -45,6 +46,12 @@ export default {
 		cardYear() {
 			const year = this.animeCard.aired.prop.from.year
 			return year ? year : 'Soon'
+		},
+	},
+
+	methods: {
+		cardClickHandler() {
+			window.scroll({ top: 0, behavior: 'smooth' })
 		},
 	},
 }
