@@ -32,7 +32,7 @@
 			</div>
 			<SearchPageResults />
 			<div class="search__tip" v-if="lastSearch === '' && !isWaitForResponse">
-				Write the anime you want to find above.
+				Write the anime or character you want to find above.
 			</div>
 		</div>
 	</section>
@@ -77,7 +77,7 @@ export default {
 	align-items: center
 
 .search
-	position: relative
+	@include sectionWrapper
 	background-color: $bc-grey-color
 
 	.results__title

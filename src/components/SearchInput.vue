@@ -1,16 +1,13 @@
 <template>
 	<div class="search__input-wrapper">
-		<label
-			v-show="input.length"
-			@click="input = ''"
-			for="animeSearch"
-			class="search__input__remove-icon"
-		>
-		</label>
+		<select v-model="selectedOption" class="search__input__select" name="type">
+			<option value="anime">Anime</option>
+			<option value="characters">Character</option>
+		</select>
 		<input
-			v-model="input"
+			v-model.trim="input"
 			@keypress.enter="getAnimeList"
-			@input="debounceSearchResults"
+			@input="getInputResults()"
 			@click="inputClickHandler"
 			ref="searchInput"
 			class="search__input"
@@ -18,13 +15,21 @@
 			placeholder="Search of anime"
 			name="animeSearch"
 		/>
+		<label
+			v-show="input.length"
+			@click="input = ''"
+			for="animeSearch"
+			class="search__input__remove-icon"
+		>
+		</label>
 		<Transition @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
-			<SearchPageDropDown
+			<SearchPageDropdown
 				@clearInput="input = ''"
 				:input="input"
 				:searchResult="inputResultArray"
 				:isOpen="isDropdownOpen"
 				:isGotResponse="isGotResponse"
+				:sel="selectedOption"
 			/>
 		</Transition>
 		<button
@@ -46,18 +51,19 @@
 </template>
 
 <script>
-import SearchPageDropDown from '@/components/SearchPageDropDown.vue'
+import SearchPageDropdown from '@/components/SearchPageDropdown.vue'
 import _ from 'lodash'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { gsap } from 'gsap'
 
 export default {
 	components: {
-		SearchPageDropDown,
+		SearchPageDropdown,
 	},
 
 	data() {
 		return {
+			selectedOption: 'anime',
 			input: '',
 			inputResultArray: [],
 			isDropdownOpen: false,
@@ -91,11 +97,14 @@ export default {
 			getInputDropdown: 'searchPage/getInputDropdown',
 		}),
 
-		debounceSearchResults: _.debounce(async function () {
+		getInputResults: _.debounce(async function () {
 			this.isGotResponse = false
-			const res = await this.getInputDropdown(this.input.trim())
+			let res = await this.getInputDropdown({
+				inp: this.input,
+				sel: this.selectedOption,
+			})
 			this.isGotResponse = true
-			res ? (this.inputResultArray = res) : (this.inputResultArray = [])
+			res ? (this.inputResultArray = [...res]) : (this.inputResultArray = [])
 		}, 1500),
 
 		async getAnimeList() {
@@ -103,7 +112,7 @@ export default {
 			if (this.input !== '' && this.input !== this.lastSearch) {
 				this.SET_SEARCHED_RESULTS([])
 			}
-			await this.getSearchResults(this.input.trim())
+			this.getSearchResults(this.input, this.selectedOption)
 			this.$router.replace({ name: 'SearchPage' })
 			window.scroll({ top: 0, behavior: 'smooth' })
 			this.input = ''
@@ -163,6 +172,15 @@ export default {
 	align-items: center
 	position: relative
 
+.search__input__select
+	height: 100%
+	padding-left: 2px
+	border: 1px solid $dark-black-color
+	border-right: none
+	border-radius: 10px 0 0 10px
+	font-size: 14px
+	cursor: pointer
+
 .search__input
 	width: 100%
 	height: 100%
@@ -171,7 +189,6 @@ export default {
 	padding-left: 10px
 	padding-right: 30px
 	border: 1px solid $dark-black-color
-	border-radius: 10px 0 0 10px
 	font-size: 18px
 
 	&:focus

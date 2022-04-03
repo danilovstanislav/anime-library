@@ -15,7 +15,7 @@
 				>
 					<router-link
 						class="dropdown__link"
-						:to="{ name: 'AnimePageMain', params: { animeId: search.mal_id } }"
+						:to="linkToSearch(search)"
 						@click="dropdownClickHandler(search.mal_id)"
 					>
 						<img
@@ -27,12 +27,6 @@
 							<div class="dropdown__item__title" :title="searchTitle(search)">
 								{{ searchTitle(search) }}
 							</div>
-							<div class="dropdown__item__episodes">
-								{{ searchEpisodesAndType(search) }}
-							</div>
-							<div class="dropdown__item__year">
-								{{ cardYear(search) }}
-							</div>
 						</div>
 					</router-link>
 				</li>
@@ -40,14 +34,11 @@
 		</ul>
 		<div
 			class="dropdown__not-found"
-			v-if="searchResult.length === 0 && isGotResponse"
+			v-else-if="searchResult.length === 0 && isGotResponse"
 		>
 			No results for "{{ input }}"
 		</div>
-		<div
-			class="dropdown__loading"
-			v-if="searchResult.length === 0 && !isGotResponse"
-		>
+		<div class="dropdown__loading" v-else>
 			<span class="dropdown__loading__title">Loading</span>
 			<LoadingCircle />
 		</div>
@@ -72,6 +63,7 @@ export default {
 		input: String,
 		isOpen: Boolean,
 		isGotResponse: Boolean,
+		sel: String,
 	},
 
 	computed: {
@@ -82,19 +74,19 @@ export default {
 
 	methods: {
 		searchTitle(search) {
-			return search.title_english ? search.title_english : search.title
+			if (this.sel === 'anime') {
+				return search.title_english ? search.title_english : search.title
+			} else if (this.sel === 'characters') {
+				return search.name
+			}
 		},
 
-		searchEpisodesAndType(search) {
-			const ep = search.episodes
-			const epString = ep ? ep + ' ep.' : null
-			const type = search.type ?? ''
-			return epString ? `${type} | ${epString}` : type
-		},
-
-		cardYear(search) {
-			const year = search.aired.prop.from.year
-			return year ? year : 'Soon'
+		linkToSearch(search) {
+			if (this.sel === 'anime') {
+				return { name: 'AnimePageMain', params: { animeId: search.mal_id } }
+			} else if (this.sel === 'characters') {
+				return { name: 'CharacterInfoPage', params: { charId: search.mal_id } }
+			}
 		},
 
 		...mapActions({

@@ -5,30 +5,30 @@ export const wideSlider = {
       spaceBetween: 10,
       slidesPerGroup: 3,
     },
-    992: {
-      slidesPerView: 6,
+    991: {
+      slidesPerView: 5,
       spaceBetween: 10,
       slidesPerGroup: 3,
     },
-    768: {
+    767: {
       slidesPerView: 4,
       spaceBetween: 10,
       slidesPerGroup: 3,
     },
-    576: {
+    575: {
       slidesPerView: 4,
+      spaceBetween: 10,
       slidesPerGroup: 2,
-      spaceBetween: 10,
     },
-    375: {
+    374: {
       slidesPerView: 3,
+      spaceBetween: 10,
       slidesPerGroup: 1,
-      spaceBetween: 8,
     },
-    325: {
+    324: {
       slidesPerView: 2,
-      slidesPerGroup: 1,
       spaceBetween: 15,
+      slidesPerGroup: 1,
     },
   },
 }

@@ -1,11 +1,7 @@
 <template>
-	<div class="page__body">
-		<page-header />
-		<div class="page__content">
-			<router-view />
-		</div>
-		<page-footer />
-	</div>
+	<page-header />
+	<router-view />
+	<page-footer />
 </template>
 
 <script>
@@ -19,15 +15,10 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.page__body
-	min-width: 100%
+<style lang="sass">
+#app
 	min-height: 100vh
 	display: flex
 	flex-direction: column
-
-.page__content
-	min-height: 70vh
-	flex-grow: 1
-	position: relative
+	font-family: 'Fredoka-Regular', sans-serif
 </style>

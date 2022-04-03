@@ -1,46 +1,49 @@
 <template>
-	<div class="character" v-if="Object.keys(currentChar).length">
-		<div class="container">
-			<transition class="character__image" name="character-image" appear>
+	<section class="character">
+		<div class="container" v-if="Object.keys(currentChar).length">
+			<Transition class="character__image" name="character-image" appear>
 				<img
-					v-if="currentChar.images"
 					:src="currentChar.images.jpg.image_url"
 					:alt="currentChar.name ?? 'Character image'"
 				/>
-			</transition>
+			</Transition>
 			<div class="character__wrapper">
-				<transition name="character-name" appear>
-					<h2 class="character__name" v-if="currentChar.name">
+				<Transition name="character-name" appear>
+					<h2 class="character__name">
 						{{ currentChar.name }}
 					</h2>
-				</transition>
-				<transition name="character-description" appear>
+				</Transition>
+				<Transition name="character-description" appear>
 					<p
-						v-if="currentChar.hasOwnProperty('about')"
 						class="character__description"
 						:class="{
 							'no-info': !currentChar.about,
 						}"
 					>
-						{{ currentChar.about ?? `Sorry we don't have any information` }}
+						{{ aboutText }}
 					</p>
-				</transition>
+				</Transition>
 			</div>
 		</div>
-		<h2 class="character__error" v-if="error">
-			Ooops... Something went wrong. Try reloading. 😢
-		</h2>
-	</div>
-	<LoadingPage v-else />
+		<div class="character__error" v-else-if="error">
+			<h2 class="character__error__title">
+				Ooops... Something went wrong. Try reloading. 😢
+			</h2>
+			<ReloadButton />
+		</div>
+		<LoadingPage v-else />
+	</section>
 </template>
 
 <script>
 import LoadingPage from '@/components/LoadingPage.vue'
+import ReloadButton from '@/components/ReloadButton.vue'
 import axios from 'axios'
 
 export default {
 	components: {
 		LoadingPage,
+		ReloadButton,
 	},
 
 	data() {
@@ -56,6 +59,12 @@ export default {
 
 	unmounted() {
 		this.currentChar = {}
+	},
+
+	computed: {
+		aboutText() {
+			return this.currentChar.about ?? 'Sorry, information is not available'
+		},
 	},
 
 	methods: {
@@ -78,9 +87,9 @@ export default {
 
 <style lang="sass" scoped>
 .character
+	@include sectionWrapper
 	padding-top: 30px
 	padding-bottom: 30px
-	position: relative
 
 	.container
 		@include container
@@ -119,17 +128,23 @@ export default {
 		width: 100%
 		padding-left: 10px
 		padding-right: 10px
-		margin-top: 0
-		margin-bottom: 0
+		display: flex
+		flex-direction: column
+		align-items: center
+		justify-content: center
 		position: absolute
 		top: 30%
 		left: 50%
 		transform: translate(-50%, -50%)
-		text-align: center
-		font-size: 28px
 
 		@media(max-width: $screen-xs-max)
 			font-size: 22px
+
+		&__title
+			margin-top: 0
+			margin-bottom: 10px
+			text-align: center
+			font-size: 28px
 
 .no-info
 	font-style: italic
