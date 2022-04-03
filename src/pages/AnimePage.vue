@@ -1,59 +1,60 @@
 <template>
-	<div class="container" v-if="Object.keys(this.currentAnime).length">
-		<AnimePageSidebar />
-		<div class="main">
-			<AnimeTitle />
-			<AnimePageMainTabs />
-			<router-view />
+	<section class="anime-page">
+		<!-- <div class="container" v-if="Object.keys(this.currentAnime).length">
+			<AnimePageSidebar />
+			<div class="anime-page__main">
+				<AnimeTitle />
+				<AnimePageTabs />
+			</div>
 		</div>
-	</div>
-	<LoadingPage v-else />
+		<LoadingPage v-else /> -->
+	</section>
 </template>
 
 <script>
-import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
-import AnimeTitle from '@/components/AnimeTitle.vue'
-import AnimePageMainTabs from '@/components/AnimePageMainTabs.vue'
-import LoadingPage from '@/components/LoadingPage.vue'
-import { mapState, mapActions } from 'vuex'
+// import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
+// import AnimeTitle from '@/components/AnimeTitle.vue'
+// import AnimePageTabs from '@/components/AnimePageTabs.vue'
+// import LoadingPage from '@/components/LoadingPage.vue'
+// import { mapState, mapActions } from 'vuex'
+import { useAnimePage } from '@/api/useAnimePage'
 
 export default {
-	components: {
-		AnimePageSidebar,
-		AnimeTitle,
-		AnimePageMainTabs,
-		LoadingPage,
-	},
+	// components: {
+	// 	AnimePageSidebar,
+	// 	AnimeTitle,
+	// 	AnimePageTabs,
+	// 	LoadingPage,
+	// },
 
-	created() {
-		if (Object.keys(this.currentAnime).length === 0 && !this.isRequested) {
-			this.getAnimeById(this.$route.params.animeId)
-		}
+	async mounted() {
+		const { result } = await useAnimePage(this.$route.params.animeId)
 	},
 
 	unmounted() {
-		this.removeAllData()
+		// this.removeAllData()
 	},
 
 	computed: {
-		...mapState({
-			isRequested: (state) => state.animePage.isRequested,
-			currentAnime: (state) => state.animePage.currentAnime,
-		}),
+		// ...mapState({
+		// 	isRequested: (state) => state.animePage.isRequested,
+		// 	currentAnime: (state) => state.animePage.currentAnime,
+		// }),
 	},
 
 	methods: {
-		...mapActions({
-			getAnimeById: 'animePage/getAnimeById',
-			getCharacters: 'animePage/getCharacters',
-			getReviews: 'animePage/getReviews',
-			removeAllData: 'animePage/removeAllData',
-		}),
+		// ...mapActions({
+		// 	getAnimeById: 'animePage/getAnimeById',
+		// 	removeAllData: 'animePage/removeAllData',
+		// }),
 	},
 }
 </script>
 
 <style lang='sass' scoped>
+.anime-page
+	@include sectionWrapper
+
 .container
 	@include container
 	padding-top: 30px
@@ -65,7 +66,7 @@ export default {
 		flex-direction: column
 		font-size: 14px
 
-.main
+.anime-page__main
 	width: 100%
 	max-width: calc(75% - 20px)
 	display: flex

@@ -4,7 +4,6 @@ export const searchPage = {
   namespaced: true,
 
   state: () => ({
-    API_URL: 'https://api.jikan.moe/v4/anime',
     searchParams: {
       sort: 'desc',
       order_by: 'score',
@@ -45,18 +44,20 @@ export const searchPage = {
   },
 
   actions: {
-    async getSearchResults({ state, commit }, inp) {
+    async getSearchResults({ state, commit }, inp, sel) {
       commit('SET_LAST_SEARCH', inp ?? state.lastSearch)
       commit('SET_IS_WAIT_FOR_RESPONSE', true)
       commit('SET_RESULTS_NOT_FOUND', false)
       let accumulateArray = []
       const step = 2
+      console.log(sel)
 
       try {
         for (let i = 1; i <= step; i++) {
+          console.log(sel)
           const res = await axios({
             methods: 'GET',
-            url: state.API_URL,
+            url: `https://api.jikan.moe/v4/${sel}`,
             params: {
               q: state.lastSearch,
               page: state.currentPage,
@@ -89,7 +90,7 @@ export const searchPage = {
         : commit('SET_RESULTS_NOT_FOUND', false)
     },
 
-    async getInputDropdown({ state }, inp) {
+    async getInputDropdown({ state }, { inp, sel }) {
       if (inp === '') {
         return []
       }
@@ -97,13 +98,13 @@ export const searchPage = {
       try {
         const res = await axios({
           methods: 'GET',
-          url: state.API_URL,
+          url: `https://api.jikan.moe/v4/${sel}`,
           params: {
             q: inp,
-            page: 1,
             ...state.searchParams,
           },
         })
+        console.log(res.data.data)
         return [...res.data.data]
       } catch (error) {
         console.error(error)

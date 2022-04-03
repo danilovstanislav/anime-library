@@ -1,25 +1,18 @@
 <template>
 	<router-link
 		class="card"
-		:to="{ name: 'AnimePageMain', params: { animeId: animeCard.id } }"
-		@click="cardClickHandler"
+		:to="{ name: 'CharacterInfoPage', params: { charId: charCard.mal_id } }"
 	>
 		<img
-			v-show="Object.keys(animeCard).length"
 			class="card__image"
-			:src="animeCard.main_picture.medium"
+			:src="charCard.images.jpg.image_url"
 			:alt="cardTitle ?? 'Anime poster'"
 		/>
-		<div class="card__info">
-			<div class="card__info__item card__title" :title="cardTitle">
-				{{ cardTitle }}
-			</div>
-			<div class="card__info__item">
-				{{ cardEpisodesAndType }}
-			</div>
-			<div class="card__info__item">
-				{{ cardYear }}
-			</div>
+		<div class="card__title" :title="cardTitle">
+			{{ cardFavorite }}
+		</div>
+		<div class="card__favorites">
+			{{ cardFavorites }}
 		</div>
 	</router-link>
 </template>
@@ -27,31 +20,15 @@
 <script>
 export default {
 	props: {
-		animeCard: Object,
+		charCard: Object,
 	},
 	computed: {
 		cardTitle() {
-			return this.animeCard.alternative_titles.en
-				? this.animeCard.alternative_titles.en
-				: this.animeCard.title
+			return this.charCard.name
 		},
 
-		cardEpisodesAndType() {
-			let ep = this.animeCard.num_episodes
-			let epString = ep ? ep + ' ep.' : null
-			let type = this.animeCard.media_type.toUpperCase() ?? ''
-			return epString ? `${epString} | ${type}` : type
-		},
-
-		cardYear() {
-			let year = this.animeCard.start_season?.year
-			return year ? year : 'Soon'
-		},
-	},
-
-	methods: {
-		cardClickHandler() {
-			window.scroll({ top: 0, behavior: 'smooth' })
+		cardFavorites() {
+			return `In the favorites of ${this.charCard.favorites} people`
 		},
 	},
 }

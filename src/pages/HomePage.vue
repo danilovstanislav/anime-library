@@ -1,40 +1,36 @@
 <template>
-	<div class="home" v-if="checkLength">
-		<div class="container">
-			<div class="slider__wrapper">
-				<h2 class="section__title">Winter 2022</h2>
-				<Slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
+	<section class="home">
+		<div class="container" v-if="checkLength">
+			<div class="slider__wrapper" v-if="airingAnime.length">
+				<h2 class="section__title">Airing</h2>
+				<Slider v-slot="{ card }" :contentArr="airingAnime" sliderSize="wide">
 					<AnimeCard :animeCard="card" />
 				</Slider>
 			</div>
-
-			<div class="slider__wrapper">
+			<button @click="fetch">click</button>
+			<div class="slider__wrapper" v-if="upcomingAnime.length">
+				<h2 class="section__title">Upcoming anime</h2>
+				<Slider v-slot="{ card }" :contentArr="upcomingAnime" sliderSize="wide">
+					<AnimeCard :animeCard="card" />
+				</Slider>
+			</div>
+			<div class="slider__wrapper" v-if="allAnime.length">
 				<h2 class="section__title">Top anime</h2>
-				<Slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
-					<AnimeCard :animeCard="card" />
-				</Slider>
-			</div>
-
-			<div class="slider__wrapper">
-				<h2 class="section__title">Top upcoming anime</h2>
-				<Slider
-					v-slot="{ card }"
-					:contentArr="seasonUpcoming"
-					sliderSize="wide"
-				>
+				<Slider v-slot="{ card }" :contentArr="allAnime" sliderSize="wide">
 					<AnimeCard :animeCard="card" />
 				</Slider>
 			</div>
 		</div>
-	</div>
-	<LoadingPage v-else />
+		<LoadingPage v-else />
+	</section>
 </template>
 
 <script>
 import Slider from '@/components/Slider.vue'
 import AnimeCard from '@/components/AnimeCard.vue'
 import LoadingPage from '@/components/LoadingPage.vue'
-import { mapState, mapActions } from 'vuex'
+import { useRanking } from '@/api/useRanking'
+import { useAnimePage } from '@/api/useAnimePage'
 
 export default {
 	name: 'HomePage',
@@ -44,40 +40,46 @@ export default {
 		LoadingPage,
 	},
 
-	created() {
-		this.getTopAnime()
-		this.getSeasonNow()
-		this.getSeasonUpcoming()
+	data() {
+		return {
+			airingAnime: [],
+			upcomingAnime: [],
+			allAnime: [],
+		}
+	},
+
+	async mounted() {
+		const { result: airingRes } = await useRanking('airing')
+		this.airingAnime = airingRes
+
+		const { result: upcomingRes } = await useRanking('upcoming')
+		this.upcomingAnime = upcomingRes
+
+		const { result: allAnimeRes } = await useRanking('all')
+		this.allAnime = allAnimeRes
 	},
 
 	computed: {
-		...mapState({
-			topAnime: (state) => state.homePage.topAnime,
-			seasonNow: (state) => state.homePage.seasonNow,
-			seasonUpcoming: (state) => state.homePage.seasonUpcoming,
-		}),
-
 		checkLength() {
 			return (
-				this.topAnime.length &&
-				this.seasonNow.length &&
-				this.seasonUpcoming.length
+				this.airingAnime.length ||
+				this.upcomingAnime.length ||
+				this.allAnime.length
 			)
 		},
 	},
 
 	methods: {
-		...mapActions({
-			getTopAnime: 'homePage/getTopAnime',
-			getSeasonNow: 'homePage/getSeasonNow',
-			getSeasonUpcoming: 'homePage/getSeasonUpcoming',
-		}),
-	},
+		fetch() {
+			useAnimePage('1')
+		}
+	}
 }
 </script>
 
 <style lang="sass" scoped>
 .home
+	@include sectionWrapper
 	padding-top: 40px
 	padding-bottom: 40px
 	background-color: $bc-grey-color
@@ -89,29 +91,35 @@ export default {
 	&:not(:last-child)
 		margin-bottom: 30px
 
+	@media (max-width: $screen-l-max)
+		max-width: calc($screen-m-max - 20px)
+
 	@media (max-width: $screen-m-max)
-		max-width: 800px
+		max-width: calc($screen-s-max - 20px)
 
 	@media (max-width: $screen-s-max)
-		max-width: 650px
+		max-width: calc($screen-xs-max - 20px)
 
 	@media (max-width: $screen-xs-max)
-		max-width: 400px
+		max-width: calc($screen-xs-min - 20px)
+
+	@media (max-width: $screen-xs-min)
+		max-width: 325px
 
 	&:deep(.card__image)
-		height: 260px
+		height: 265px
 
-		@media (max-width: $screen-m-max)
-			height: 260px
+		@media (max-width: $screen-l-max)
+			height: 255px
 
 		@media (max-width: $screen-s-max)
-			height: 210px
+			height: 200px
 
 		@media (max-width: $screen-xs-max)
 			height: 170px
 
 		@media (max-width: $screen-xs-min)
-			height: 205px
+			height: 235px
 
 .container
 	@include container

@@ -14,7 +14,8 @@
 					:key="search.mal_id"
 					:data-index="index"
 				>
-					<AnimeCard :animeCard="search" />
+					<!-- <AnimeCard :animeCard="search" /> -->
+					<CharacterCard :charCard="search" />
 				</li>
 			</TransitionGroup>
 		</ul>
@@ -36,14 +37,16 @@
 </template>
 
 <script>
-import AnimeCard from '@/components/AnimeCard.vue'
+// import AnimeCard from '@/components/AnimeCard.vue'
+import CharacterCard from '@/components/CharacterCard.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import { mapState, mapActions } from 'vuex'
 import { gsap } from 'gsap'
 
 export default {
 	components: {
-		AnimeCard,
+		// AnimeCard,
+		CharacterCard,
 		LoadingCircle,
 	},
 
@@ -68,9 +71,6 @@ export default {
 	},
 	unmounted() {
 		window.removeEventListener('scroll', this.scrollHandler)
-	},
-	updated() {
-		window.addEventListener('scroll', this.scrollHandler)
 	},
 
 	methods: {

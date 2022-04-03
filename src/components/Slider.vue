@@ -7,9 +7,9 @@
 		navigation
 		:rewind="true"
 	>
-		<swiper-slide v-for="card in contentArr" :key="card.mal_id">
+		<swiper-slide v-for="card in contentArr" :key="card.node.id">
 			<transition name="slider-card" appear>
-				<slot :card="card" />
+				<slot :card="card.node" />
 			</transition>
 		</swiper-slide>
 	</swiper>
