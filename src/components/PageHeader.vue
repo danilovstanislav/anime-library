@@ -17,7 +17,7 @@
 					>
 				</li>
 			</ul>
-			<SearchInput />
+			<SearchInput v-if="displayHandler" />
 		</div>
 	</header>
 </template>
@@ -28,6 +28,12 @@ import SearchInput from '@/components/SearchInput.vue'
 export default {
 	components: {
 		SearchInput,
+	},
+
+	computed: {
+		displayHandler() {
+			return this.$route.name !== 'SearchPage'
+		},
 	},
 
 	methods: {
