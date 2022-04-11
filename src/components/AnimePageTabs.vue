@@ -43,11 +43,6 @@ export default {
 
 	data() {
 		return {
-			// tabs: [
-			// 	{ label: 'Detail', component: 'AnimePageMain' },
-			// 	{ label: 'Characters', component: 'AnimePageMainCharacters' },
-			// 	{ label: 'Reviews', component: 'AnimePageMainReviews' },
-			// ],
 			activeTab: 'AnimePageMain',
 		}
 	},
