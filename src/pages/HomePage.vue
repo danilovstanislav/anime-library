@@ -1,6 +1,6 @@
 <template>
-	<div class="home" v-if="checkLength">
-		<div class="container">
+	<div class="home">
+		<div class="container" v-if="checkLength">
 			<div class="slider__wrapper">
 				<h2 class="section__title">Spring 2022</h2>
 				<Slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
@@ -26,8 +26,8 @@
 				</Slider>
 			</div>
 		</div>
+		<LoadingPage class="home__loading" v-else />
 	</div>
-	<LoadingPage v-else />
 </template>
 
 <script>
