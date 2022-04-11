@@ -6,9 +6,9 @@
 		</select>
 		<input
 			v-model.trim="input"
-			@keypress.enter="getAnimeList"
-			@input="getInputResults()"
-			@click="inputClickHandler"
+			@keypress.enter="searchResults"
+			@input="updateInputResults"
+			@click="clickOnInput"
 			ref="searchInput"
 			class="search__input"
 			type="text"
@@ -16,7 +16,7 @@
 			name="animeSearch"
 		/>
 		<label
-			v-show="input.length"
+			v-if="input.length"
 			@click="input = ''"
 			for="animeSearch"
 			class="search__input__remove-icon"
@@ -28,13 +28,12 @@
 				:input="input"
 				:searchResult="inputResultArray"
 				:isOpen="isDropdownOpen"
-				:isGotResponse="isGotResponse"
 				:sel="selectedOption"
 			/>
 		</Transition>
 		<button
 			class="search__input__button"
-			@click="getAnimeList()"
+			@click="searchResults"
 			:disabled="input.length === 0"
 		>
 			<svg
@@ -52,8 +51,9 @@
 
 <script>
 import SearchPageDropDown from '@/components/SearchPageDropDown.vue'
-import _ from 'lodash'
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { useInputResults } from '@/composables/useInputResults'
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 
 export default {
@@ -61,104 +61,94 @@ export default {
 		SearchPageDropDown,
 	},
 
-	data() {
-		return {
-			selectedOption: 'anime',
-			input: '',
-			inputResultArray: [],
-			isDropdownOpen: false,
-			isGotResponse: false,
-		}
+	emits: {
+		getSearchResults: null,
+		changeCurrentPage: null,
 	},
 
-	mounted() {
-		window.addEventListener('click', (e) => {
-			if (e.target !== this.$refs.searchInput) {
-				this.isDropdownOpen = false
-			}
-		})
-	},
+	setup(_, { emit }) {
+		const {
+			loading,
+			error,
+			updateInputResults,
+			input,
+			selectedOption,
+			inputResultArray,
+			isDropdownOpen,
+		} = useInputResults()
 
-	computed: {
-		...mapState({
-			searchedResults: (state) => state.searchPage.searchedResults,
-			lastSearch: (state) => state.searchPage.lastSearch,
-		}),
-	},
+		const searchInput = ref(null)
+		const router = useRouter()
 
-	methods: {
-		...mapMutations({
-			SET_CURRENT_PAGE: 'searchPage/SET_CURRENT_PAGE',
-			SET_SEARCHED_RESULTS: 'searchPage/SET_SEARCHED_RESULTS',
-		}),
-
-		...mapActions({
-			getSearchResults: 'searchPage/getSearchResults',
-			getInputDropdown: 'searchPage/getInputDropdown',
-		}),
-
-		getInputResults: _.debounce(async function () {
-			this.isGotResponse = false
-			let { result, load } = await this.getInputDropdown({
-				inp: this.input,
-				sel: this.selectedOption,
+		onMounted(() => {
+			window.addEventListener('click', (e) => {
+				if (e.target !== searchInput.value) isDropdownOpen.value = false
 			})
-			this.isGotResponse = load
-			result
-				? (this.inputResultArray = [...result])
-				: (this.inputResultArray = [])
-		}, 1500),
+		})
 
-		async getAnimeList() {
-			this.isDropdownOpen = false
-			if (this.input !== '' && this.input !== this.lastSearch) {
-				this.SET_SEARCHED_RESULTS([])
-			}
-			this.getSearchResults(this.input, this.selectedOption)
-			this.$router.replace({ name: 'SearchPage' })
+		const searchResults = () => {
+			emit('getSearchResults', {
+				inp: input.value,
+				sel: selectedOption.value,
+			})
+			router.replace({ name: 'SearchPage' })
 			window.scroll({ top: 0, behavior: 'smooth' })
-			this.input = ''
-		},
+			input.value = ''
+		}
 
-		inputClickHandler() {
-			if (this.input !== '') {
-				this.isDropdownOpen = true
+		const clickOnInput = () => {
+			if (input.value !== '') {
+				isDropdownOpen.value = true
 			}
-		},
+		}
 
-		onBeforeEnter(el) {
+		watch(input, (val) => {
+			emit('changeCurrentPage')
+			val === ''
+				? (isDropdownOpen.value = false)
+				: (isDropdownOpen.value = true)
+
+			if (val !== '') inputResultArray.value = []
+		})
+
+		const onBeforeEnter = (el) => {
 			el.style.opacity = 0
 			el.style.height = 0
-		},
+		}
 
-		onEnter(el, done) {
+		const onEnter = (el, done) => {
 			gsap.to(el, {
 				opacity: 1,
 				height: 'auto',
 				duration: 0.3,
 				onComplete: done,
 			})
-		},
+		}
 
-		onLeave(el, done) {
+		const onLeave = (el, done) => {
 			gsap.to(el, {
 				opacity: 0,
 				height: 0,
 				duration: 0.3,
 				onComplete: done,
 			})
-		},
-	},
+		}
 
-	watch: {
-		input(val) {
-			this.SET_CURRENT_PAGE(1)
-			this.isGotResponse = false
-			val === '' ? (this.isDropdownOpen = false) : (this.isDropdownOpen = true)
-			if (val !== '') {
-				this.inputResultArray = []
-			}
-		},
+		return {
+			loading,
+			error,
+			updateInputResults,
+			input,
+			selectedOption,
+			inputResultArray,
+			isDropdownOpen,
+			searchInput,
+			searchResults,
+			clickOnInput,
+			onBeforeEnter,
+			onEnter,
+			onLeave,
+		}
 	},
 }
 </script>
