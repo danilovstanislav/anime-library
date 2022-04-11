@@ -4,7 +4,6 @@
 		<div class="main">
 			<AnimeTitle />
 			<AnimePageTabs />
-			<router-view />
 		</div>
 	</div>
 	<LoadingPage v-else />
@@ -60,6 +59,7 @@ export default {
 	padding-bottom: 30px
 	display: flex
 	position: relative
+	overflow: hidden
 
 	@media (max-width: $screen-xs-max)
 		flex-direction: column
