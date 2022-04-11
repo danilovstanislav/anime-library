@@ -3,7 +3,7 @@
 		<AnimePageSidebar />
 		<div class="main">
 			<AnimeTitle />
-			<AnimePageMainTabs />
+			<AnimePageTabs />
 			<router-view />
 		</div>
 	</div>
@@ -13,7 +13,7 @@
 <script>
 import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import AnimeTitle from '@/components/AnimeTitle.vue'
-import AnimePageMainTabs from '@/components/AnimePageMainTabs.vue'
+import AnimePageTabs from '@/components/AnimePageTabs.vue'
 import LoadingPage from '@/components/LoadingPage.vue'
 import { mapState, mapActions } from 'vuex'
 
@@ -21,7 +21,7 @@ export default {
 	components: {
 		AnimePageSidebar,
 		AnimeTitle,
-		AnimePageMainTabs,
+		AnimePageTabs,
 		LoadingPage,
 	},
 

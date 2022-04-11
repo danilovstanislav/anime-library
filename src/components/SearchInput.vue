@@ -23,7 +23,7 @@
 		>
 		</label>
 		<Transition @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
-			<SearchPageDropdown
+			<SearchPageDropDown
 				@clearInput="input = ''"
 				:input="input"
 				:searchResult="inputResultArray"
@@ -51,14 +51,14 @@
 </template>
 
 <script>
-import SearchPageDropdown from '@/components/SearchPageDropdown.vue'
+import SearchPageDropDown from '@/components/SearchPageDropDown.vue'
 import _ from 'lodash'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { gsap } from 'gsap'
 
 export default {
 	components: {
-		SearchPageDropdown,
+		SearchPageDropDown,
 	},
 
 	data() {
