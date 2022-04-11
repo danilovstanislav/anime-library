@@ -1,12 +1,14 @@
 <template>
-	<div class="container" v-if="Object.keys(this.currentAnime).length">
-		<AnimePageSidebar />
-		<div class="main">
-			<AnimeTitle />
-			<AnimePageTabs />
+	<section class="anime-page">
+		<div class="container" v-if="Object.keys(this.currentAnime).length">
+			<AnimePageSidebar />
+			<div class="main">
+				<AnimeTitle />
+				<AnimePageTabs />
+			</div>
 		</div>
-	</div>
-	<LoadingPage v-else />
+		<LoadingPage v-else />
+	</section>
 </template>
 
 <script>
@@ -53,6 +55,9 @@ export default {
 </script>
 
 <style lang='sass' scoped>
+.anime-page
+	@include sectionWrapper
+
 .container
 	@include container
 	padding-top: 30px
