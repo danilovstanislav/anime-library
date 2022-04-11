@@ -99,12 +99,14 @@ export default {
 
 		getInputResults: _.debounce(async function () {
 			this.isGotResponse = false
-			let res = await this.getInputDropdown({
+			let { result, load } = await this.getInputDropdown({
 				inp: this.input,
 				sel: this.selectedOption,
 			})
-			this.isGotResponse = true
-			res ? (this.inputResultArray = [...res]) : (this.inputResultArray = [])
+			this.isGotResponse = load
+			result
+				? (this.inputResultArray = [...result])
+				: (this.inputResultArray = [])
 		}, 1500),
 
 		async getAnimeList() {

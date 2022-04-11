@@ -1,4 +1,4 @@
-import axios from 'axios'
+import instance from '@/plugins/axios'
 
 export const searchPage = {
   namespaced: true,
@@ -45,7 +45,7 @@ export const searchPage = {
   },
 
   actions: {
-    async getSearchResults({ state, commit }, inp) {
+    async getSearchResults({ state, commit }, {inp, sel}) {
       commit('SET_LAST_SEARCH', inp ?? state.lastSearch)
       commit('SET_IS_WAIT_FOR_RESPONSE', true)
       commit('SET_RESULTS_NOT_FOUND', false)
@@ -54,9 +54,9 @@ export const searchPage = {
 
       try {
         for (let i = 1; i <= step; i++) {
-          const res = await axios({
+          const res = await instance({
             methods: 'GET',
-            url: state.API_URL,
+            url: sel,
             params: {
               q: state.lastSearch,
               page: state.currentPage,
@@ -89,24 +89,33 @@ export const searchPage = {
         : commit('SET_RESULTS_NOT_FOUND', false)
     },
 
-    async getInputDropdown({ state }, inp) {
+    async getInputDropdown({ state }, { inp, sel }) {
       if (inp === '') {
         return []
       }
 
+      let result = null
+      let load = false
+      let error = false
+
       try {
-        const res = await axios({
+        load = true
+        const res = await instance({
           methods: 'GET',
-          url: state.API_URL,
+          url: sel,
           params: {
             q: inp,
             page: 1,
             ...state.searchParams,
           },
         })
-        return [...res.data.data]
-      } catch (error) {
-        console.error(error)
+        result = [...res.data.data]
+        return { result, load, error }
+      } catch (err) {
+        error = true
+        console.error(err)
+      } finally {
+        load = false
       }
     },
 
