@@ -78,6 +78,7 @@ export default {
 
 <style lang="sass" scoped>
 .home
+	@include sectionWrapper
 	padding-top: 40px
 	padding-bottom: 40px
 	background-color: $bc-grey-color
@@ -89,29 +90,35 @@ export default {
 	&:not(:last-child)
 		margin-bottom: 30px
 
+	@media (max-width: $screen-l-max)
+		max-width: calc($screen-m-max - 20px)
+
 	@media (max-width: $screen-m-max)
-		max-width: 800px
+		max-width: calc($screen-s-max - 20px)
 
 	@media (max-width: $screen-s-max)
-		max-width: 650px
+		max-width: calc($screen-xs-max - 20px)
 
 	@media (max-width: $screen-xs-max)
-		max-width: 400px
+		max-width: calc($screen-xs-min - 20px)
+
+	@media (max-width: $screen-xs-min)
+		max-width: 325px
 
 	&:deep(.card__image)
-		height: 260px
+		height: 265px
 
-		@media (max-width: $screen-m-max)
-			height: 260px
+		@media (max-width: $screen-l-max)
+			height: 255px
 
 		@media (max-width: $screen-s-max)
-			height: 210px
+			height: 200px
 
 		@media (max-width: $screen-xs-max)
 			height: 170px
 
 		@media (max-width: $screen-xs-min)
-			height: 205px
+			height: 235px
 
 .container
 	@include container
