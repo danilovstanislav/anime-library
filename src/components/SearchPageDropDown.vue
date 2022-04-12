@@ -1,5 +1,5 @@
 <template>
-	<div class="dropdown__wrapper" v-show="isOpen">
+	<div class="dropdown__wrapper" v-if="isOpen">
 		<ul class="dropdown__list" v-if="searchResult.length">
 			<TransitionGroup
 				@before-enter="onBeforeEnter"
@@ -32,15 +32,15 @@
 				</li>
 			</TransitionGroup>
 		</ul>
-		<div
-			class="dropdown__not-found"
-			v-else-if="searchResult.length === 0 && isGotResponse"
-		>
-			No results for "{{ input }}"
-		</div>
-		<div class="dropdown__loading" v-else>
+		<div class="dropdown__loading" v-if="loadingInputResults">
 			<span class="dropdown__loading__title">Loading</span>
 			<LoadingCircle />
+		</div>
+		<div
+			class="dropdown__not-found"
+			v-if="searchResult.length === 0 && !loadingInputResults"
+		>
+			No results for "{{ input }}"
 		</div>
 	</div>
 </template>
@@ -62,8 +62,8 @@ export default {
 		},
 		input: String,
 		isOpen: Boolean,
-		isGotResponse: Boolean,
 		sel: String,
+		loadingInputResults: Boolean,
 	},
 
 	computed: {

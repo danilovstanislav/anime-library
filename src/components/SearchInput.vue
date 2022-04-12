@@ -29,6 +29,7 @@
 				:searchResult="inputResultArray"
 				:isOpen="isDropdownOpen"
 				:sel="selectedOption"
+				:loadingInputResults="loading"
 			/>
 		</Transition>
 		<button
@@ -63,7 +64,7 @@ export default {
 
 	emits: {
 		getSearchResults: null,
-		changeCurrentPage: null,
+		changeInputField: null,
 	},
 
 	setup(_, { emit }) {
@@ -103,7 +104,8 @@ export default {
 		}
 
 		watch(input, (val) => {
-			emit('changeCurrentPage')
+			emit('changeInputField')
+			loading.value = true
 			val === ''
 				? (isDropdownOpen.value = false)
 				: (isDropdownOpen.value = true)

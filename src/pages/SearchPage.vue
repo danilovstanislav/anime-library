@@ -3,7 +3,7 @@
 		<div class="container">
 			<SearchInput
 				@getSearchResults="getSearchResults"
-				@changeCurrentPage="currentPage = 1"
+				@changeInputField="changeInputField"
 			/>
 
 			<SearchPageResults
@@ -41,6 +41,8 @@ export default {
 			getResults,
 		} = useSearchResults()
 
+		const changeInputField = () => (currentPage.value = 1)
+
 		const getSearchResults = ({ inp, sel }) => {
 			searchedResults.value = []
 			lastSearch.value = inp
@@ -59,6 +61,7 @@ export default {
 			error,
 			currentPage,
 			getResults,
+			changeInputField,
 			getSearchResults,
 			clearResults,
 		}

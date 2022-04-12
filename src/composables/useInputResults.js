@@ -25,7 +25,6 @@ export function useInputResults() {
     }
 
     try {
-      loading.value = true
       const res = await instance({
         methods: 'GET',
         url: selectedOption.value,
