@@ -4,7 +4,7 @@
 			<div class="slider__wrapper">
 				<h2 class="section__title">Spring 2022</h2>
 				<Slider v-slot="{ card }" :contentArr="seasonNow" sliderSize="wide">
-					<AnimeCard :animeCard="card" />
+					<AnimeCard :card="card" />
 				</Slider>
 			</div>
 
@@ -15,14 +15,14 @@
 					:contentArr="seasonUpcoming"
 					sliderSize="wide"
 				>
-					<AnimeCard :animeCard="card" />
+					<AnimeCard :card="card" />
 				</Slider>
 			</div>
 
 			<div class="slider__wrapper">
 				<h2 class="section__title">Top anime</h2>
 				<Slider v-slot="{ card }" :contentArr="topAnime" sliderSize="wide">
-					<AnimeCard :animeCard="card" />
+					<AnimeCard :card="card" />
 				</Slider>
 			</div>
 		</div>

@@ -1,7 +1,7 @@
 <template>
 	<router-link
 		class="card"
-		:to="{ name: 'AnimePageMain', params: { animeId: card.mal_id } }"
+		:to="{ name: 'CharacterInfoPage', params: { charId: card.mal_id } }"
 		@click="clickOnCard"
 	>
 		<img
@@ -13,11 +13,8 @@
 			<div class="card__info__item card__title" :title="cardTitle">
 				{{ cardTitle }}
 			</div>
-			<div class="card__info__item">
-				{{ cardEpisodesAndType }}
-			</div>
-			<div class="card__info__item">
-				{{ cardYear }}
+			<div class="card__info__item card__favorites">
+				❤&nbsp;{{ cardFavorites }}
 			</div>
 		</div>
 	</router-link>
@@ -30,19 +27,12 @@ export default {
 	},
 	computed: {
 		cardTitle() {
-			return this.card.title_english ? this.card.title_english : this.card.title
+			return this.card.name
 		},
 
-		cardEpisodesAndType() {
-			const ep = this.card.episodes
-			const epString = ep ? ep + ' ep.' : null
-			const type = this.card.type ?? ''
-			return epString ? `${epString} | ${type}` : type
-		},
-
-		cardYear() {
-			const year = this.card.aired.prop.from.year
-			return year ? year : 'Soon'
+		cardFavorites() {
+			const num = this.card.favorites
+			return num % 10 === 1 ? `${num} like` : `${num} likes`
 		},
 	},
 

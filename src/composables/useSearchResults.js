@@ -1,10 +1,15 @@
 import instance from '@/plugins/axios/axios'
 import { ref } from 'vue'
 
-const searchParams = {
+const animeSearchParams = {
   sort: 'desc',
   order_by: 'score',
   min_score: 1,
+}
+
+const characterSearchParams = {
+  sort: 'desc',
+  order_by: 'favorites',
 }
 
 export function useSearchResults() {
@@ -15,8 +20,15 @@ export function useSearchResults() {
   const error = ref(false)
   const searchedResults = ref([])
   const step = 2
+  const searchParams = ref(null)
 
   async function getResults(inp, sel) {
+    if (sel === 'anime') {
+      searchParams.value = animeSearchParams
+    } else if (sel === 'characters') {
+      searchParams.value = characterSearchParams
+    }
+
     try {
       loading.value = true
       for (let i = 0; i <= step; i++) {
@@ -26,7 +38,7 @@ export function useSearchResults() {
           params: {
             q: inp ?? lastSearch.value,
             page: currentPage.value,
-            ...searchParams,
+            ...searchParams.value,
           },
         })
 
@@ -42,6 +54,9 @@ export function useSearchResults() {
       console.error(err)
     } finally {
       loading.value = false
+      sessionStorage.searchedResults = JSON.stringify(searchedResults.value)
+      sessionStorage.lastSearch = lastSearch.value
+      sessionStorage.selectedTypeCard = sel
     }
   }
 

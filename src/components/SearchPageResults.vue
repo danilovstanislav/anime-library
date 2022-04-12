@@ -1,7 +1,9 @@
 <template>
 	<div class="results__list__wrapper">
 		<div class="results__title" v-if="searchedResults.length">
-			<span class="results__title__content"> Search results for </span>
+			<span class="results__title__content">
+				Search results for {{ selectedTypeCard }}
+			</span>
 			<span class="results__title__search"> "{{ lastSearch }}" </span>
 			<button class="results__remove-button" @click="$emit('clearResults')">
 				<svg
@@ -37,16 +39,10 @@
 					:key="search.mal_id"
 					:data-index="index"
 				>
-					<AnimeCard :animeCard="search" />
+					<component :is="cardType" :card="search" />
 				</li>
 			</TransitionGroup>
 		</ul>
-
-		<!-- <div class="results__load-more" v-if="isLoadingMore">
-			<span class="results__load-more__title"> Wait. Loading more </span>
-			<LoadingCircle />
-		</div> -->
-
 		<div
 			class="results__loading"
 			v-else-if="loadingResults && searchedResults.length === 0"
@@ -54,11 +50,7 @@
 			<span class="results__loading__title"> Loading </span>
 			<LoadingCircle />
 		</div>
-
-		<div
-			class="results__not-found"
-			v-else
-		>
+		<div class="results__not-found" v-else>
 			No results for "{{ lastSearch }}"
 		</div>
 	</div>
@@ -66,12 +58,14 @@
 
 <script>
 import AnimeCard from '@/components/AnimeCard.vue'
+import CharacterCard from '@/components/CharacterCard.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import { gsap } from 'gsap'
 
 export default {
 	components: {
 		AnimeCard,
+		CharacterCard,
 		LoadingCircle,
 	},
 
@@ -82,6 +76,7 @@ export default {
 		},
 		loadingResults: Boolean,
 		lastSearch: String,
+		selectedTypeCard: String,
 	},
 
 	emits: {
@@ -94,12 +89,10 @@ export default {
 		}
 	},
 
-	mounted() {
-		window.addEventListener('scroll', this.scrollHandler)
-	},
-
-	unmounted() {
-		window.removeEventListener('scroll', this.scrollHandler)
+	computed: {
+		cardType() {
+			return this.selectedTypeCard === 'anime' ? 'AnimeCard' : 'CharacterCard'
+		},
 	},
 
 	methods: {

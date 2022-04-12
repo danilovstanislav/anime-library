@@ -11,6 +11,7 @@
 				:searchedResults="searchedResults"
 				:loadingResults="loading"
 				:lastSearch="lastSearch"
+				:selectedTypeCard="selectedTypeCard"
 				@clearResults="clearResults"
 			/>
 			<div class="search__tip" v-else>
@@ -24,6 +25,7 @@
 import SearchInput from '@/components/SearchInput.vue'
 import SearchPageResults from '@/components/SearchPageResults.vue'
 import { useSearchResults } from '@/composables/useSearchResults'
+import { ref, onMounted } from 'vue'
 
 export default {
 	components: {
@@ -41,20 +43,35 @@ export default {
 			getResults,
 		} = useSearchResults()
 
+		const selectedTypeCard = ref(null)
+
+		onMounted(() => {
+			searchedResults.value = sessionStorage.searchedResults
+				? JSON.parse(sessionStorage.searchedResults)
+				: []
+			lastSearch.value = sessionStorage.lastSearch ?? ''
+			selectedTypeCard.value = sessionStorage.selectedTypeCard ?? null
+		})
+
 		const changeInputField = () => (currentPage.value = 1)
 
 		const getSearchResults = ({ inp, sel }) => {
 			searchedResults.value = []
 			lastSearch.value = inp
+			selectedTypeCard.value = sel
 			getResults(inp, sel)
 		}
 
 		const clearResults = () => {
+			sessionStorage.removeItem('searchedResults')
+			sessionStorage.removeItem('lastSearch')
+			sessionStorage.removeItem('selectedTypeCard')
 			searchedResults.value = []
 			lastSearch.value = ''
 		}
 
 		return {
+			selectedTypeCard,
 			searchedResults,
 			lastSearch,
 			loading,
