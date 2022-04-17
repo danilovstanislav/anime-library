@@ -4,7 +4,7 @@
 			<router-link
 				class="header__logo"
 				:to="{ name: 'HomePage' }"
-				@click="clickHandler"
+				@click="clickOnLink"
 				>AniBase</router-link
 			>
 			<ul class="header__list">
@@ -12,12 +12,12 @@
 					<router-link
 						class="header__link"
 						:to="{ name: 'SearchPage' }"
-						@click="clickHandler"
+						@click="clickOnLink"
 						>Search</router-link
 					>
 				</li>
 			</ul>
-			<SearchInput v-if="displayHandler" />
+			<SearchInput v-if="$route.name !== 'SearchPage'" />
 		</div>
 	</header>
 </template>
@@ -30,14 +30,8 @@ export default {
 		SearchInput,
 	},
 
-	computed: {
-		displayHandler() {
-			return this.$route.name !== 'SearchPage'
-		},
-	},
-
 	methods: {
-		clickHandler() {
+		clickOnLink() {
 			const scrollToTop = () => {
 				if (window.pageYOffset === 0) {
 					window.removeEventListener('scroll', scrollToTop)
