@@ -1,13 +1,6 @@
 <template>
-	<section class="characters" v-show="charactersArray.length">
-		<AnimePageMainSectionTitle
-			:routerPath="{
-				name: 'AnimePageCharacters',
-				params: currentAnime.mal_id,
-			}"
-			:viewMoreButton="charactersArray.length > 6"
-			>Characters</AnimePageMainSectionTitle
-		>
+	<section class="characters" v-if="charactersArray.length">
+		<AnimePageMainSectionTitle>Characters</AnimePageMainSectionTitle>
 		<TransitionGroup
 			class="characters__list"
 			tag="ul"
@@ -53,7 +46,6 @@
 
 <script>
 import AnimePageMainSectionTitle from '@/components/AnimePageMainSectionTitle.vue'
-import { mapState } from 'vuex'
 import { gsap } from 'gsap'
 
 export default {
@@ -61,12 +53,11 @@ export default {
 		AnimePageMainSectionTitle,
 	},
 
-	computed: {
-		...mapState({
-			currentAnime: (state) => state.animePage.currentAnime,
-			charactersArray: (state) => state.animePage.charactersArray,
-		}),
+	props: {
+		charactersArray: Array,
+	},
 
+	computed: {
 		slicedCharactersArray() {
 			return this.charactersArray.slice(0, 6)
 		},

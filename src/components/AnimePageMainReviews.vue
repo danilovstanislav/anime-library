@@ -1,14 +1,6 @@
 <template>
-	<section class="reviews" v-show="reviewsArray.length">
-		<AnimePageMainSectionTitle
-			:routerPath="{
-				name: 'AnimePageReviews',
-				params: { animeId: currentAnime.mal_id },
-			}"
-			:viewMoreButton="reviewsArray.length > 4"
-		>
-			Reviews
-		</AnimePageMainSectionTitle>
+	<section class="reviews" v-if="reviewsArray.length">
+		<AnimePageMainSectionTitle> Reviews </AnimePageMainSectionTitle>
 		<transition-group class="reviews__list" tag="ul" name="reviews-list" appear>
 			<li
 				class="reviews__item"
@@ -25,9 +17,7 @@
 						{{ review.date }}
 					</div>
 					<div class="reviews__username">{{ review.user.username }}</div>
-					<p class="reviews__text">
-						{{ review.review.substring(0, 250) }}...
-					</p>
+					<p class="reviews__text">{{ review.review.substring(0, 250) }}...</p>
 				</div>
 			</li>
 		</transition-group>
@@ -36,18 +26,17 @@
 
 <script>
 import AnimePageMainSectionTitle from '@/components/AnimePageMainSectionTitle.vue'
-import { mapState } from 'vuex'
+
 export default {
 	components: {
 		AnimePageMainSectionTitle,
 	},
 
-	computed: {
-		...mapState({
-			currentAnime: (state) => state.animePage.currentAnime,
-			reviewsArray: (state) => state.animePage.reviewsArray,
-		}),
+	props: {
+		reviewsArray: Array,
+	},
 
+	computed: {
 		slicedReviewsArray() {
 			return this.reviewsArray.slice(0, 5)
 		},
@@ -104,7 +93,7 @@ export default {
 .reviews-list-enter-from
 	opacity: 0
 	transform: translateX(150px)
-	
+
 .reviews-list-enter-to
 	opacity: 1
 	transform: translateX(0)

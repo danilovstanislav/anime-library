@@ -50,31 +50,15 @@
 
 <script>
 import AnimeTitle from '@/components/AnimeTitle.vue'
-import { mapState, mapActions } from 'vuex'
 
 export default {
 	components: {
 		AnimeTitle,
 	},
 
-	created() {
-		if (this.currentAnime === {}) {
-			this.getAnimeById(this.$route.params.animeId)
-		}
-	},
-
-	computed: {
-		...mapState({
-			currentAnime: (state) => state.animePage.currentAnime,
-			animeInfo: (state) => state.animePage.animeInfo,
-			trailer: (state) => state.animePage.trailer,
-		}),
-	},
-
-	methods: {
-		...mapActions({
-			getAnimeById: 'animePage/getAnimeById',
-		}),
+	props: {
+		animeInfo: Object,
+		trailer: Object,
 	},
 }
 </script>

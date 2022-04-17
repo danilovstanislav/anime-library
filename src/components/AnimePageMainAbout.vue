@@ -10,7 +10,7 @@
 		</p>
 		<button
 			class="about__button"
-			@click="clickHandler"
+			@click="readMoreText"
 			v-if="textAboutLength >= 250"
 		>
 			{{ isReadMoreClicked ? 'Read less' : 'Read more' }}
@@ -20,12 +20,15 @@
 
 <script>
 import AnimePageMainSectionTitle from '@/components/AnimePageMainSectionTitle.vue'
-import { mapState } from 'vuex'
 import { gsap } from 'gsap'
 
 export default {
 	components: {
 		AnimePageMainSectionTitle,
+	},
+
+	props: {
+		textAbout: String,
 	},
 
 	data() {
@@ -35,21 +38,13 @@ export default {
 	},
 
 	computed: {
-		...mapState({
-			currentAnime: (state) => state.animePage.currentAnime,
-		}),
-
-		textAbout() {
-			return this.currentAnime.synopsis ?? ''
-		},
-
 		textAboutLength() {
 			return this.textAbout.length
 		},
 	},
 
 	methods: {
-		clickHandler() {
+		readMoreText() {
 			this.isReadMoreClicked = !this.isReadMoreClicked
 			if (this.isReadMoreClicked) {
 				gsap.to(this.$refs.textAbout, {

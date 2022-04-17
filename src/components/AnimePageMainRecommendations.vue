@@ -10,10 +10,10 @@
 				<router-link
 					class="recommendations__item"
 					:to="{
-						name: 'AnimePageMain',
+						name: 'AnimePage',
 						params: { animeId: card.entry.mal_id },
 					}"
-					@click="recomendationsClickHandler(card.entry.mal_id)"
+					@click="clickOnRec(card.entry.mal_id)"
 				>
 					<img
 						class="recommendations__image"
@@ -32,41 +32,20 @@
 <script>
 import AnimePageMainSectionTitle from '@/components/AnimePageMainSectionTitle.vue'
 import Slider from '@/components/Slider.vue'
-import { mapState, mapActions } from 'vuex'
+
 export default {
 	components: {
 		AnimePageMainSectionTitle,
 		Slider,
 	},
 
-	computed: {
-		...mapState({
-			recommendationsArray: (state) => state.animePage.recommendationsArray,
-		}),
+	props: {
+		recommendationsArray: Array,
 	},
 
 	methods: {
-		...mapActions({
-			getAnimeById: 'animePage/getAnimeById',
-			removeAllData: 'animePage/removeAllData',
-		}),
-
-		recomendationsClickHandler(id) {
-			const scrollToTop = () => {
-				if (window.pageYOffset === 0) {
-					this.removeAllData()
-					this.getAnimeById(id)
-					window.removeEventListener('scroll', scrollToTop)
-				}
-			}
-
-			if (window.pageYOffset === 0) {
-				this.removeAllData()
-				this.getAnimeById(id)
-			} else {
-				window.addEventListener('scroll', scrollToTop)
-				window.scroll({ top: 0, behavior: 'smooth' })
-			}
+		clickOnRec() {
+			window.scroll({ top: 0, behavior: 'smooth' })
 		},
 	},
 }
