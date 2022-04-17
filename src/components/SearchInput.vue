@@ -35,7 +35,7 @@
 		<button
 			class="search__input__button"
 			@click="searchResults"
-			:disabled="input.length === 0"
+			:disabled="input.length > 1"
 		>
 			<svg
 				class="search__input-icon"
@@ -89,6 +89,10 @@ export default {
 		})
 
 		const searchResults = () => {
+			if (input.value === '') {
+				return
+			}
+
 			if (route.name !== 'SearchPage') {
 				router.replace({
 					name: 'SearchPage',
