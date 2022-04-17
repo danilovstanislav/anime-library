@@ -1,7 +1,7 @@
 <template>
 	<router-link
 		class="card"
-		:to="{ name: 'AnimePageMain', params: { animeId: card.mal_id } }"
+		:to="{ name: 'AnimePage', params: { animeId: card.mal_id } }"
 		@click="clickOnCard"
 	>
 		<img

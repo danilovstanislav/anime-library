@@ -38,7 +38,7 @@
 <script>
 import LoadingPage from '@/components/LoadingPage.vue'
 import ReloadButton from '@/components/ReloadButton.vue'
-import axios from 'axios'
+import instance from '@/plugins/axios/axios'
 
 export default {
 	components: {
@@ -53,7 +53,7 @@ export default {
 		}
 	},
 
-	created() {
+	mounted() {
 		this.getCurrentChar(this.$route.params.charId)
 	},
 
@@ -70,7 +70,7 @@ export default {
 	methods: {
 		async getCurrentChar(id) {
 			try {
-				const res = await axios.get(`https://api.jikan.moe/v4/characters/${id}`)
+				const res = await instance.get(`characters/${id}`)
 				this.currentChar = res.data.data
 				this.error = false
 			} catch (err) {

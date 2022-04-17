@@ -16,7 +16,7 @@
 					<router-link
 						class="dropdown__link"
 						:to="linkToSearch(search)"
-						@click="dropdownClickHandler(search.mal_id)"
+						@click="clickOnDropdownEl"
 					>
 						<img
 							class="dropdown__item__image"
@@ -83,7 +83,7 @@ export default {
 
 		linkToSearch(search) {
 			if (this.sel === 'anime') {
-				return { name: 'AnimePageMain', params: { animeId: search.mal_id } }
+				return { name: 'AnimePage', params: { animeId: search.mal_id } }
 			} else if (this.sel === 'characters') {
 				return { name: 'CharacterInfoPage', params: { charId: search.mal_id } }
 			}
@@ -94,19 +94,14 @@ export default {
 			removeAllData: 'animePage/removeAllData',
 		}),
 
-		dropdownClickHandler(id) {
+		clickOnDropdownEl(id) {
 			const scrollToTop = () => {
 				if (window.pageYOffset === 0) {
-					this.removeAllData()
-					this.getAnimeById(id)
 					window.removeEventListener('scroll', scrollToTop)
 				}
 			}
 
-			if (window.pageYOffset === 0) {
-				this.removeAllData()
-				this.getAnimeById(id)
-			} else {
+			if (window.pageYOffset !== 0) {
 				window.addEventListener('scroll', scrollToTop)
 				window.scroll({ top: 0, behavior: 'smooth' })
 			}
