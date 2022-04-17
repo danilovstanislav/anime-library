@@ -1,10 +1,15 @@
 <template>
 	<section class="anime-page">
 		<div class="container" v-if="Object.keys(this.currentAnime).length">
-			<AnimePageSidebar />
+			<AnimePageSidebar :animeInfo="animeInfo" :trailer="trailer" />
 			<div class="main">
-				<AnimeTitle />
-				<AnimePageTabs />
+				<AnimeTitle :animeTitle="animeTitle" />
+				<AnimePageTabs
+					:currentAnime="currentAnime"
+					:charactersArray="charactersArray"
+					:reviewsArray="reviewsArray"
+					:recommendationsArray="recommendationsArray"
+				/>
 			</div>
 		</div>
 		<LoadingPage v-else />
@@ -16,7 +21,7 @@ import AnimePageSidebar from '@/components/AnimePageSidebar.vue'
 import AnimeTitle from '@/components/AnimeTitle.vue'
 import AnimePageTabs from '@/components/AnimePageTabs.vue'
 import LoadingPage from '@/components/LoadingPage.vue'
-import { mapState, mapActions } from 'vuex'
+import instance from '@/plugins/axios/axios'
 
 export default {
 	components: {
@@ -26,10 +31,23 @@ export default {
 		LoadingPage,
 	},
 
-	created() {
-		if (Object.keys(this.currentAnime).length === 0 && !this.isRequested) {
-			this.getAnimeById(this.$route.params.animeId)
+	data() {
+		return {
+			currentAnime: {},
+			animeInfo: {
+				animeImage: null,
+				animeImageAlt: null,
+				categories: [],
+			},
+			trailer: {},
+			charactersArray: [],
+			reviewsArray: [],
+			recommendationsArray: [],
 		}
+	},
+
+	mounted() {
+		this.getAnimeById(this.currentId)
 	},
 
 	unmounted() {
@@ -37,19 +55,100 @@ export default {
 	},
 
 	computed: {
-		...mapState({
-			isRequested: (state) => state.animePage.isRequested,
-			currentAnime: (state) => state.animePage.currentAnime,
-		}),
+		currentId() {
+			return this.$route.params.animeId
+		},
+
+		animeTitle() {
+			return this.currentAnime.title_english
+				? this.currentAnime.title_english
+				: this.currentAnime.title
+		},
 	},
 
 	methods: {
-		...mapActions({
-			getAnimeById: 'animePage/getAnimeById',
-			getCharacters: 'animePage/getCharacters',
-			getReviews: 'animePage/getReviews',
-			removeAllData: 'animePage/removeAllData',
-		}),
+		async getAnimeById(id) {
+			try {
+				const res = await instance.get(`anime/${id}`)
+				this.currentAnime = res.data.data
+				this.animeInfo = {
+					animeImage: this.currentAnime.images.jpg.large_image_url,
+					animeImageAlt: this.currentAnime.title,
+					categories: [
+						{ key: 'Type', value: this.currentAnime.type },
+						{ key: 'Episodes', value: this.currentAnime.episodes },
+						{ key: 'Status', value: this.currentAnime.status },
+						{ key: 'Premiered', value: this.currentAnime.aired.string },
+						{
+							key: 'Genres',
+							value: this.currentAnime.genres
+								.map((i) => i.name)
+								.slice(0, 3)
+								.join(' '),
+						},
+						{ key: 'Duration', value: this.currentAnime.duration },
+					],
+				}
+				this.animeTrailer = this.currentAnime.trailer.url
+				this.getCharacters(id)
+				this.getReviews(id)
+				this.getRecommendations(id)
+			} catch (err) {
+				console.error(err)
+			}
+		},
+
+		async getCharacters(id) {
+			try {
+				const res = await instance.get(`anime/${id}/characters`)
+				this.charactersArray = res.data.data
+			} catch (err) {
+				this.charactersArray = []
+				console.error(err)
+			}
+		},
+
+		async getReviews(id) {
+			try {
+				const res = await instance.get(`anime/${id}/reviews`)
+				this.reviewsArray = res.data.data
+			} catch (err) {
+				this.reviewsArray = []
+				console.error(err)
+			}
+		},
+
+		async getRecommendations(id) {
+			try {
+				const res = await instance.get(`anime/${id}/recommendations`)
+				this.recommendationsArray = res.data.data
+			} catch (err) {
+				this.recommendationsArray = []
+				console.error(err)
+			}
+		},
+
+		removeAllData() {
+			this.currentAnime = {}
+			this.animeInfo = {
+				animeImage: null,
+				animeImageAlt: null,
+				categories: [],
+			}
+			this.trailer = {}
+			this.charactersArray = []
+			this.reviewsArray = []
+			this.recommendationsArray = []
+		},
+	},
+
+	watch: {
+		currentId(val) {
+			if (val >= 0) {
+				this.removeAllData()
+				this.getAnimeById(val)
+			}
+		},
 	},
 }
 </script>

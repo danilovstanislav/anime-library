@@ -4,7 +4,7 @@
 			v-if="Object.keys(currentAnime).length"
 			@click="activeTab = 'AnimePageMain'"
 			class="tabs__item"
-			:class="{active: activeTab === 'AnimePageMain'}"
+			:class="{ active: activeTab === 'AnimePageMain' }"
 		>
 			Details
 		</li>
@@ -12,7 +12,7 @@
 			v-if="charactersArray.length"
 			@click="activeTab = 'AnimePageCharacters'"
 			class="tabs__item"
-			:class="{active: activeTab === 'AnimePageCharacters'}"
+			:class="{ active: activeTab === 'AnimePageCharacters' }"
 		>
 			Characters
 		</li>
@@ -20,19 +20,24 @@
 			v-if="reviewsArray.length"
 			@click="activeTab = 'AnimePageReviews'"
 			class="tabs__item"
-			:class="{active: activeTab === 'AnimePageReviews'}"
+			:class="{ active: activeTab === 'AnimePageReviews' }"
 		>
 			Reviews
 		</li>
 	</ul>
-	<component :is="activeTab" />
+	<component
+		:is="activeTab"
+		:currentAnime="currentAnime"
+		:charactersArray="charactersArray"
+		:reviewsArray="reviewsArray"
+		:recommendationsArray="recommendationsArray"
+	/>
 </template>
 
 <script>
-import AnimePageMain from '@/pages/AnimePageMain.vue'
-import AnimePageCharacters from '@/pages/AnimePageCharacters.vue'
-import AnimePageReviews from '@/pages/AnimePageReviews.vue'
-import { mapState } from 'vuex'
+import AnimePageMain from '@/components/AnimePageMain.vue'
+import AnimePageCharacters from '@/components/AnimePageCharacters.vue'
+import AnimePageReviews from '@/components/AnimePageReviews.vue'
 
 export default {
 	components: {
@@ -41,18 +46,17 @@ export default {
 		AnimePageReviews,
 	},
 
+	props: {
+		currentAnime: Object,
+		charactersArray: Array,
+		reviewsArray: Array,
+		recommendationsArray: Array,
+	},
+
 	data() {
 		return {
 			activeTab: 'AnimePageMain',
 		}
-	},
-
-	computed: {
-		...mapState({
-			currentAnime: (state) => state.animePage.currentAnime,
-			charactersArray: (state) => state.animePage.charactersArray,
-			reviewsArray: (state) => state.animePage.reviewsArray,
-		}),
 	},
 }
 </script>
