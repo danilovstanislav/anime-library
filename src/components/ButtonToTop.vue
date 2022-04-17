@@ -3,9 +3,13 @@
 		<button
 			class="button-scroll-to-top"
 			v-show="isButtonActive"
-			@click="backToTop"
+			@click="scrollToTop"
 		>
-			<svg class="button-scroll-to-top__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+			<svg
+				class="button-scroll-to-top__icon"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 384 512"
+			>
 				<path
 					d="M374.6 246.6C368.4 252.9 360.2 256 352 256s-16.38-3.125-22.62-9.375L224 141.3V448c0 17.69-14.33 31.1-31.1 31.1S160 465.7 160 448V141.3L54.63 246.6c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160C387.1 213.9 387.1 234.1 374.6 246.6z"
 				/>
@@ -13,49 +17,44 @@
 		</button>
 	</transition>
 </template>
+
 <script>
 export default {
 	data() {
 		return {
 			isButtonActive: false,
+			offsetY: 0,
 		}
 	},
 
 	mounted() {
-		window.addEventListener('scroll', this.showHideButton)
+		window.addEventListener('scroll', this.changeOffset)
 	},
 
 	unmounted() {
-		window.removeEventListener('scroll', this.showHideButton)
-	},
-
-	computed: {
-		getPageHeight() {
-			return Math.max(
-				document.body.scrollHeight,
-				document.documentElement.scrollHeight,
-				document.body.offsetHeight,
-				document.documentElement.offsetHeight,
-				document.body.clientHeight,
-				document.documentElement.clientHeight
-			)
-		},
+		window.removeEventListener('scroll', this.changeOffset)
 	},
 
 	methods: {
-		backToTop() {
-			window.scroll({ top: 0, behavior: 'smooth' })
+		changeOffset() {
+			this.offsetY = window.pageYOffset
 		},
 
-		showHideButton() {
-			let offsetY = window.pageYOffset
-			this.getPageHeight / 3 > offsetY
-				? (this.isButtonActive = false)
-				: (this.isButtonActive = true)
+		scrollToTop() {
+			window.scrollTo({ top: 0, behavior: 'smooth' })
+		},
+	},
+
+	watch: {
+		offsetY(v) {
+			v > document.documentElement.clientWidth
+				? (this.isButtonActive = true)
+				: (this.isButtonActive = false)
 		},
 	},
 }
 </script>
+
 <style lang="sass">
 .button-scroll-to-top
 	@include button
