@@ -23,7 +23,7 @@
 		>
 		</label>
 		<Transition @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
-			<SearchPageDropDown
+			<SearchPageDropdown
 				@clearInput="input = ''"
 				:input="input"
 				:searchResult="inputResultArray"
@@ -51,15 +51,15 @@
 </template>
 
 <script>
-import SearchPageDropDown from '@/components/SearchPageDropDown.vue'
+import SearchPageDropdown from '@/components/SearchPageDropdown.vue'
 import { useInputResults } from '@/composables/useInputResults'
 import { ref, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { gsap } from 'gsap'
 
 export default {
 	components: {
-		SearchPageDropDown,
+		SearchPageDropdown,
 	},
 
 	emits: {
@@ -80,6 +80,7 @@ export default {
 
 		const searchInput = ref(null)
 		const router = useRouter()
+		const route = useRoute()
 
 		onMounted(() => {
 			window.addEventListener('click', (e) => {
@@ -88,12 +89,18 @@ export default {
 		})
 
 		const searchResults = () => {
+			if (route.name !== 'SearchPage') {
+				router.replace({
+					name: 'SearchPage',
+					params: { inp: input.value, sel: selectedOption.value },
+				})
+			}
+
+			window.scroll({ top: 0, behavior: 'smooth' })
 			emit('getSearchResults', {
 				inp: input.value,
 				sel: selectedOption.value,
 			})
-			router.replace({ name: 'SearchPage' })
-			window.scroll({ top: 0, behavior: 'smooth' })
 			input.value = ''
 		}
 

@@ -26,6 +26,7 @@ import SearchInput from '@/components/SearchInput.vue'
 import SearchPageResults from '@/components/SearchPageResults.vue'
 import { useSearchResults } from '@/composables/useSearchResults'
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default {
 	components: {
@@ -43,14 +44,26 @@ export default {
 			getResults,
 		} = useSearchResults()
 
+		const route = useRoute()
 		const selectedTypeCard = ref(null)
 
 		onMounted(() => {
-			searchedResults.value = sessionStorage.searchedResults
-				? JSON.parse(sessionStorage.searchedResults)
-				: []
-			lastSearch.value = sessionStorage.lastSearch ?? ''
-			selectedTypeCard.value = sessionStorage.selectedTypeCard ?? null
+			if (Object.keys(route.params).length) {
+				clearResults()
+				getSearchResults(route.params)
+			} else {
+				if (sessionStorage.searchedResults) {
+					searchedResults.value = JSON.parse(sessionStorage.searchedResults)
+				}
+
+				if (sessionStorage.lastSearch) {
+					lastSearch.value = sessionStorage.lastSearch
+				}
+
+				if (sessionStorage.selectedTypeCard) {
+					selectedTypeCard.value = sessionStorage.selectedTypeCard
+				}
+			}
 		})
 
 		const changeInputField = () => (currentPage.value = 1)
