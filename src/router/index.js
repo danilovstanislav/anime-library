@@ -16,23 +16,6 @@ const routes = [
     path: '/anime/:animeId',
     name: 'AnimePage',
     component: () => import('@/pages/AnimePage.vue'),
-    children: [
-      {
-        path: '',
-        name: 'AnimePageMain',
-        component: () => import('@/pages/AnimePageMain.vue'),
-      },
-      {
-        path: 'characters',
-        name: 'AnimePageCharacters',
-        component: () => import('@/pages/AnimePageCharacters.vue'),
-      },
-      {
-        path: 'reviews',
-        name: 'AnimePageReviews',
-        component: () => import('@/pages/AnimePageReviews.vue'),
-      },
-    ],
   },
   {
     path: '/characters/:charId',
