@@ -7,20 +7,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { gsap } from 'gsap'
 
 export default {
-	computed: {
-		...mapState({
-			currentAnime: (state) => state.animePage.currentAnime,
-		}),
-
-		animeTitle() {
-			return this.currentAnime.title_english
-				? this.currentAnime.title_english
-				: this.currentAnime.title
-		},
+	props: {
+		animeTitle: String,
 	},
 
 	methods: {
