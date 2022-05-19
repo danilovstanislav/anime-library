@@ -124,6 +124,12 @@ export default {
 			if (val !== '') inputResultArray.value = []
 		})
 
+		watch(selectedOption, () => {
+			inputResultArray.value = []
+			loading.value = true
+			updateInputResults()
+		})
+
 		const onBeforeEnter = (el) => {
 			el.style.opacity = 0
 			el.style.height = 0

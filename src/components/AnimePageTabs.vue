@@ -83,9 +83,14 @@ export default {
 		text-align: center
 		color: $dark-black-color
 		cursor: pointer
+		transition: all .2s
 
 		&:not(:last-child)
 			margin-right: 10px
+
+		&:hover
+			opacity: .7
+			box-shadow: 0 0 0 2px $dark-black-color
 
 	.active
 		background-color: #fffb96
