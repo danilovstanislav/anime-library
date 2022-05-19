@@ -96,15 +96,15 @@ export default {
 			if (route.name !== 'SearchPage') {
 				router.replace({
 					name: 'SearchPage',
-					params: { inp: input.value, sel: selectedOption.value },
+					query: { q: input.value, category: selectedOption.value },
+				})
+			} else {
+				emit('getSearchResults', {
+					q: input.value,
+					category: selectedOption.value,
 				})
 			}
-
 			window.scroll({ top: 0, behavior: 'smooth' })
-			emit('getSearchResults', {
-				inp: input.value,
-				sel: selectedOption.value,
-			})
 			input.value = ''
 		}
 
