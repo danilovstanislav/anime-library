@@ -3,4 +3,4 @@
 This repository contains my portfolio project
 
 ## Demo
-See the completed project here: [**LINK**](http://h91991ai.beget.tech/)
+See the completed project: [**LINK HERE**](http://h91991ai.beget.tech/)
