@@ -1,19 +1,6 @@
-# anime-library
+# Vue.JS Anime Library
 
-## Project setup
-```
-yarn install
-```
+This repository contains my portfolio project
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Demo
+See the completed project here: http://h91991ai.beget.tech/
