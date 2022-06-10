@@ -1,6 +1,6 @@
 <template>
-	<section class="recommendations" v-if="recommendationsArray.length">
-		<anime-page-section-title>Recommendations</anime-page-section-title>
+	<section class="recommendations" v-show="recommendationsArray.length">
+		<AnimePageMainSectionTitle>Recommendations</AnimePageMainSectionTitle>
 		<div class="recommendations__list">
 			<slider
 				v-slot="{ card }"
@@ -10,17 +10,17 @@
 				<router-link
 					class="recommendations__item"
 					:to="{
-						name: 'AnimePage',
+						name: 'AnimePageMain',
 						params: { animeId: card.entry.mal_id },
 					}"
-					@click="scrollTop(card.entry.mal_id)"
+					@click="recomendationsClickHandler(card.entry.mal_id)"
 				>
 					<img
 						class="recommendations__image"
 						:src="card.entry.images.jpg.image_url"
 						alt="Anime image"
 					/>
-					<div class="recommendations__item-title">
+					<div class="recommendations__item-title" :title="card.entry.title">
 						{{ card.entry.title }}
 					</div>
 				</router-link>
@@ -30,46 +30,42 @@
 </template>
 
 <script>
-import AnimePageSectionTitle from '@/components/AnimePageSectionTitle.vue'
+import AnimePageMainSectionTitle from '@/components/AnimePageMainSectionTitle.vue'
 import Slider from '@/components/Slider.vue'
-import axios from 'axios'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
 	components: {
-		AnimePageSectionTitle,
+		AnimePageMainSectionTitle,
 		Slider,
 	},
 
-	data() {
-		return {
-			recommendationsArray: [],
-		}
-	},
-
-	created() {
-		this.getRecommendations(this.$route.params.animeId)
+	computed: {
+		...mapState({
+			recommendationsArray: (state) => state.animePage.recommendationsArray,
+		}),
 	},
 
 	methods: {
 		...mapActions({
 			getAnimeById: 'animePage/getAnimeById',
+			removeAllData: 'animePage/removeAllData',
 		}),
 
-		scrollTop(id) {
-			window.scroll({ top: 0, behavior: 'smooth' })
-			if (window.pageYOffset === 0) {
-				this.getAnimeById(id)
+		recomendationsClickHandler(id) {
+			const scrollToTop = () => {
+				if (window.pageYOffset === 0) {
+					this.removeAllData()
+					this.getAnimeById(id)
+					window.removeEventListener('scroll', scrollToTop)
+				}
 			}
-		},
 
-		async getRecommendations(id) {
-			try {
-				const res = await axios.get(
-					`https://api.jikan.moe/v4/anime/${id}/recommendations`
-				)
-				this.recommendationsArray = res.data.data
-			} catch (err) {
-				console.error(err)
+			if (window.pageYOffset === 0) {
+				this.removeAllData()
+				this.getAnimeById(id)
+			} else {
+				window.addEventListener('scroll', scrollToTop)
+				window.scroll({ top: 0, behavior: 'smooth' })
 			}
 		},
 	},
@@ -100,11 +96,17 @@ export default {
 			&::after
 				color: $dark-black-color
 
+		.swiper-button-prev
+			left: 5px
+
+		.swiper-button-next
+			right: 5px
+
 	&__item
 		display: block
 		color: #000
 		text-decoration: none
-		border-radius: 5px
+		border-radius: 10px
 		overflow: hidden
 		transition: all .2s ease
 
@@ -113,18 +115,27 @@ export default {
 
 	&__image
 		width: 100%
-		height: 160px
+		height: 185px
 		margin-bottom: 8px
 		display: block
 		object-fit: cover
 		object-position: center
 
+		@media (max-width: $screen-m-max)
+			height: 170px
+
+		@media (max-width: $screen-s-max)
+			height: 175px
+
 		@media (max-width: $screen-xs-max)
-			height: 130px
+			height: 205px
+
+		@media (max-width: $screen-xs-min)
+			height: 215px
 
 	&__item-title
-		font-weight: 700
-		font-size: 14px
+		font-family: 'Fredoka-SemiBold'
+		font-size: 15px
 		white-space: nowrap
 		text-overflow: ellipsis
 		overflow: hidden

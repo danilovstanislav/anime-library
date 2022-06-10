@@ -8,14 +8,31 @@ const routes = [
     component: HomePage,
   },
   {
+    path: '/:pathMatch(.*)*',
+    name: 'PageNotFound',
+    component: () => import('@/pages/PageNotFound.vue'),
+  },
+  {
     path: '/anime/:animeId',
     name: 'AnimePage',
     component: () => import('@/pages/AnimePage.vue'),
-  },
-  {
-    path: '/anime/:animeId/characters',
-    name: 'CharactersList',
-    component: () => import('@/pages/CharactersList.vue'),
+    children: [
+      {
+        path: '',
+        name: 'AnimePageMain',
+        component: () => import('@/pages/AnimePageMain.vue'),
+      },
+      {
+        path: 'characters',
+        name: 'AnimePageCharacters',
+        component: () => import('@/pages/AnimePageCharacters.vue'),
+      },
+      {
+        path: 'reviews',
+        name: 'AnimePageReviews',
+        component: () => import('@/pages/AnimePageReviews.vue'),
+      },
+    ],
   },
   {
     path: '/anime/:animeId/characters/:charId',
@@ -23,9 +40,9 @@ const routes = [
     component: () => import('@/pages/CharacterInfoPage.vue'),
   },
   {
-    path: '/anime/:animeId/reviews',
-    name: 'ReviewsPage',
-    component: () => import('@/pages/ReviewsPage.vue'),
+    path: '/search',
+    name: 'SearchPage',
+    component: () => import('@/pages/SearchPage.vue'),
   },
 ]
 

@@ -1,22 +1,46 @@
 <template>
 	<header class="header">
 		<div class="header__wrapper">
-			<router-link class="header__logo" :to="{ name: 'HomePage' }"
+			<router-link
+				class="header__logo"
+				:to="{ name: 'HomePage' }"
+				@click="clickHandler"
 				>AniBase</router-link
 			>
 			<ul class="header__list">
 				<li class="header__item">
-					<router-link class="header__link" :to="{ name: 'HomePage' }"
-						>Home</router-link
+					<router-link
+						class="header__link"
+						:to="{ name: 'SearchPage' }"
+						@click="clickHandler"
+						>Search</router-link
 					>
 				</li>
 			</ul>
+			<SearchInput />
 		</div>
 	</header>
 </template>
 
 <script>
-export default {}
+import SearchInput from '@/components/SearchInput.vue'
+export default {
+	components: {
+		SearchInput,
+	},
+
+	methods: {
+		clickHandler() {
+			const scrollToTop = () => {
+				if (window.pageYOffset === 0) {
+					window.removeEventListener('scroll', scrollToTop)
+				}
+			}
+			window.addEventListener('scroll', scrollToTop)
+			window.scroll({ top: 0, behavior: 'smooth' })
+		},
+	},
+}
 </script>
 
 <style lang='sass' scoped>
@@ -24,6 +48,9 @@ export default {}
 	width: 100%
 	padding-top: 20px
 	padding-bottom: 20px
+	position: sticky
+	top: 0
+	z-index: 100
 	background-color: $main-color
 
 	&__wrapper
@@ -34,11 +61,11 @@ export default {}
 	&__logo
 		margin-right: 15px
 		display: block
-		font-family: 'Akaya-Telivigala'
+		font-family: 'Fredoka-SemiBold'
 		font-size: 28px
 		line-height: .9
 		text-decoration: none
-		color: #000
+		color: $dark-black-color
 
 	&__list
 		padding: 0
@@ -61,4 +88,15 @@ export default {}
 
 		&:hover
 			border-color: #393939
+
+	&:deep(.search__input-wrapper)
+		max-width: 300px
+		height: 30px
+		margin-bottom: 0
+		margin-left: auto
+
+		.search__input-icon
+			width: 15px
+			height: 15px
+
 </style>
